@@ -1,17 +1,16 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router';
-import { createServerFn } from '@tanstack/react-start';
-import { blogDocs, blogSource } from '@/lib/source';
-import {
-  DocsBody,
-  DocsTitle,
-} from 'fumadocs-ui/layouts/docs/page';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
+import { useMDXComponents } from '@/components/mdx';
 import { baseOptions } from '@/lib/layout.shared';
 import { encodeMarkdownUrl } from '@/lib/shared';
+import { blogDocs, blogSource } from '@/lib/source';
+import { createFileRoute, Link, notFound } from '@tanstack/react-router';
+import { createServerFn } from '@tanstack/react-start';
 import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
+import {
+  DocsBody
+} from 'fumadocs-ui/layouts/docs/page';
+import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import { Suspense, use } from 'react';
-import { useMDXComponents } from '@/components/mdx';
 
 export const Route = createFileRoute('/blog/$')({
   component: Page,
@@ -50,23 +49,40 @@ function Content({ path }: { path: string }) {
 
   return (
     <main className="container mx-auto px-4 py-12 max-w-3xl">
-      <div className="mb-12">
-        <Link to="/blog" className="text-primary hover:underline mb-8 inline-block font-medium">
+      <div className="mb-16 border-b border-border/50 pb-10">
+        <Link to="/blog" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8 inline-flex items-center gap-2">
           &larr; Back to Blog
         </Link>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">{page.title}</h1>
-        <p className="text-xl text-muted-foreground mb-6">
+        <h1 className="text-3xl md:text-xl lg:text-3xl font-bold tracking-tight mb-4 leading-tight">{page.title}</h1>
+        <p className="text-md md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl">
           {page.description}
         </p>
-        {(page as any).data?.date && (
-          <div className="text-sm text-muted-foreground font-medium">
-            {new Date((page as any).data.date).toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+            P
           </div>
-        )}
+          <div>
+            <div className="font-semibold text-sm">Pace Team</div>
+            {(page as any).data?.date && (
+              <div className="text-sm text-muted-foreground/80 font-medium">
+                {new Date((page as any).data.date).toLocaleDateString(undefined, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </div>
+            )}
+            {(page as any).data?.tags && (
+              <div className="flex gap-2 mt-2">
+                {(page as any).data.tags.map((tag: string) => (
+                  <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       <DocsBody>
         <MDX components={useMDXComponents()} />

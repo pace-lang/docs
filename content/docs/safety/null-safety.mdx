@@ -1,0 +1,75 @@
+---
+title: Strict Null Safety
+description: Understand how Pace eliminates NullPointerExceptions and forces you to handle missing data safely.
+---
+
+One of the most common and frustrating bugs in programming is the "Null Pointer Exception" (or "Cannot read properties of undefined"). This happens when your code expects an object to exist, but it actually doesn't. 
+
+In older languages, any variable could secretly be `null`, and the compiler wouldn't warn you until the program crashed in front of your users.
+
+**Pace fixes this by making nullability explicit.**
+
+## The Golden Rule
+
+In Pace, **variables cannot be null by default.** If a variable is allowed to be missing, you must explicitly tell the compiler by adding a `?` to the end of its type.
+
+```pace
+// ❌ This variable MUST always have a string. It can never be null.
+let name: String = "Alice"
+
+// ✅ This variable MIGHT be a string, or it MIGHT be null.
+let nickname: String? = null
+```
+
+## How the Compiler Protects You
+
+If a variable has a `?` in its type, Pace **will not let you use it** until you prove that you have checked for `null`.
+
+<NullSafetyGraphic />
+
+### Example: The Crash Path
+
+Imagine you are looking up a user's address. If the user hasn't provided an address, the `address` variable will be `null`.
+
+```pace
+struct User {
+    address: Address? // This can be null!
+}
+
+let bob = User { address: null }
+
+// ❌ COMPILER ERROR: You cannot access `.city` because `address` might be null!
+print(bob.address.city)
+```
+In other languages, this code would compile fine, and then crash the server when it ran. Pace refuses to compile it.
+
+### Example: The Safe Path
+
+To fix this, you must handle the null case. Pace provides two very convenient operators to do this in a single line:
+
+1. **Optional Chaining (`?.`)**: "If the object exists, get its property. If it doesn't, just return null."
+2. **Null Coalescing (`??`)**: "If the value on the left is null, use the default value on the right instead."
+
+```pace
+// ✅ COMPILES PERFECTLY
+let city = bob.address?.city ?? "Unknown City"
+print(city) // Prints: "Unknown City"
+```
+
+## Using `if let`
+
+Sometimes you want to run a whole block of code only if the value exists. You can use the `if let` statement to safely "unwrap" the value.
+
+```pace
+let maybePort: Int? = get_port_from_env()
+
+if let port = maybePort {
+    // Inside this block, 'port' is guaranteed to be a real Int (not null).
+    start_server(port)
+} else {
+    // If maybePort was null, this block runs instead.
+    print("No port provided, shutting down.")
+}
+```
+
+By making nulls explicit, Pace forces you to think about edge cases while you are writing the code, leading to completely crash-free applications!

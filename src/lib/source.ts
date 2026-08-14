@@ -1,6 +1,8 @@
 import { loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
+import { frontmatterSchema } from 'fumadocs-mdx/config';
 import { defineDocs } from 'fumadocs-mdx/macro';
+import { z } from 'zod';
 import { docsRoute } from './shared';
 
 export const docs = defineDocs({
@@ -22,6 +24,10 @@ export const source = loader({
 export const blogDocs = defineDocs({
   dir: 'content/blog',
   docs: {
+    schema: frontmatterSchema.extend({
+      date: z.string().or(z.date()).optional(),
+      tags: z.array(z.string()).optional(),
+    }),
     async: true,
     postprocess: {
       includeProcessedMarkdown: true,

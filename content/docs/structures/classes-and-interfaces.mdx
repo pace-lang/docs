@@ -16,7 +16,7 @@ class Rectangle {
     let height: Int
     
     // The Constructor
-    init(w: Int, h: Int) {
+    func init(w: Int, h: Int) {
         self.width = w
         self.height = h
     }
@@ -52,7 +52,7 @@ You can use the `implements` keyword to guarantee a class fulfills the contract:
 class Circle implements Shape {
     let radius: Int
     
-    init(r: Int) {
+    func init(r: Int) {
         self.radius = r
     }
     

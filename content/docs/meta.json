@@ -3,15 +3,9 @@
   "pages": [
     "index",
     "getting-started",
-    "tooling",
-    "datatypes-and-variables",
-    "control-flow",
-    "functions",
-    "enums-and-matching",
-    "classes-and-interfaces",
-    "generics",
-    "modules-and-imports",
-    "error-handling",
-    "memory-management"
+    "basics",
+    "structures",
+    "safety",
+    "advanced"
   ]
 }

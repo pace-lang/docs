@@ -1,0 +1,72 @@
+---
+title: Understanding Compile-Time Errors
+description: Why Pace yells at you before you even run your code (and why that's a good thing).
+---
+
+If you are coming from interpreted languages like JavaScript or Python, you might be used to writing code, running it, and waiting to see if it crashes.
+
+In Pace, the experience is different. Pace uses a very strict **Compiler**. Before your code is allowed to run, the compiler scans every single line and analyzes all possible paths the data could take.
+
+If it finds anything ambiguous, unsafe, or contradictory, it stops immediately and throws a **Compile-Time Error**.
+
+<CompileErrorTerminal />
+
+## Why is this good?
+
+At first, a strict compiler can feel frustrating. It feels like it's getting in your way. But the compiler is actually your best friend. 
+
+**Every compile-time error you fix is a bug that a user will never experience.**
+
+Instead of deploying a broken app and waking up at 3 AM to fix a crash, the compiler forces you to fix the crash at 3 PM on a Tuesday while you are comfortably writing the code.
+
+## Common Compiler Errors
+
+Here are a few friendly examples of the compiler protecting you.
+
+### 1. The "Type Mismatch" Error
+
+Pace is statically typed. It needs to know what shape your data is so it can optimize memory perfectly. If you try to mix shapes, it will stop you.
+
+```pace
+let age = 25
+age = "Twenty Five" // ❌ ERROR: Cannot assign type 'String' to variable of type 'Int'
+```
+**Why it protects you:** If another part of your code tries to do math on `age`, it would completely fail if it suddenly became a string. The compiler prevents this silent corruption.
+
+### 2. The "Unhandled State" Error
+
+When you use Pattern Matching, the compiler checks if you have accounted for *every possible scenario*. 
+
+```pace
+enum NetworkStatus {
+    Connected,
+    Disconnected,
+    Connecting
+}
+
+func handle_status(status: NetworkStatus) {
+    match status {
+        Connected => print("Online!"),
+        Disconnected => print("Offline!")
+    }
+}
+// ❌ ERROR: Non-exhaustive match. You forgot to handle 'Connecting'.
+```
+**Why it protects you:** If the network is connecting, what should your app do? If you don't define it, the app would freeze or crash. The compiler forces you to define a behavior for *everything*.
+
+### 3. The "Unsafe Null" Error
+
+As covered in the [Strict Null Safety](/docs/safety/null-safety) section, Pace will not let you blindly guess that a value exists. 
+
+```pace
+let user_id: Int? = get_id() // Might be null!
+
+let next_id = user_id + 1
+// ❌ ERROR: Cannot add 'Int' to 'Int?'. Handle the null case first.
+```
+
+**Why it protects you:** Adding `1` to `null` makes no mathematical sense. The compiler makes you prove the ID exists before doing math on it.
+
+## The Takeaway
+
+When the Pace compiler throws an error, don't get frustrated. Read the error message carefully. It is pointing exactly to a place where your program would have eventually failed in the real world. By fixing it now, your final application will be incredibly robust.
