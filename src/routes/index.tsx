@@ -32,7 +32,7 @@ function Home() {
 
         {/* Subtle grid overlay */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
         </div>
 
         {/* Hero Section */}
@@ -58,7 +58,7 @@ function Home() {
               <Link
                 to="/docs/$"
                 params={{ _splat: '' }}
-                className="group relative w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-semibold text-base transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                className="group relative px-6 py-3 rounded-xl bg-white text-black font-semibold text-base transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
               >
                 Get Started <PlayCircle className="w-4 h-4" />
               </Link>
@@ -114,7 +114,7 @@ function Home() {
 
         {/* Code Showcase Section */}
         <section className="w-full max-w-7xl mx-auto px-4 py-24 flex flex-col lg:flex-row gap-12 lg:gap-16 items-center z-10 relative">
-          
+
           {/* Left Text */}
           <div className="flex-1 flex flex-col gap-6 w-full lg:max-w-xl text-left">
             <h2 className="text-3xl md:text-4xl font-bold leading-tight text-white tracking-tight">
@@ -124,35 +124,35 @@ function Home() {
             <p className="text-lg text-gray-400 leading-relaxed">
               Pace gets out of your way. With advanced type inference, clean syntax, and strict safety guarantees, you can focus on writing logic rather than fighting the compiler.
             </p>
-            
+
             <div className="flex flex-col gap-3 mt-4">
-              <button 
+              <button
                 onClick={() => setActiveTab('hello')}
                 className={`flex items-center gap-4 p-4 rounded-xl transition-all border ${activeTab === 'hello' ? 'bg-white/5 border-white/10' : 'bg-transparent border-transparent hover:bg-white/5'} text-left`}
               >
-                <Terminal className={`w-5 h-5 flex-shrink-0 ${activeTab === 'hello' ? 'text-emerald-400' : 'text-gray-500'}`} />
+                <Terminal className={`w-5 h-5 shrink-0 ${activeTab === 'hello' ? 'text-emerald-400' : 'text-gray-500'}`} />
                 <div>
                   <h4 className={`font-semibold text-sm ${activeTab === 'hello' ? 'text-white' : 'text-gray-400'}`}>Familiar Syntax</h4>
                   <p className="text-xs text-gray-500 mt-1">Easy to pick up if you know C, Rust, or Swift.</p>
                 </div>
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => setActiveTab('pattern')}
                 className={`flex items-center gap-4 p-4 rounded-xl transition-all border ${activeTab === 'pattern' ? 'bg-white/5 border-white/10' : 'bg-transparent border-transparent hover:bg-white/5'} text-left`}
               >
-                <Cpu className={`w-5 h-5 flex-shrink-0 ${activeTab === 'pattern' ? 'text-indigo-400' : 'text-gray-500'}`} />
+                <Cpu className={`w-5 h-5 shrink-0 ${activeTab === 'pattern' ? 'text-indigo-400' : 'text-gray-500'}`} />
                 <div>
                   <h4 className={`font-semibold text-sm ${activeTab === 'pattern' ? 'text-white' : 'text-gray-400'}`}>Pattern Matching</h4>
                   <p className="text-xs text-gray-500 mt-1">Exhaustive matching with algebraic data types.</p>
                 </div>
               </button>
 
-              <button 
+              <button
                 onClick={() => setActiveTab('nullsafe')}
                 className={`flex items-center gap-4 p-4 rounded-xl transition-all border ${activeTab === 'nullsafe' ? 'bg-white/5 border-white/10' : 'bg-transparent border-transparent hover:bg-white/5'} text-left`}
               >
-                <ShieldCheck className={`w-5 h-5 flex-shrink-0 ${activeTab === 'nullsafe' ? 'text-rose-400' : 'text-gray-500'}`} />
+                <ShieldCheck className={`w-5 h-5 shrink-0 ${activeTab === 'nullsafe' ? 'text-rose-400' : 'text-gray-500'}`} />
                 <div>
                   <h4 className={`font-semibold text-sm ${activeTab === 'nullsafe' ? 'text-white' : 'text-gray-400'}`}>Strict Null Safety</h4>
                   <p className="text-xs text-gray-500 mt-1">No more runtime NullPointerExceptions.</p>
@@ -177,7 +177,7 @@ function Home() {
               </div>
 
               {/* IDE Body */}
-              <div className="p-6 overflow-x-auto text-left relative h-[380px] flex items-start">
+              <div className="p-6 overflow-x-auto text-left relative h-95 flex items-start">
                 <div className="absolute top-0 left-0 w-10 h-full bg-[#161b22]/50 border-r border-white/5 flex flex-col items-center py-6 text-gray-600 font-mono text-sm leading-loose select-none">
                   {[...Array(15)].map((_, i) => <span key={i}>{i + 1}</span>)}
                 </div>
