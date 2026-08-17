@@ -12,7 +12,7 @@ Because Pace compiles down to native machine code via Cranelift, functions in Pa
 In Pace, functions are defined using the `func` keyword. Because Pace is statically typed, you must specify the types for all parameters and the return type.
 
 ```pace
-func calculateTotal(price: Float, taxRate: Float) -> Float {
+func calculateTotal(price: Float, taxRate: Float): Float {
     let tax = price * taxRate
     return price + tax
 }
@@ -20,7 +20,7 @@ func calculateTotal(price: Float, taxRate: Float) -> Float {
 let finalPrice = calculateTotal(100.0, 0.05)
 ```
 
-If a function performs an action but does not return a value, you can omit the `->` return type entirely (it defaults to `Void`).
+If a function performs an action but does not return a value, you can omit the `:` return type entirely (it defaults to `Void`).
 
 ```pace
 func logError(errorMsg: String) {
@@ -65,7 +65,7 @@ You can call C code with **zero overhead**. There is no "translation layer", no 
 
 ```pace
 // Declare the exact signature of the C function we want to call
-foreign func puts(s: String) -> Int
+foreign func puts(s: String): Int
 foreign func sleep(seconds: Int)
 
 func main() {

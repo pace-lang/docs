@@ -18,9 +18,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const [activeTab, setActiveTab] = useState<"hello" | "pattern" | "nullsafe">(
+  const [activeTab, setActiveTab] = useState<"hello" | "pattern" | "nullsafe" | "structs">(
     "hello",
   );
+  const [os, setOs] = useState<"linux" | "windows">("linux");
 
   const codeSnippets = {
     hello: {
@@ -119,6 +120,32 @@ function Home() {
         </>
       ),
     },
+    structs: {
+      title: "memory.pace",
+      code: (
+        <>
+          <span className="text-[#ff7b72] font-semibold">struct</span>{" "}
+          <span className="text-[#79c0ff]">Vector3</span> {"{\n"} x:{" "}
+          <span className="text-[#79c0ff]">Float</span>
+          {"\n"} y: <span className="text-[#79c0ff]">Float</span>
+          {"\n"} z: <span className="text-[#79c0ff]">Float</span>
+          {"\n"}
+          {"}"}
+          {"\n\n"}
+          <span className="text-[#ff7b72] font-semibold">func</span>{" "}
+          <span className="text-[#d2a8ff]">compute</span>():{" "}
+          <span className="text-[#79c0ff]">Vector3</span> {"{\n"}{" "}
+          <span className="text-[#8b949e] italic">
+            // Stack-allocated, zero ARC overhead
+          </span>
+          {"\n"} <span className="text-[#ff7b72] font-semibold">return</span>{" "}
+          Vector3(x: <span className="text-[#79c0ff]">1.0</span>, y:{" "}
+          <span className="text-[#79c0ff]">0.0</span>, z:{" "}
+          <span className="text-[#79c0ff]">0.0</span>);{"\n"}
+          {"}"}
+        </>
+      ),
+    },
   };
 
   return (
@@ -133,11 +160,11 @@ function Home() {
         <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-32 flex flex-col items-center text-center z-10">
           <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000 w-full max-w-4xl mx-auto flex flex-col items-center">
             <a
-              href="/blog/v0-2-0-release"
+              href="/blog/v0-3-0-release"
               className="group inline-flex items-center rounded-full border border-border bg-muted/50 px-5 py-2 text-sm font-medium text-foreground mb-10 hover:bg-muted transition-all backdrop-blur-xl hover:scale-105"
             >
               <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 mr-3 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-              Pace v0.2.0 is now available
+              Pace v0.3.0 is now available
               <ArrowRight className="ml-2 w-4 h-4 text-emerald-500 group-hover:translate-x-1 transition-transform" />
             </a>
 
@@ -200,13 +227,10 @@ function Home() {
                   <Zap className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">
-                  Zero GC Pauses
+                  Pure AOT Compilation
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-sm">
-                  Memory is managed deterministically through advanced
-                  compile-time analysis and Automatic Reference Counting (ARC).
-                  Achieve predictable, extremely low-latency execution suited
-                  for real-time systems.
+                  Powered by Cranelift, Pace compiles directly to heavily optimized native machine code. Enjoy predictable, ultra low-latency execution with zero garbage collection (GC) pauses.
                 </p>
               </div>
             </div>
@@ -304,6 +328,25 @@ function Home() {
                   </p>
                 </div>
               </button>
+
+              <button
+                onClick={() => setActiveTab("structs")}
+                className={`flex items-center gap-4 p-4 rounded-xl transition-all border ${activeTab === "structs" ? "bg-muted border-border" : "bg-transparent border-transparent hover:bg-muted/50"} text-left`}
+              >
+                <Layers
+                  className={`w-5 h-5 shrink-0 ${activeTab === "structs" ? "text-amber-500" : "text-muted-foreground"}`}
+                />
+                <div>
+                  <h4
+                    className={`font-semibold text-sm ${activeTab === "structs" ? "text-foreground" : "text-muted-foreground"}`}
+                  >
+                    Value Types
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Stack-allocated structs for maximum performance.
+                  </p>
+                </div>
+              </button>
             </div>
           </div>
 
@@ -339,6 +382,53 @@ function Home() {
                   </code>
                 </pre>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Quick Start Section */}
+        <section className="w-full max-w-4xl mx-auto px-4 py-24 z-10 flex flex-col items-center">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-foreground mb-4 tracking-tight">
+              Get Started Instantly
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Install the Pace toolchain and start building in seconds.
+            </p>
+          </div>
+
+          <div className="w-full max-w-2xl rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col">
+            {/* Tabs */}
+            <div className="flex items-center border-b border-border bg-muted/50">
+              <button
+                onClick={() => setOs("linux")}
+                className={`flex-1 py-3 text-sm font-medium transition-colors ${os === "linux" ? "text-foreground border-b-2 border-primary" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                Linux / macOS
+              </button>
+              <button
+                onClick={() => setOs("windows")}
+                className={`flex-1 py-3 text-sm font-medium transition-colors ${os === "windows" ? "text-foreground border-b-2 border-primary" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                Windows
+              </button>
+            </div>
+            
+            {/* Terminal Window */}
+            <div className="p-6 bg-[#0d1117] relative flex items-center">
+              <span className="text-muted-foreground font-mono mr-4 select-none">$</span>
+              <code className="text-[#c9d1d9] font-mono text-sm sm:text-base break-all flex-1">
+                {os === "linux"
+                  ? "curl -fsSL https://pace-lang.org/install.sh | bash"
+                  : "iwr https://pace-lang.org/install.ps1 -useb | iex"}
+              </code>
+              <button 
+                onClick={() => navigator.clipboard.writeText(os === "linux" ? "curl -fsSL https://pace-lang.org/install.sh | bash" : "iwr https://pace-lang.org/install.ps1 -useb | iex")}
+                className="ml-4 p-2 rounded-md hover:bg-white/10 text-muted-foreground hover:text-white transition-colors cursor-pointer"
+                title="Copy to clipboard"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
             </div>
           </div>
         </section>

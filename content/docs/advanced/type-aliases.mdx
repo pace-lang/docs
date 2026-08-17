@@ -1,0 +1,58 @@
+---
+title: Type Aliases
+description: Use type aliases to simplify complex types and improve diagnostic readability.
+---
+
+Pace allows you to define custom names for existing types using the `type` keyword. This is known as a **type alias**.
+
+Type aliases do not create entirely new types in memory; they are simply transparent labels that the compiler uses during type checking. This means an alias and its underlying type are 100% interchangeable.
+
+## Basic Syntax
+
+To create a type alias, use the `type` keyword followed by the new name, an equals sign `=`, and the underlying type.
+
+```pace
+type StatusCode = Int
+type UserId = String
+
+func getUser(id: UserId): StatusCode {
+    if (id == "admin") {
+        return 200
+    }
+    return 404
+}
+```
+
+In the example above, `UserId` is completely interchangeable with `String`. You can pass a regular `"admin"` string to the function without any special casting or wrapping.
+
+## Simplifying Complex Types
+
+Type aliases are incredibly useful for simplifying long, complex type signatures, especially those involving nested Enums, Optionals, or Function types.
+
+```pace
+// Without type aliases
+func registerCallback(cb: func(String, Int) -> Result<String, Error>) { ... }
+
+// With type aliases
+type ResponseHandler = func(String, Int) -> Result<String, Error>
+
+func registerCallback(cb: ResponseHandler) { ... }
+```
+
+This dramatically improves code readability and reduces duplication if the same complex type is passed around multiple functions.
+
+## Better Compiler Diagnostics
+
+One of the best benefits of type aliases in Pace is that the compiler preserves the alias name when generating error messages.
+
+```pace
+type Matrix = [[Float]]
+
+func multiply(a: Matrix, b: Matrix): Matrix { ... }
+
+// If you pass the wrong type, the compiler error will say:
+// ERROR: Expected 'Matrix', got 'String'
+// (Instead of saying: Expected '[[Float]]', got 'String')
+```
+
+This makes debugging heavily nested collections or complex generics significantly easier to understand at a glance.

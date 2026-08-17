@@ -23,7 +23,7 @@ let version: Int = 1
 // name = "New Pace" // ERROR: Cannot reassign a 'let' variable!
 ```
 
-**The Rationale:** Mutable state is one of the leading causes of bugs in large codebases. When variables can change unexpectedly, reasoning about data flow becomes incredibly difficult. By making `let` the default, Pace ensures that data remains constant after initialization unless you explicitly declare otherwise. 
+**The Rationale:** Mutable state is one of the leading causes of bugs in large codebases. When variables can change unexpectedly, reasoning about data flow becomes incredibly difficult. By making `let` the default, Pace ensures that data remains constant after initialization. The compiler **strictly enforces** this immutability across the language, including function arguments, class properties, and loop iterators.
 
 ### Explicit Mutability (`var`)
 When an algorithm inherently requires modifying state (like a counter in a loop), you use `var`. 
@@ -116,6 +116,18 @@ let ages = {
 // Accessing map values returns an Optional (e.g. Int?)
 // because the key might not exist!
 let aliceAge = ages["Alice"]
+```
+
+## Sets
+
+Pace also provides a native `Set` collection in the standard library (`stdlib/src/collections/set.pace`) for storing unique values. Like other collections, Sets are backed by native performance bridges.
+
+```pace
+import "stdlib/src/collections/set.pace"
+
+let names = Set<String>()
+names.insert("Alice")
+names.insert("Bob")
 ```
 
 ---
@@ -233,7 +245,7 @@ The following words are reserved by the compiler:
   type={{
     'Declaration': {
       description: 'Used to declare variables, functions, and types.',
-      type: 'class, interface, implements, func, init, var, let, enum',
+      type: 'class, interface, implements, struct, type, func, init, deinit, var, let, enum',
     },
     'Control Flow': {
       description: 'Used to control the execution path of the program.',

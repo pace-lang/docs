@@ -57,7 +57,7 @@ for server in servers {
 }
 ```
 
-**The Rationale:** Off-by-one errors in traditional C loops are incredibly common and often lead to buffer overflows. By forcing developers to use the `for ... in` construct, Pace completely eliminates out-of-bounds indexing errors during iteration. 
+**The Rationale:** Off-by-one errors in traditional C loops are incredibly common and often lead to buffer overflows. By forcing developers to use the `for ... in` construct, Pace completely eliminates out-of-bounds indexing errors during iteration. Under the hood, Pace natively desugars `for` loops into method calls to `.iter()` and `.next()` pulled from standard library interfaces, allowing any custom class implementing `Iterable<T>` to be seamlessly iterated!
 
 ### Loop Control: `break` and `continue`
 You can modify the behavior of any loop using `break` and `continue`.

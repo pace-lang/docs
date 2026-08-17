@@ -2,6 +2,7 @@
   "title": "Advanced",
   "pages": [
     "generics",
+    "type-aliases",
     "modules-and-imports"
   ]
 }

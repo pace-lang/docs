@@ -23,7 +23,7 @@ class Stack<T> {
     }
 
     // Returns an optional T, because the stack might be empty
-    func pop() -> T? {
+    func pop(): T? {
         if self.items.length() == 0 {
             return null
         }
@@ -48,7 +48,7 @@ stringStack.push("Hello")
 Functions can also take type parameters. For example, a function that returns the first element of an array of any type:
 
 ```pace
-func firstElement<T>(arr: [T]) -> T? {
+func firstElement<T>(arr: [T]): T? {
     if arr.length() == 0 {
         return null
     }
@@ -65,7 +65,18 @@ let firstNum = firstElement(numbers) // T is inferred as Int!
 
 ## Generic Enums
 
-The standard library extensively uses generic Enums. Two of the most important ones you'll use every day are `Option<T>` (used behind the scenes for `T?`) and `Result<T, E>`.
+The standard library extensively uses generic Enums. Two of the most important ones you'll use every day are `Option<T>` (used behind the scenes for `T?`) and `Result<T, E>`. 
+
+### Error Bubbling (`?` operator)
+Dealing with `Result<T, E>` is frictionless using the postfix `?` operator. This operator elegantly unpacks the `Ok` payload or returns early with the `Err` if the expression evaluates to an error.
+
+```pace
+func fetchAndProcess(): Result<String, Error> {
+    // If fetch fails, the error is immediately returned!
+    let data = fetch()?
+    return Ok(process(data))
+}
+```
 
 You can define your own generic Enums just like classes:
 

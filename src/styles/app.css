@@ -2,6 +2,20 @@
 @import 'fumadocs-ui/css/dusk.css';
 @import 'fumadocs-ui/css/preset.css';
 
+.dark {
+  --color-fd-background: hsl(215, 15%, 11%);
+  --color-fd-card: hsl(215, 15%, 14%);
+  --color-fd-popover: hsl(215, 15%, 14%);
+  --color-fd-muted: hsl(215, 15%, 18%);
+  --color-fd-border: hsl(215, 15%, 20%);
+  --color-fd-accent: hsl(215, 15%, 18%);
+  --color-fd-secondary: hsl(215, 15%, 18%);
+}
+
+.dark #nd-sidebar {
+  background-color: hsl(215, 15%, 10%);
+}
+
 html {
   scrollbar-gutter: stable;
 }

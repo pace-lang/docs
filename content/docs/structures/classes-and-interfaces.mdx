@@ -22,7 +22,7 @@ class Rectangle {
     }
     
     // A Method
-    func area() -> Int {
+    func area(): Int {
         return self.width * self.height
     }
 }
@@ -35,18 +35,40 @@ let rect = Rectangle(10, 20)
 print(rect.area()) // Prints: 200
 ```
 
+### Destructors (`deinit`)
+
+If your class manages external resources (like network sockets or open files), you can define a custom `func deinit()`. Pace's compiler will automatically invoke this function exactly when the object's reference count drops to 0 and its memory is about to be freed.
+
+```pace
+class FileHandler {
+    func init() { print("Opened file") }
+    func deinit() { print("Closed file") }
+}
+```
+
+## Structs (Value Types)
+
+By default, classes in Pace are passed by reference and managed by ARC. If you want a lightweight, pass-by-value data structure, you can use the `struct` keyword. Structs are entirely stack-allocated and forbid ARC-managed fields, giving you strict control over performance and memory layout.
+
+```pace
+struct Point {
+    let x: Int
+    let y: Int
+}
+```
+
 ## Interfaces
 
 An `interface` defines a strict contract that classes can implement. Interfaces contain method signatures without actual logic.
 
 ```pace
 interface Shape {
-    func area() -> Int
-    func name() -> String
+    func area(): Int
+    func name(): String
 }
 ```
 
-You can use the `implements` keyword to guarantee a class fulfills the contract:
+You can use the `implements` keyword to guarantee a class fulfills the contract. Classes can also implement generic interfaces (like `implements Iterable<T>`) for advanced polymorphism!
 
 ```pace
 class Circle implements Shape {
@@ -56,11 +78,11 @@ class Circle implements Shape {
         self.radius = r
     }
     
-    func area() -> Int {
+    func area(): Int {
         return 3 * self.radius * self.radius // Approximate!
     }
     
-    func name() -> String {
+    func name(): String {
         return "Circle"
     }
 }
