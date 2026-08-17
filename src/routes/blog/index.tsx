@@ -1,9 +1,9 @@
-import { baseOptions } from '@/lib/layout.shared';
-import { blogSource } from '@/lib/source';
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
+import { baseOptions } from "@/lib/layout.shared";
+import { blogSource } from "@/lib/source";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
 
-export const Route = createFileRoute('/blog/')({
+export const Route = createFileRoute("/blog/")({
   component: BlogIndex,
 });
 
@@ -34,23 +34,42 @@ function BlogIndex() {
               <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
                 {post.data.title}
               </h2>
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed flex-grow">
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed grow">
                 {post.data.description}
               </p>
-              <div className="flex items-center gap-4 mt-auto">
+              <div className="flex items-center gap-3 mt-auto flex-wrap">
                 {(post.data as any)?.date && (
-                  <div className="text-sm text-muted-foreground/80 font-medium uppercase tracking-wider">
-                    {new Date((post.data as any).date).toLocaleDateString(undefined, {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                  <div className="text-xs text-muted-foreground font-medium flex items-center gap-1.5">
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    {new Date((post.data as any).date).toLocaleDateString(
+                      undefined,
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      },
+                    )}
                   </div>
                 )}
                 {(post.data as any)?.tags && (
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     {(post.data as any).tags.map((tag: string) => (
-                      <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                      <span
+                        key={tag}
+                        className="text-xs px-2.5 py-1 rounded-md bg-muted hover:bg-muted/80 text-foreground font-medium border border-border transition-colors"
+                      >
                         {tag}
                       </span>
                     ))}
