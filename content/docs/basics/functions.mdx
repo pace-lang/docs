@@ -13,11 +13,11 @@ In Pace, functions are defined using the `func` keyword. Because Pace is statica
 
 ```pace
 func calculateTotal(price: Float, taxRate: Float): Float {
-    let tax = price * taxRate
+    tax := price * taxRate
     return price + tax
 }
 
-let finalPrice = calculateTotal(100.0, 0.05)
+finalPrice := calculateTotal(100.0, 0.05)
 ```
 
 If a function performs an action but does not return a value, you can omit the `:` return type entirely (it defaults to `Void`).
@@ -47,9 +47,10 @@ In Pace, functions are first-class citizens. This means you can treat functions 
 
 ```pace
 // Define a function variable type: func(Float, Float) -> Float
-let calculator: func(Float, Float) -> Float = calculateTotal
+calculator: func(Float, Float) -> Float = calculateTotal
 
-let result = calculator(50.0, 0.1)
+result := calculator(50.0, 0.1)
+print(result) // Prints: 55.0
 ```
 
 Under the hood, `calculator` simply stores a memory pointer to the executable code of the `calculateTotal` function.

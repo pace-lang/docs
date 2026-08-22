@@ -30,14 +30,14 @@ When the count reaches exactly `0`, the object is immediately and deterministica
 
 ```pace
 class DataBuffer {
-    init() { print("Buffer Created") }
+    func init() { print("Buffer Created") }
     func destroy() { print("Buffer Destroyed") } // Conceptually!
 }
 
 func processData() {
     // 1. A DataBuffer object is allocated. 
     // 2. The compiler injects `retain`. (Ref count = 1)
-    let buffer = DataBuffer()
+    buffer := DataBuffer()
     
 } // 3. 'buffer' variable goes out of scope. 
   // 4. Compiler injects `release`. (Ref count = 0). 
@@ -52,12 +52,12 @@ Because ARC relies on counting references, a critical problem can occur if two o
 
 ```pace
 class Node {
-    var next: Node?
-    init() {}
+    next: Node?
+    func init() {}
 }
 
-let a = Node()
-let b = Node()
+a := Node()
+b := Node()
 
 // A points to B, B points to A.
 a.next = b
@@ -72,16 +72,16 @@ To solve this architectural limitation of ARC, Pace introduces the `weak` keywor
 
 ```pace
 class Parent {
-    var child: Child?
-    init() {}
+    child: Child?
+    func init() {}
 }
 
 class Child {
     // The child has a 'weak' reference back to the parent.
     // This breaks the reference cycle!
-    weak var parent: Parent?
-    init() {}
+    weak parent: Parent?
+    func init() {}
 }
 ```
 
-If the `Parent` goes out of scope, its reference count reaches `0` and it is destroyed. The `Child`'s `weak var parent` is automatically zeroed out by the runtime and safely becomes `null` (since it is an Optional type). This completely eliminates the memory leak while maintaining memory safety!
+If the `Parent` goes out of scope, its reference count reaches `0` and it is destroyed. The `Child`'s `weak` bound parent is automatically zeroed out by the runtime and safely becomes `null` (since it is an Optional type). This completely eliminates the memory leak while maintaining memory safety!

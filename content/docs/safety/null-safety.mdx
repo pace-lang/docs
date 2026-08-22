@@ -15,10 +15,10 @@ In Pace, **variables cannot be null by default.** If a variable is allowed to be
 
 ```pace
 // ❌ This variable MUST always have a string. It can never be null.
-let name: String = "Alice"
+name: String = "Alice"
 
 // ✅ This variable MIGHT be a string, or it MIGHT be null.
-let nickname: String? = null
+nickname: String? = null
 ```
 
 ## How the Compiler Protects You
@@ -36,7 +36,7 @@ class User {
     address: Address? // This can be null!
 }
 
-let bob = User( address: null )
+bob := User( address: null )
 
 // ❌ COMPILER ERROR: You cannot access `.city` because `address` might be null!
 print(bob.address.city)
@@ -53,18 +53,18 @@ To fix this, you must handle the null case. Pace provides two very convenient op
 
 ```pace
 // ✅ COMPILES PERFECTLY
-let city = bob.address?.city ?? "Unknown City"
+city := bob.address?.city ?? "Unknown City"
 print(city) // Prints: "Unknown City"
 ```
 
-## Using `if let`
+## Safe Unwrapping
 
-Sometimes you want to run a whole block of code only if the value exists. You can use the `if let` statement to safely "unwrap" the value.
+Sometimes you want to run a whole block of code only if the value exists. You can use safe unwrapping bindings.
 
 ```pace
-let maybePort: Int? = get_port_from_env()
+maybePort: Int? = get_port_from_env()
 
-if let port = maybePort {
+if port := maybePort {
     // Inside this block, 'port' is guaranteed to be a real Int (not null).
     start_server(port)
 } else {

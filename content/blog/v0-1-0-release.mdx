@@ -1,84 +1,162 @@
 ---
 title: "Pace v0.1.0 - The Journey Begins"
-description: Welcome to the first official release of the Pace programming language! Discover how Pace delivers blazing speed and modern ergonomics.
+description: Welcome to the first official release of the Pace programming language! Discover how Pace delivers blazing speed, modern ergonomics, and native performance.
 date: 2026-08-11
 tags: ["release", "v0.1"]
 draft: false
 ---
 
-Welcome to the first official release of **Pace (v0.1.0)**! 🎉
+We are incredibly excited to announce the first official release of **Pace (v0.1.0)**! 🎉
 
-Whether you're a seasoned systems engineer or a beginner looking for an intuitive programming language, Pace was built for you. We've completely reimagined what a modern, statically typed language should feel like, and we're incredibly excited to share this massive milestone with the world.
+Whether you're a seasoned systems engineer or a beginner looking for an intuitive programming language, Pace was built for you. We've completely reimagined what a modern, statically typed language should feel like, combining high-performance execution with developer-first ergonomics.
 
 ---
 
 ## What is Pace?
 
-**Pace** is a modern, statically typed, natively compiled programming language designed from the ground up to be intuitive, safe, and blazingly fast. It stands entirely on its own, offering a unique blend of high-performance execution and developer-first ergonomics. 
+**Pace** is a modern, statically typed, **pure Ahead-Of-Time (AOT) compiled** programming language designed to be intuitive, safe, and blazingly fast. It stands entirely on its own, powered by a native Cranelift backend.
 
 At its core, Pace is built on three pillars:
 
 1. **Safety**: Strict, compiler-enforced null safety (`T?`) prevents entire classes of runtime errors. You'll never see a `NullPointerException` again.
-2. **Predictable Performance**: Pace uses deterministic Automatic Reference Counting (ARC) instead of a tracing garbage collector. This guarantees memory safety without unpredictable pause times.
-3. **Expressiveness**: First-class support for both Object-Oriented (Classes, Interfaces) and Functional (Algebraic Data Types, Pattern Matching) paradigms.
+2. **Predictable Performance**: Pace uses deterministic Automatic Reference Counting (ARC) instead of a tracing garbage collector, guaranteeing memory safety without unpredictable pause times.
+3. **Expressiveness**: First-class support for Object-Oriented (Classes, Interfaces) and Functional (Generic Algebraic Data Types, Pattern Matching) paradigms.
 
 ---
 
-## v0.1.0 Feature Highlights
+## 🚀 Core Language Features
 
-We have successfully built a fully functioning compiler suite from scratch! Here is what you can do in Pace today:
+### The Modern Mutability Model
 
-### 🧱 Object-Oriented & Functional Design
+Pace optimizes for real-world ergonomics. Variables are **mutable by default** using the `:=` operator. To declare immutable bindings, you simply use the `final` keyword. For compile-time constant primitives, use `const`.
 
-Pace embraces multi-paradigm programming. You can define robust contracts using `interface` and `class`, while also taking advantage of powerful Algebraic Data Types (ADTs).
+```pace
+name := "Pace Developer" // Mutable string
+final version = "0.1.0"  // Immutable string
 
-Getting started is as simple as this:
+// The compiler enforces immutability!
+// version = "0.2.0" // ❌ COMPILER ERROR
+```
 
-```pace title="Hello World"
-func main() {
-    print("✨ Welcome to Pace — let's make something great.");
+### Generics & Algebraic Data Types
+
+Pace features a robust generics system, powering full monomorphization for functions, classes, and enums. We have officially introduced **Standard Generic Algebraic Data Types**, including `Option<T>`, `Result<T, E>`, `List<T>`, and `Map<K, V>`.
+
+### Pattern Matching (`match`)
+
+To complement ADTs, Pace supports comprehensive pattern matching via the `match` expression! You can safely unwrap variants and extract payloads with compile-time exhaustiveness checking.
+
+```pace
+result := fetch_data()
+match result {
+    Result.Ok(data) => print("Success: \{data}")
+    Result.Err(e) => print("Failed with error: \{e}")
 }
 ```
 
-### 🧠 Modern Memory Management (ARC)
+### The `?` Error Bubbling Operator
 
-Pace uses Automatic Reference Counting (ARC). Objects are automatically retained and released by the compiler. You don't have to write manual memory management code, and there's no background garbage collector slowing down your application.
+Dealing with `Result<T, E>` is frictionless. The postfix `?` operator elegantly unpacks the `Ok` payload or returns early with an `Err`.
 
-```pace title="Zero-Pause ARC"
-class DataBuffer {
-    init() { print("Buffer Created") }
+```pace
+func fetchAndProcess(): Result<String, Error> {
+    data := fetch()? // Returns early if fetch() fails!
+    return Result.Ok(process(data))
 }
-
-func process() {
-    // Memory is allocated. Reference count = 1
-    let buffer = DataBuffer() 
-    
-} // buffer goes out of scope. Reference count = 0. Memory is instantly freed!
 ```
 
-We've also built in `weak` references to safely break reference cycles without leaking memory!
+### Value Types (`struct`)
 
-### 🛡️ Iron-Clad Safety
+You can define highly efficient, stack-allocated, non-ARC value types using the `struct` keyword! Structs guarantee pass-by-value semantics and explicitly forbid ARC-managed fields, giving you fine-grained control over memory layout.
 
-- **Strict Null Safety**: Pace forces you to handle missing data explicitly at compile time. 
-- **Native Arrays**: Dynamically sized arrays with strict bounds checking and highly optimized, contiguous memory layouts.
+### String Interpolation
+
+Pace now supports string interpolation using both `\{expr}` and `${expr}` syntax. Expressions are directly evaluated and safely concatenated inside string literals—no manual type conversions necessary!
+
+```pace
+name := "Pace Developer"
+print("Welcome to v0.1.0, \{name}!")
+```
+
+### Function Overloading
+
+The compiler now supports function overloading via a custom name mangling system. Developers can declare multiple functions with the same name, so long as their parameter signatures differ!
+
+### Null-Safety Operators
+
+Dealing with optional data is now frictionless. We've introduced full support for the null-coalescing operator (`??`) and the null-coalesce assignment operator (`??=`). This allows you to easily provide default fallbacks for `T?` types.
+
+### Type Aliases
+
+You can now define type aliases using the `type` keyword. They are completely transparent to the compiler but drastically improve the readability of your code and diagnostic messages!
+
+```pace
+type StatusCode = Int
+type UserId = String
+```
+
+### Generic Interfaces
+
+Classes can now formally implement generic interfaces, and the typechecker will properly validate them (e.g. `class MyCollection implements Iterable<T>`). We also lowered `for` loops to natively use `.iter()` and `.next()` under the hood, natively integrating with these interfaces.
+
+### Custom Destructors (`deinit`)
+
+Classes can now define a custom `func deinit()`. The compiler dynamically tracks this function and automatically invokes it right before the object's reference count drops to 0 and its memory is freed. Perfect for closing files, network sockets, or releasing resources!
+
+### Access Modifiers & Constructor Checks
+
+- **Access Modifiers**: We've introduced explicit `public` and `private` keywords, dropping the legacy underscore (`_`) convention for visibility control.
+- **Constructor Checks**: The typechecker now rigorously tracks uninitialized properties inside class constructors, producing robust compile-time errors if you attempt to use a partially initialized object.
 
 ---
 
-## Under the Hood: A Modern Architecture
+## 🏗️ Standard Library & Architecture
 
-For the compiler enthusiasts out there, the Pace compiler is a multi-pass architecture built in Rust. It takes your code through a rigorous journey:
+### The Dynamic Standard Library
 
-1. **Frontend**: A fast, recursive descent parser building a strictly typed Abstract Syntax Tree (AST).
-2. **Semantic Analysis**: Advanced name resolution, scope tracking, and a robust Typechecker.
-3. **MIR Lowering**: Lowers the AST into a Mid-level Intermediate Representation (MIR) that explicitly models control flow and memory (ARC) operations.
-4. **Backend (Codegen)**: Translates MIR directly into highly optimized native machine code using the **Cranelift** backend.
+We have successfully decoupled standard types from the core compiler. Types like `List`, `Map`, `Set`, and `Math` (which provides `Math.Pi`, `Math.abs()`, etc.) are natively injected during compilation. 
 
-> [!NOTE]
-> Our Diagnostics Engine provides beautiful, structured error reporting with precise source spans, ensuring that when things go wrong, the compiler acts as a helpful pair programmer rather than an adversary.
+Collections like `List` and `Map` are **native-backed**, utilizing highly optimized implementations over a C-ABI bridge.
 
-## What's Next?
+### Pure AOT Compilation (Goodbye VM!)
 
-This is just the beginning. Our roadmap for the coming months includes building out the standard library, introducing generic programming, and refining our C-Interop capabilities.
+Pace is now a **pure Ahead-Of-Time (AOT) compiled language**. When you execute `pace run`, it compiles your code into a lightning-fast native executable and seamlessly spawns it, dropping the interpreter overhead entirely.
 
-We invite you to read the [Getting Started](/docs) guide, download the compiler, and write your first Pace program today!
+### Local Module Resolution
+
+We've overhauled the module loader! Imports like `import "math_utils"` now successfully resolve if `math_utils.pace` exists in your local directory. No more fighting with explicit relative paths or package configurations for simple sibling modules.
+
+---
+
+## 🛠️ Tooling & Ecosystem
+
+### Built-in Style Linter
+
+Pace introduces a brand new, highly opinionated style linter built directly into the compiler pipeline. It intelligently enforces the Pace design philosophy (`camelCase` for functions and variables, `PascalCase` for types and constants, `static` members on classes) without failing compilation for perfectly valid code. 
+
+### Ergonomic Project Creation
+
+The `pace create <name>` command provides helpful step-by-step instructions so you can jump into coding immediately. We've also locked down package naming conventions to enforce ecosystem consistency: `pace create` and `pace init` strictly require project names to use `kebab-case`.
+
+### Seamless CLI Upgrades & Diagnostics
+
+- **Seamless Upgrades**: You can update your Pace installation directly from the terminal by running `pace upgrade`.
+- **Upgraded Diagnostics**: CLI-level project errors (e.g., missing `main` function, linker issues, missing `pace.toml`) are now beautifully styled global diagnostics (like `[E001]`). If a required system C compiler is missing, the linker prints the exact terminal commands needed to install it.
+
+### Optimized Release Builds
+
+The `pace build` and `pace run` commands now officially support the `--release` flag! Running in release mode automatically leverages optimizations (`speed_and_size`) and strips debug symbols during the linking phase, radically shrinking the size of your compiled binaries and producing a lightning-fast executable.
+
+---
+
+## Get Started
+
+Pace v0.1.0 is available right now. You can jump into coding immediately:
+
+```bash
+pace create my-app
+cd my-app
+pace run
+```
+
+We invite you to read the [Getting Started](/docs) guide, check out the new features, update your syntax, and let us know what you build!

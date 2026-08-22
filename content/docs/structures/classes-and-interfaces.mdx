@@ -12,8 +12,8 @@ A `class` acts as a blueprint for an object. Classes in Pace can hold state (pro
 ```pace
 class Rectangle {
     // Properties
-    let width: Int
-    let height: Int
+    width: Int
+    height: Int
     
     // The Constructor
     func init(w: Int, h: Int) {
@@ -31,7 +31,7 @@ class Rectangle {
 To create an instance of a class, call it like a function:
 
 ```pace
-let rect = Rectangle(10, 20)
+rect := Rectangle(10, 20)
 print(rect.area()) // Prints: 200
 ```
 
@@ -52,8 +52,8 @@ By default, classes in Pace are passed by reference and managed by ARC. If you w
 
 ```pace
 struct Point {
-    let x: Int
-    let y: Int
+    x: Int
+    y: Int
 }
 ```
 
@@ -72,7 +72,7 @@ You can use the `implements` keyword to guarantee a class fulfills the contract.
 
 ```pace
 class Circle implements Shape {
-    let radius: Int
+    radius: Int
     
     func init(r: Int) {
         self.radius = r
@@ -99,6 +99,6 @@ func printShapeInfo(shape: Shape) {
     print(shape.area())
 }
 
-let c = Circle(5)
+c := Circle(5)
 printShapeInfo(c) // Works perfectly!
 ```

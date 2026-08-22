@@ -12,7 +12,7 @@ When an operation might legitimately fail as part of its normal execution (for e
 
 ```pace
 // If the string isn't a valid integer, this returns `null`
-let maybeNumber: Int? = parseInt("123abc")
+maybeNumber: Int? = parseInt("123abc")
 
 // Explicitly handle the failure
 if (maybeNumber != null) {
@@ -30,10 +30,11 @@ When your program enters a mathematically or logically impossible state (like di
 A panic immediately halts the execution of the program. This is a deliberate safety feature: it is infinitely better for a system to crash instantly than to continue running while corrupting user data.
 
 ```pace
-let items = [1, 2, 3]
+items := [1, 2, 3]
 
-// This will PANIC at runtime! Program halted safely.
-let missing = items[5] 
+// The next line triggers a guaranteed runtime panic:
+// "Index out of bounds"
+missing := items[5] 
 ```
 
 ### 3. `Result<T, E>` for Complex Error Handling
@@ -42,7 +43,7 @@ For advanced error handling where operations might fail with specific, meaningfu
 A `Result` can either be `Ok(T)` containing the successful value, or `Err(E)` containing the error details. You use Pace's powerful `match` statement to handle both possibilities safely.
 
 ```pace
-let result: Result<String, Int> = readFile("config.json")
+result: Result<String, Int> = readFile("config.json")
 
 match result {
     Ok(data) => print(data),

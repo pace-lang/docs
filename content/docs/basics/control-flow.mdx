@@ -10,7 +10,7 @@ Pace provides a deliberately small, strictly typed set of control flow mechanics
 The `if` statement allows you to execute blocks of code conditionally. 
 
 ```pace
-let statusCode = 404
+statusCode := 404
 
 if (statusCode == 200) {
     print("Request successful!")
@@ -36,8 +36,8 @@ Pace provides two fundamental loop types: `while` and `for`.
 Use `while` loops for manual, condition-based iteration.
 
 ```pace
-var attempts = 0
-let maxAttempts = 3
+attempts := 0
+maxAttempts := 3
 
 while (attempts < maxAttempts) {
     print("Attempting connection...")
@@ -49,7 +49,7 @@ while (attempts < maxAttempts) {
 For iterating over collections, Pace replaces the traditional, error-prone C-style `for(int i=0; i<length; i++)` loop with the highly readable `for ... in` iterator loop.
 
 ```pace
-let servers = ["US-East", "EU-West", "AP-South"]
+servers := ["US-East", "EU-West", "AP-South"]
 
 for server in servers {
     print("Pinging ")
@@ -66,7 +66,7 @@ You can modify the behavior of any loop using `break` and `continue`.
 - **`continue`**: Skips the rest of the current iteration and jumps to the next condition check.
 
 ```pace
-let numbers = [1, 2, 3, 4, 5, 6]
+numbers := [1, 2, 3, 4, 5, 6]
 
 for num in numbers {
     if (num % 2 == 0) {
@@ -96,24 +96,24 @@ Traditional `switch` statements have a severe flaw: "fall-through". If you forge
 
 ```pace
 enum Message {
-    QUIT,
-    WRITE(String),
-    MOVE(Int, Int)
+    Quit,
+    Write(String),
+    Move(Int, Int)
 }
 
-let msg = Message.WRITE("Hello Pace!")
+msg := Message.Write("Hello Pace!")
 
 // The compiler guarantees you handle every variant!
 match msg {
-    Message.QUIT => {
+    Message.Quit => {
         print("Quitting...")
     }
-    Message.WRITE(text) => {
+    Message.Write(text) => {
         // 'text' is safely extracted from the enum
         print("Writing: ")
         print(text)
     }
-    Message.MOVE(x, y) => {
+    Message.Move(x, y) => {
         print("Moving coordinates")
     }
 }
@@ -123,8 +123,8 @@ match msg {
 Because `match` evaluates to a value (it is an *expression*, not just a statement), you can cleanly assign its result directly to a variable. This eliminates the need for temporary mutable variables.
 
 ```pace
-let isExit = match msg {
-    Message.QUIT => true
+isExit := match msg {
+    Message.Quit => true
     _ => false // The wildcard '_' acts as a default fallback
 }
 ```

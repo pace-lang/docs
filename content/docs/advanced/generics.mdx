@@ -11,9 +11,9 @@ A classic example of a generic type is a `Stack`. You might want a stack of inte
 
 ```pace
 class Stack<T> {
-    var items: [T]
+    items: [T]
 
-    init() {
+    func init() {
         self.items = []
     }
 
@@ -82,12 +82,12 @@ You can define your own generic Enums just like classes:
 
 ```pace
 enum NetworkResponse<T> {
-    SUCCESS(T),
-    FAILURE(String),
-    TIMEOUT
+    Success(T),
+    Failure(String),
+    Timeout
 }
 
-let response: NetworkResponse<User> = NetworkResponse.SUCCESS(User())
+response: NetworkResponse<User> = NetworkResponse.Success(User())
 ```
 
 Using generics allows you to write highly reusable, completely type-safe code without the overhead of runtime type casting!

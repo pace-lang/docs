@@ -11,17 +11,17 @@ At their simplest, Enums are just a list of possible states. For example, if you
 
 ```pace
 enum PlayerState {
-    IDLE,
-    WALKING,
-    RUNNING,
-    JUMPING
+    Idle,
+    Walking,
+    Running,
+    Jumping
 }
 ```
 
 To create a value of this Enum type, you use the Enum name followed by a dot and the variant name:
 
 ```pace
-let state: PlayerState = PlayerState.JUMPING
+state: PlayerState = PlayerState.Jumping
 ```
 
 ## Enums with Data (Algebraic Data Types)
@@ -32,13 +32,13 @@ For example, a network connection might be disconnected, connecting, or connecte
 
 ```pace
 enum Connection {
-    DISCONNECTED,
-    CONNECTING(String), // Stores the URL being connected to
-    CONNECTED(Int)      // Stores the active socket ID
+    Disconnected,
+    Connecting(String), // Stores the URL being connected to
+    Connected(Int)      // Stores the active socket ID
 }
 
-let activeConnection = Connection.CONNECTED(1024)
-let connecting = Connection.CONNECTING("https://pace-lang.org")
+activeConnection := Connection.Connected(1024)
+connecting := Connection.Connecting("https://pace-lang.org")
 ```
 
 ## Pattern Matching with `match`
@@ -49,20 +49,20 @@ The compiler will ensure that your `match` is **exhaustive**—meaning you must 
 
 ```pace
 enum Message {
-    QUIT,
-    MOVE(Int, Int),
-    WRITE(String)
+    Quit,
+    Move(Int, Int),
+    Write(String)
 }
 
 func processMessage(msg: Message) {
     match msg {
-        Message.QUIT => {
+        Message.Quit => {
             print("Quitting the game...")
         }
-        Message.MOVE(x, y) => {
+        Message.Move(x, y) => {
             print("Moving to coordinates")
         }
-        Message.WRITE(text) => {
+        Message.Write(text) => {
             print("Message received: " + text)
         }
     }
@@ -74,8 +74,8 @@ func processMessage(msg: Message) {
 Because `match` is an expression in Pace, it evaluates to a value. This means you can assign the result of a `match` directly to a variable, avoiding clunky `if`/`else` chains.
 
 ```pace
-let isExitMessage = match msg {
-    Message.QUIT => true
+isExitMessage := match msg {
+    Message.Quit => true
     _ => false // The '_' is a wildcard that matches anything else
 }
 ```
