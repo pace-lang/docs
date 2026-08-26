@@ -14,7 +14,7 @@ While Pace is strictly typed, it uses **type inference** to deduce types automat
 In many languages, deciding how to declare a variable is an afterthought. In Pace, variable declaration is a fundamental tool for program safety. Pace uses a **mutable-by-default** paradigm combined with explicit immutability bindings.
 
 ### Mutable by Default
-In Pace, variables are mutable by default. You can declare them using type inference (`:=`) or explicit typing (`:`).
+In Pace, variables are mutable by default. You can declare them using the `var` and `let` keywords or explicit typing (`:`).
 
 ```pace
 var name = "Pace"
@@ -25,17 +25,17 @@ name = "New Pace" // This is perfectly fine
 
 **The Rationale:** Modern application development heavily relies on state mutation (counters, loop iterators, object updates). Instead of requiring developers to explicitly opt-in to mutability constantly, Pace embraces it implicitly while providing powerful tools to restrict it when needed.
 
-### Explicit Immutability (`final` and `const`)
-When you want to guarantee that a variable's binding cannot be changed after initialization, you use `final`. For primitive values known at compile-time, you use `const`.
+### Immutability (`let` and `const`)
+When you want to guarantee that a variable's binding cannot be changed after initialization, you use `let`. For primitive values known at compile-time, you use `const`.
 
 ```pace
 let maxUsers = 100
-// maxUsers = 200 // ERROR: Cannot reassign a 'final' binding!
+// maxUsers = 200 // ERROR: Cannot reassign a 'let' binding!
 
 const PI = 3.14
 ```
 
-By explicitly locking data with `final`, you create a visual signal to anyone reading the code: *"This value is constant throughout this scope."*
+By explicitly locking data with `let`, you create a visual signal to anyone reading the code: *"This value is constant throughout this scope."*
 
 ### Why Postfix Types?
 Notice how explicit type declarations in Pace are placed *after* the variable name, separated by a colon (`name: String`).
@@ -176,7 +176,7 @@ configSpeed: Int? = null
 var defaultSpeed = configSpeed ?? 100 
 
 // You can chain them safely:
-var finalSpeed = userSpeed ?? configSpeed ?? 100
+var letSpeed = userSpeed ?? configSpeed ?? 100
 ```
 
 ### Null Coalesce Assignment (`??=`)

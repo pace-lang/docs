@@ -45,6 +45,20 @@ while (attempts < maxAttempts) {
 }
 ```
 
+
+### `loop` Loops
+When you need an infinite loop or a loop where the break condition is complex, use the `loop` keyword. It is cleaner than `while (true)`.
+
+```pace
+var count = 0
+loop {
+    count = count + 1
+    if count >= 10 {
+        break
+    }
+}
+```
+
 ### `for` Loops
 For iterating over collections, Pace replaces the traditional, error-prone C-style `for(int i=0; i<length; i++)` loop with the highly readable `for ... in` iterator loop.
 
@@ -101,7 +115,7 @@ enum Message {
     Move(Int, Int)
 }
 
-var msg = Message.Write("Hello Pace!")
+let msg = Message.Write("Hello Pace!")
 
 // The compiler guarantees you handle every variant!
 match msg {
@@ -123,7 +137,7 @@ match msg {
 Because `match` evaluates to a value (it is an *expression*, not just a statement), you can cleanly assign its result directly to a variable. This eliminates the need for temporary mutable variables.
 
 ```pace
-var isExit = match msg {
+let isExit = match msg {
     Message.Quit => true
     _ => false // The wildcard '_' acts as a default fallback
 }
