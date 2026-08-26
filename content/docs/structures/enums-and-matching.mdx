@@ -37,8 +37,8 @@ enum Connection {
     Connected(Int)      // Stores the active socket ID
 }
 
-activeConnection := Connection.Connected(1024)
-connecting := Connection.Connecting("https://pace-lang.org")
+var activeConnection = Connection.Connected(1024)
+var connecting = Connection.Connecting("https://pace-lang.org")
 ```
 
 ## Pattern Matching with `match`
@@ -74,7 +74,7 @@ func processMessage(msg: Message) {
 Because `match` is an expression in Pace, it evaluates to a value. This means you can assign the result of a `match` directly to a variable, avoiding clunky `if`/`else` chains.
 
 ```pace
-isExitMessage := match msg {
+var isExitMessage = match msg {
     Message.Quit => true
     _ => false // The '_' is a wildcard that matches anything else
 }
@@ -85,3 +85,16 @@ isExitMessage := match msg {
 Enums are the best way to represent data that can be *one thing or another, but never both*. 
 
 For example, instead of having a class with `isConnected`, `socketId`, and `url` fields where some fields are meaningless depending on the state, an Enum ensures that the `socketId` ONLY exists when the state is `CONNECTED`. This prevents entire categories of bugs!
+
+## Generic Enums and Monomorphized Pattern Matching
+
+Pace also supports generic Enums, where variants can hold data of a type specified at instantiation. When pattern matching on a generic Enum, you can explicitly provide the generic type arguments to the variant. This gives the compiler strict guarantees about the monomorphized type it is unpacking.
+
+```pace
+var result: Result<Int, String> = fetch_data()
+
+match result {
+    Result<Int, String>::Ok(data) => print("Success")
+    Result<Int, String>::Err(err) => print("Error")
+}
+```

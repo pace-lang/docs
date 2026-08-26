@@ -10,7 +10,7 @@ Pace provides a deliberately small, strictly typed set of control flow mechanics
 The `if` statement allows you to execute blocks of code conditionally. 
 
 ```pace
-statusCode := 404
+var statusCode = 404
 
 if (statusCode == 200) {
     print("Request successful!")
@@ -36,8 +36,8 @@ Pace provides two fundamental loop types: `while` and `for`.
 Use `while` loops for manual, condition-based iteration.
 
 ```pace
-attempts := 0
-maxAttempts := 3
+var attempts = 0
+var maxAttempts = 3
 
 while (attempts < maxAttempts) {
     print("Attempting connection...")
@@ -49,7 +49,7 @@ while (attempts < maxAttempts) {
 For iterating over collections, Pace replaces the traditional, error-prone C-style `for(int i=0; i<length; i++)` loop with the highly readable `for ... in` iterator loop.
 
 ```pace
-servers := ["US-East", "EU-West", "AP-South"]
+var servers = ["US-East", "EU-West", "AP-South"]
 
 for server in servers {
     print("Pinging ")
@@ -66,7 +66,7 @@ You can modify the behavior of any loop using `break` and `continue`.
 - **`continue`**: Skips the rest of the current iteration and jumps to the next condition check.
 
 ```pace
-numbers := [1, 2, 3, 4, 5, 6]
+var numbers = [1, 2, 3, 4, 5, 6]
 
 for num in numbers {
     if (num % 2 == 0) {
@@ -101,7 +101,7 @@ enum Message {
     Move(Int, Int)
 }
 
-msg := Message.Write("Hello Pace!")
+var msg = Message.Write("Hello Pace!")
 
 // The compiler guarantees you handle every variant!
 match msg {
@@ -123,7 +123,7 @@ match msg {
 Because `match` evaluates to a value (it is an *expression*, not just a statement), you can cleanly assign its result directly to a variable. This eliminates the need for temporary mutable variables.
 
 ```pace
-isExit := match msg {
+var isExit = match msg {
     Message.Quit => true
     _ => false // The wildcard '_' acts as a default fallback
 }

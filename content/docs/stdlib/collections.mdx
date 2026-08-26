@@ -1,0 +1,70 @@
+---
+title: Collections
+description: Comprehensive documentation on Pace's core collection types.
+---
+
+Pace includes several high-performance, strictly typed collection structures built natively with our generic monomorphization system, meaning they offer zero-overhead abstraction.
+
+## `List<T>`
+
+`List<T>` is a growable array type for dynamically sizing lists.
+
+```pace
+var my_list: List<Int> = List<Int>.new()
+my_list.push(10)
+my_list.push(20)
+
+let first_item = my_list.get(0) // Returns 10
+let size = my_list.length() // Returns 2
+```
+
+## `Map<K, V>`
+
+`Map<K, V>` is a hash map used to store key-value pairs. Keys must be primitive types (like `String` or `Int`).
+
+```pace
+var users: Map<String, Int> = Map<String, Int>.new()
+users.insert("Alice", 30)
+users.insert("Bob", 25)
+
+let alice_age = users.get("Alice") // Returns Option<Int>::Some(30)
+let has_charlie = users.contains_key("Charlie") // Returns false
+```
+
+## `Set<T>`
+
+`Set<T>` stores unique values without any particular ordering, backed by a hash set.
+
+```pace
+var active_ids: Set<Int> = Set<Int>.new()
+active_ids.insert(101)
+active_ids.insert(102)
+active_ids.insert(101) // Duplicate ignored
+
+let size = active_ids.length() // Returns 2
+```
+
+## `Queue<T>`
+
+`Queue<T>` provides First-In-First-Out (FIFO) access.
+
+```pace
+var q: Queue<String> = Queue<String>.new()
+q.enqueue("job1")
+q.enqueue("job2")
+
+let job = q.dequeue() // Returns Option<String>::Some("job1")
+```
+
+## `TreeSet<T>`
+
+`TreeSet<T>` stores unique values while keeping them sorted in ascending order.
+
+```pace
+var sorted: TreeSet<Int> = TreeSet<Int>.new()
+sorted.insert(50)
+sorted.insert(10)
+sorted.insert(30)
+
+// The values are stored sequentially as 10, 30, 50.
+```

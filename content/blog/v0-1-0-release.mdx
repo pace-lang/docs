@@ -31,26 +31,28 @@ At its core, Pace is built on three pillars:
 Pace optimizes for real-world ergonomics. Variables are **mutable by default** using the `:=` operator. To declare immutable bindings, you simply use the `final` keyword. For compile-time constant primitives, use `const`.
 
 ```pace
-name := "Pace Developer" // Mutable string
-final version = "0.1.0"  // Immutable string
+var name = "Pace Developer" // Mutable string
+let version = "0.1.0"  // Immutable string
 
 // The compiler enforces immutability!
 // version = "0.2.0" // ❌ COMPILER ERROR
 ```
 
-### Generics & Algebraic Data Types
+### Generics & True Monomorphization
 
-Pace features a robust generics system, powering full monomorphization for functions, classes, and enums. We have officially introduced **Standard Generic Algebraic Data Types**, including `Option<T>`, `Result<T, E>`, `List<T>`, and `Map<K, V>`.
+Pace features a robust generics system, powering **true monomorphization** for functions, classes, and enums. When you use `Result<T, E>` or a generic class, the compiler generates a unique version of that type for each type argument. This completely eliminates the need for boxing or opaque pointers, leading to zero-cost abstractions, massive execution speed improvements, and full C-FFI compatibility for generic structs!
+
+We have officially introduced **Standard Generic Algebraic Data Types**, including `Option<T>`, `Result<T, E>`, `List<T>`, and `Map<K, V>`.
 
 ### Pattern Matching (`match`)
 
-To complement ADTs, Pace supports comprehensive pattern matching via the `match` expression! You can safely unwrap variants and extract payloads with compile-time exhaustiveness checking.
+To complement ADTs, Pace supports comprehensive pattern matching via the `match` expression! You can safely unwrap variants and extract payloads with compile-time exhaustiveness checking. Furthermore, you can explicitly pattern match on generic ADT variants using the new generic pattern matching syntax to ensure absolute type safety.
 
 ```pace
-result := fetch_data()
+var result: Result<Int, String> = fetch_data()
 match result {
-    Result.Ok(data) => print("Success: \{data}")
-    Result.Err(e) => print("Failed with error: \{e}")
+    Result<Int, String>::Ok(data) => print("Success: \{data}")
+    Result<Int, String>::Err(e) => print("Failed with error: \{e}")
 }
 ```
 
@@ -60,7 +62,7 @@ Dealing with `Result<T, E>` is frictionless. The postfix `?` operator elegantly 
 
 ```pace
 func fetchAndProcess(): Result<String, Error> {
-    data := fetch()? // Returns early if fetch() fails!
+    var data = fetch()? // Returns early if fetch() fails!
     return Result.Ok(process(data))
 }
 ```
@@ -74,7 +76,7 @@ You can define highly efficient, stack-allocated, non-ARC value types using the 
 Pace now supports string interpolation using both `\{expr}` and `${expr}` syntax. Expressions are directly evaluated and safely concatenated inside string literals—no manual type conversions necessary!
 
 ```pace
-name := "Pace Developer"
+var name = "Pace Developer"
 print("Welcome to v0.1.0, \{name}!")
 ```
 
@@ -114,7 +116,12 @@ Classes can now define a custom `func deinit()`. The compiler dynamically tracks
 
 ### The Dynamic Standard Library
 
-We have successfully decoupled standard types from the core compiler. Types like `List`, `Map`, `Set`, and `Math` (which provides `Math.Pi`, `Math.abs()`, etc.) are natively injected during compilation. 
+We have successfully decoupled standard types from the core compiler. The standard library has been expanded to include powerful new modules for real-world application development:
+- **Collections**: Fully typed `List<T>`, `Map<K, V>`, `Set<T>`, `Queue<T>`, and `TreeSet<T>`.
+- **File System (`std:fs`)**: Perform IO operations using `fs_readText`, `fs_writeText`, and `fs_exists`.
+- **Networking (`std:http`)**: Native `http_get` support for external API calls.
+- **Strings (`std:string`)**: Comprehensive string manipulation methods like `string_replace`, `string_substring`, etc.
+- **Math (`std:math`)**: Provides `Math.Pi`, `Math.abs()`, etc.
 
 Collections like `List` and `Map` are **native-backed**, utilizing highly optimized implementations over a C-ABI bridge.
 

@@ -17,7 +17,7 @@ In many languages, deciding how to declare a variable is an afterthought. In Pac
 In Pace, variables are mutable by default. You can declare them using type inference (`:=`) or explicit typing (`:`).
 
 ```pace
-name := "Pace"
+var name = "Pace"
 version: Int = 1
 
 name = "New Pace" // This is perfectly fine
@@ -29,7 +29,7 @@ name = "New Pace" // This is perfectly fine
 When you want to guarantee that a variable's binding cannot be changed after initialization, you use `final`. For primitive values known at compile-time, you use `const`.
 
 ```pace
-final maxUsers = 100
+let maxUsers = 100
 // maxUsers = 200 // ERROR: Cannot reassign a 'final' binding!
 
 const PI = 3.14
@@ -65,7 +65,7 @@ Pace supports dynamically sized arrays natively. Arrays are strictly typed; an a
 
 ```pace
 // Type inferred as [Int]
-numbers := [1, 2, 3, 4, 5]
+var numbers = [1, 2, 3, 4, 5]
 
 // Explicit type declaration
 names: [String] = ["Alice", "Bob"]
@@ -76,14 +76,14 @@ You can initialize an array with a repeated value using the `[value; count]` syn
 
 ```pace
 // Creates an array with ten 0s: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-zeroes := [0; 10]
+var zeroes = [0; 10]
 ```
 
 ### Indexing
 You can read and write to arrays using standard bracket `[]` notation:
 
 ```pace
-items := ["Apple", "Banana", "Cherry"]
+var items = ["Apple", "Banana", "Cherry"]
 print(items[1]) // Prints: Banana
 
 items[1] = "Blueberry"
@@ -100,14 +100,14 @@ items[1] = "Blueberry"
 Pace natively supports Hash Maps for key-value storage. Like Arrays, Maps are strictly typed.
 
 ```pace
-ages := {
+var ages = {
     "Alice": 30,
     "Bob": 25
 }
 
 // Accessing map values returns an Optional (e.g. Int?)
 // because the key might not exist!
-aliceAge := ages["Alice"]
+var aliceAge = ages["Alice"]
 ```
 
 ## Sets
@@ -117,7 +117,7 @@ Pace also provides a native `Set` collection in the standard library (`stdlib/sr
 ```pace
 import "stdlib/src/collections/set.pace"
 
-names := Set<String>()
+var names = Set<String>()
 names.insert("Alice")
 names.insert("Bob")
 ```
@@ -162,9 +162,9 @@ class Profile {
     age: Int = 30
 }
 
-user := User()
+var user = User()
 // Returns an Int? which is null if profile is null
-userAge := user.profile?.age 
+var userAge = user.profile?.age 
 ```
 
 ### Null Coalescing (`??`)
@@ -173,10 +173,10 @@ Often, you want to provide a default fallback value if an optional turns out to 
 ```pace
 configSpeed: Int? = null
 // result is 100 because configSpeed is null
-defaultSpeed := configSpeed ?? 100 
+var defaultSpeed = configSpeed ?? 100 
 
 // You can chain them safely:
-finalSpeed := userSpeed ?? configSpeed ?? 100
+var finalSpeed = userSpeed ?? configSpeed ?? 100
 ```
 
 ### Null Coalesce Assignment (`??=`)
@@ -237,7 +237,7 @@ The following words are reserved by the compiler:
   type={{
     'Declaration': {
       description: 'Used to declare variables, functions, and types.',
-      type: 'class, interface, implements, struct, type, func, init, deinit, final, const, enum',
+      type: 'class, interface, implements, struct, type, func, init, deinit, let, var, const, enum',
     },
     'Control Flow': {
       description: 'Used to control the execution path of the program.',
@@ -245,7 +245,7 @@ The following words are reserved by the compiler:
     },
     'Modifiers & Values': {
       description: 'Used to modify behavior or represent primitive literal values.',
-      type: 'weak, foreign, true, false, null',
+      type: 'weak, true, false, null',
     }
   }}
 />

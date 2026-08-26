@@ -1,0 +1,9 @@
+{
+  "title": "Standard Library",
+  "pages": [
+    "collections",
+    "fs",
+    "http",
+    "strings"
+  ]
+}

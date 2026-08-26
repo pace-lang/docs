@@ -36,7 +36,7 @@ class User {
     address: Address? // This can be null!
 }
 
-bob := User( address: null )
+var bob = User( address: null )
 
 // ❌ COMPILER ERROR: You cannot access `.city` because `address` might be null!
 print(bob.address.city)
@@ -53,7 +53,7 @@ To fix this, you must handle the null case. Pace provides two very convenient op
 
 ```pace
 // ✅ COMPILES PERFECTLY
-city := bob.address?.city ?? "Unknown City"
+var city = bob.address?.city ?? "Unknown City"
 print(city) // Prints: "Unknown City"
 ```
 
@@ -64,7 +64,7 @@ Sometimes you want to run a whole block of code only if the value exists. You ca
 ```pace
 maybePort: Int? = get_port_from_env()
 
-if port := maybePort {
+if var port = maybePort {
     // Inside this block, 'port' is guaranteed to be a real Int (not null).
     start_server(port)
 } else {

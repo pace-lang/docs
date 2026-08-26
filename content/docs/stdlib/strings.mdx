@@ -1,0 +1,34 @@
+---
+title: Strings
+description: Advanced string manipulation functions.
+---
+
+The `std:string` module provides utilities for manipulating native Pace strings. Note that string interpolation is built directly into the compiler, but these utilities extend functionality further.
+
+## Substring
+
+Use `string_substring(s: String, start: Int, end: Int) -> String` to slice a portion of a string.
+
+```pace
+import std:string;
+
+let text = "Hello Pace!"
+let sliced = string_substring(text, 0, 5) // Returns "Hello"
+```
+
+## Replace
+
+Use `string_replace(s: String, from: String, to: String) -> String` to replace occurrences of a substring.
+
+```pace
+import std:string;
+
+let url = string_replace("http://example.com", "http", "https")
+```
+
+## Advanced Functions
+
+Pace also includes several other powerful string functions out of the box:
+- `string_trim(s: String) -> String`: Removes leading and trailing whitespace.
+- `string_indexOf(s: String, needle: String) -> Int`: Finds the first occurrence of `needle` (returns `-1` if not found).
+- `string_startsWith(s: String, prefix: String) -> Bool`: Returns true if the string begins with the given prefix.

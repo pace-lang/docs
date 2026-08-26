@@ -6,6 +6,7 @@
     "basics",
     "structures",
     "safety",
+    "stdlib",
     "advanced"
   ]
 }

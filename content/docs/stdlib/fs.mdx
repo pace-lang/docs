@@ -1,0 +1,42 @@
+---
+title: File System (FS)
+description: Interact with the host file system.
+---
+
+The `std:fs` module provides native capabilities to interact with the host operating system's file system, avoiding the need for manual C-FFI interactions.
+
+## Checking if a file exists
+
+Use `fs_exists(path: String) -> Bool` to safely verify if a file exists before attempting to read it.
+
+```pace
+import std:fs;
+
+let has_config = fs_exists("config.json")
+```
+
+## Reading Files
+
+Use `fs_readText(path: String) -> Result<String, String>` to read the contents of a file as a UTF-8 string.
+
+```pace
+import std:fs;
+
+let content = fs_readText("config.json")
+match content {
+    Result<String, String>::Ok(text) => print("File: " + text)
+    Result<String, String>::Err(e) => print("Failed to read: " + e)
+}
+```
+
+## Writing Files
+
+Use `fs_writeText(path: String, content: String) -> Result<Bool, String>` to write text to a file. It returns a success boolean or an error string.
+
+```pace
+import std:fs;
+
+let result = fs_writeText("log.txt", "Pace execution started")
+// You can use the `?` operator for clean error bubbling!
+let success = fs_writeText("log.txt", "Pace execution started")?
+```

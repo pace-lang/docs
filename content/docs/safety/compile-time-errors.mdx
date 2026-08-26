@@ -28,7 +28,7 @@ Here are a few friendly examples of the compiler protecting you.
 Pace is statically typed. It needs to know what shape your data is so it can optimize memory perfectly. If you try to mix shapes, it will stop you.
 
 ```pace
-age := 25
+var age = 25
 age = "Twenty Five" // ❌ ERROR: Cannot assign type 'String' to variable of type 'Int'
 ```
 **Why it protects you:** If another part of your code tries to do math on `age`, it would completely fail if it suddenly became a string. The compiler prevents this silent corruption.
@@ -61,7 +61,7 @@ As covered in the [Strict Null Safety](/docs/safety/null-safety) section, Pace w
 ```pace
 user_id: Int? = get_id() // Might be null!
 
-next_id := user_id + 1
+var next_id = user_id + 1
 // ❌ ERROR: Cannot add 'Int' to 'Int?'. Handle the null case first.
 ```
 

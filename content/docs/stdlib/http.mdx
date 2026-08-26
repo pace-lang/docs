@@ -1,0 +1,25 @@
+---
+title: Networking (HTTP)
+description: Make external network requests.
+---
+
+The `std:http` module empowers Pace applications to make external API calls seamlessly.
+
+## Making a GET Request
+
+You can use the `http_get(url: String) -> Result<String, String>` function to fetch data from a REST API or web server.
+
+```pace
+import std:http;
+
+func fetchUserData(): Result<String, String> {
+    let response = http_get("https://api.github.com/users/pace-lang")?
+    return Result<String, String>::Ok(response)
+}
+
+let result = fetchUserData()
+match result {
+    Result<String, String>::Ok(json) => print(json)
+    Result<String, String>::Err(e) => print("Network error: " + e)
+}
+```

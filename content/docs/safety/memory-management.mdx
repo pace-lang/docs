@@ -37,7 +37,7 @@ class DataBuffer {
 func processData() {
     // 1. A DataBuffer object is allocated. 
     // 2. The compiler injects `retain`. (Ref count = 1)
-    buffer := DataBuffer()
+    var buffer = DataBuffer()
     
 } // 3. 'buffer' variable goes out of scope. 
   // 4. Compiler injects `release`. (Ref count = 0). 
@@ -56,8 +56,8 @@ class Node {
     func init() {}
 }
 
-a := Node()
-b := Node()
+var a = Node()
+var b = Node()
 
 // A points to B, B points to A.
 a.next = b
