@@ -45,14 +45,42 @@ Reference types (`class` instances, `String`s, and `Array`s) are passed **by ref
 
 In Pace, functions are first-class citizens. This means you can treat functions just like any other variable: you can assign them to variables, store them in arrays, or pass them as arguments to other functions.
 
+Function types use the `(ParamType) -> ReturnType` syntax.
+
 ```pace
-// Define a function variable type: func(Float, Float) -> Float
-let calculator: func(Float, Float) -> Float = calculateTotal
+func calculateTotal(price: Float, taxRate: Float) -> Float {
+    return price + (price * taxRate)
+}
+
+// Define a function variable type: (Float, Float) -> Float
+let calculator: (Float, Float) -> Float = calculateTotal
 
 var result = calculator(50.0, 0.1)
 print(result) // Prints: 55.0
 ```
 
-Under the hood, `calculator` simply stores a memory pointer to the executable code of the `calculateTotal` function.
+Under the hood, `calculator` stores a memory pointer to the executable code of the `calculateTotal` function.
+
+## Closures (Anonymous Functions)
+
+Sometimes you need to define a quick, inline function to pass as a callback without formally declaring it with `func`. Pace provides **closures** for this purpose.
+
+Closures use the `=>` "fat arrow" syntax:
+
+```pace
+func applyTwice(f: (Int) -> Int, x: Int) -> Int {
+    return f(f(x))
+}
+
+let multiplier = 5
+
+// Define an inline closure that multiplies a number by 5
+let multiply = (x: Int) -> Int => x * multiplier
+
+let result = applyTwice(multiply, 2)
+print(result) // Prints 50
+```
+
+Closures in Pace compile down to "fat pointers"—a struct containing both a pointer to the generated machine code and an environment pointer holding captured variables. This gives them zero-cost abstraction overhead while preserving full memory safety.
 
 

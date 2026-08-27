@@ -13,26 +13,32 @@ By default, all declarations (classes, functions, bindings) are **public** to th
 
 ## Importing Modules
 
-To use code from another file, you use the `import` statement. Imports must appear at the top of the file.
+To use code from another file, the standard library, or external packages, you use the `import` statement. Imports must appear at the top of the file.
 
 ```pace
-// Imports the entire math module
-import "math"
+// Relative import
+import "./math"
 
-func calculateArea(radius: Float): Float {
-    // Access static members on the Math class
-    return Math.Pi * radius * radius
-}
+// Standard library import
+import std:io
+
+// External package import
+import http
 ```
 
-### How Imports Work Under the Hood
+### Selective Imports and Shadowing
 
-When the Pace compiler encounters an `import "math"` statement, it does **not** simply read `math.pace` and shove its text into the current file. Instead, the compiler:
-1. **Resolves the path**: Locates `math.pace` in the project structure.
-2. **Parses the AST**: Builds a completely independent Abstract Syntax Tree for `math.pace`.
-3. **AST Linking**: In the type-checking phase, the compiler creates a reference between the current file's AST and the `math` module's AST.
+To avoid polluting your namespace, you can selectively show or hide specific symbols from an imported module:
 
-Because of this semantic linking, Pace is immune to "include order" bugs and circular definition errors that plague older languages. The compiler resolves all types globally before emitting native machine code.
+```pace
+// Only imports 'print' and 'readLine'
+import std:io { show print, readLine }
+
+// Imports everything EXCEPT 'Iterable'
+import std:core { hide Iterable }
+```
+
+If you declare a variable or type in your file that shares a name with an imported symbol, the local declaration will automatically **shadow** the imported symbol.
 
 ### Aliasing Imports
 If a module path is too long or conflicts with a local variable, you can alias it using the `as` keyword:
