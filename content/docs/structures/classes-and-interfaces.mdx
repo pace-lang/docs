@@ -46,16 +46,6 @@ class FileHandler {
 }
 ```
 
-## Structs (Value Types)
-
-By default, classes in Pace are passed by reference and managed by ARC. If you want a lightweight, pass-by-value data structure, you can use the `struct` keyword. Structs are entirely stack-allocated and forbid ARC-managed fields, giving you strict control over performance and memory layout.
-
-```pace
-struct Point {
-    x: Int
-    y: Int
-}
-```
 
 ## Interfaces
 

@@ -1,0 +1,78 @@
+---
+title: Concurrency
+description: Master Async/Await, Actors, and Multithreading in Pace.
+---
+
+Pace is designed from the ground up for safe, efficient multithreaded execution. Normal developers should not need to manually manage OS threads. Pace provides high-level abstractions like `async`/`await`, `spawn`, and `actor`s to handle concurrent work effortlessly.
+
+## The Concurrency Model
+
+Pace provides several tools for different concurrency needs:
+- `async` / `await` -> Asynchronous suspension
+- `spawn` -> Parallel work
+- `actor` -> Isolated mutable state
+- `Channel` -> Message passing
+- `Atomic` & `Mutex` -> Advanced synchronization
+
+## Async / Await
+
+The `async` keyword marks a function that can suspend its execution without blocking the underlying OS thread. You use `await` to wait for an asynchronous operation to complete.
+
+```pace
+async func fetchUser(id: Int) -> User {
+    let response = await http.get("/users/{id}")
+    return response.json()
+}
+```
+
+To call an `async` function, you must `await` it:
+
+```pace
+let user = await fetchUser(id: 42)
+```
+
+> [!NOTE]
+> `async` means the function can suspend; it does not mean a new OS thread is created. The Pace runtime schedules `async` work across available threads.
+
+## Multithreading with `spawn`
+
+To run heavy computations in parallel, use the `spawn` block. The Pace runtime will schedule this work across its thread pool.
+
+```pace
+spawn {
+    heavyWork() // Runs in parallel
+}
+```
+
+## Actors (Isolated State)
+
+Sharing mutable state across threads is notoriously dangerous and leads to data races. Pace solves this with **Actors**. 
+
+An `actor` isolates mutable state. It guarantees that only one task can access its state at a time, making concurrent access perfectly safe.
+
+```pace
+actor Counter {
+    private var value = 0
+
+    func increment() {
+        value += 1
+    }
+
+    func get(): Int {
+        return value
+    }
+}
+```
+
+Because an actor's state is isolated, you must `await` its methods from the outside to ensure safe access:
+
+```pace
+let counter = Counter()
+
+await counter.increment()
+
+let value = await counter.get()
+print(value)
+```
+
+By combining `async`, `spawn`, and `actor`, you can build highly concurrent applications that are immune to traditional data races!

@@ -1,0 +1,43 @@
+---
+title: Structs
+description: Understand value types and stack allocation in Pace.
+---
+
+By default, classes in Pace are passed by reference and managed by Automatic Reference Counting (ARC). If you want a lightweight, pass-by-value data structure, you can use the `struct` keyword. 
+
+Structs are entirely stack-allocated and forbid ARC-managed fields, giving you strict control over performance and memory layout.
+
+## Defining a Struct
+
+You define a struct similarly to a class, but with the `struct` keyword.
+
+```pace
+struct Point {
+    let x: Float64
+    let y: Float64
+}
+```
+
+## Value Semantics vs Reference Semantics
+
+The primary distinction between structs and classes in Pace is how they are passed around in memory:
+
+* **Structs (`struct`)** have **value semantics**. When you assign a struct to a new variable or pass it to a function, the entire struct is copied. Because they live on the stack, this copy is extremely fast.
+* **Classes (`class`)** have **reference semantics**. When you assign a class instance to a new variable, you are only copying the reference (pointer) to the heap-allocated object, and incrementing its ARC count.
+
+```pace
+// Value Semantics (Struct)
+var p1 = Point(x: 10.0, y: 20.0)
+var p2 = p1 // p2 is a full copy of p1
+
+// Modifying p2 does NOT affect p1!
+```
+
+## When to use Structs
+
+You should prefer structs over classes when:
+- The data structure is small and lightweight (e.g., coordinates, RGB colors, configuration options).
+- You want to ensure the data is not modified elsewhere (since it is passed by value).
+- You want to avoid heap allocation and ARC overhead for maximum performance.
+
+If you need inheritance, shared mutable state, or if the data structure is very large (where copying would be expensive), use a `class` instead.

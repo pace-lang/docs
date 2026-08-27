@@ -3,6 +3,7 @@
   "pages": [
     "generics",
     "type-aliases",
-    "modules-and-imports"
+    "modules-and-imports",
+    "concurrency"
   ]
 }

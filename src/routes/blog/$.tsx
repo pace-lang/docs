@@ -34,8 +34,6 @@ const loader = createServerFn({
     return {
       path: page.path,
       markdownUrl: encodeMarkdownUrl(page.slugs, page.locale),
-      // For blog posts we don't necessarily need the whole tree unless we want to show a sidebar
-      // We will just pass empty tree to DocsLayout, or pass the blogSource tree.
       pageTree: await blogSource.serializePageTree(blogSource.getPageTree()),
     };
   });
@@ -48,45 +46,49 @@ function Content({ path }: { path: string }) {
   const MDX = page.body;
 
   return (
-    <main className="container mx-auto px-4 py-12 max-w-3xl">
-      <div className="mb-16 border-b border-border/50 pb-10">
-        <Link to="/blog" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8 inline-flex items-center gap-2">
-          &larr; Back to Blog
-        </Link>
-        <h1 className="text-3xl md:text-xl lg:text-3xl font-bold tracking-tight mb-4 leading-tight">{page.title}</h1>
-        <p className="text-md md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl">
-          {page.description}
-        </p>
-        <div className="flex items-center gap-4">
-          <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-            P
-          </div>
-          <div>
-            <div className="font-semibold text-sm">Pace Team</div>
-            {(page as any).data?.date && (
-              <div className="text-sm text-muted-foreground/80 font-medium">
-                {new Date((page as any).data.date).toLocaleDateString(undefined, {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-            )}
+    <main className="flex-1 flex flex-col items-center overflow-x-hidden bg-background w-full pb-32">
+      <div className="w-full max-w-[800px] mx-auto px-6 pt-16 pb-12 relative z-10">
+        <div className="mb-10 border-b border-border/50 pb-6">
+          <Link to="/blog" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2 mb-8">
+            &larr; Back to Blog
+          </Link>
+          
+          <div className="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">
             {(page as any).data?.tags && (
-              <div className="flex gap-2 mt-2">
-                {(page as any).data.tags.map((tag: string) => (
-                  <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              <span className="bg-[#ff2e93] text-white px-2 py-0.5 rounded-sm font-bold">
+                {(page as any).data.tags[0] || 'Release'}
+              </span>
             )}
+            {(page as any).data?.date && (
+              <span>
+                {new Date((page as any).data.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            )}
+          </div>
+
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight text-foreground text-balance">
+            {page.title}
+          </h1>
+          
+          <p className="text-lg text-muted-foreground mb-8 leading-relaxed text-balance">
+            {page.description}
+          </p>
+          
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <span>Pace Team</span>
           </div>
         </div>
       </div>
-      <DocsBody>
-        <MDX components={useMDXComponents()} />
-      </DocsBody>
+      
+      <div className="w-full max-w-[800px] mx-auto px-6 relative z-10">
+        <DocsBody>
+          <MDX components={useMDXComponents()} />
+        </DocsBody>
+      </div>
     </main>
   );
 }

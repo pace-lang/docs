@@ -5,7 +5,7 @@ export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
       // JSX supported
-      title: appName,
+      title: <span className="font-semibold tracking-tight text-foreground">pace<span className="text-emerald-500">.</span></span>,
     },
     links: [
       {

@@ -2,6 +2,7 @@
   "title": "Data Structures",
   "pages": [
     "classes-and-interfaces",
+    "structs",
     "enums-and-matching"
   ]
 }

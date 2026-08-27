@@ -18,7 +18,10 @@ export const Route = createRootRoute({
         title: 'Pace Language Documentation',
       },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
+    links: [
+      { rel: 'stylesheet', href: appCss },
+      { rel: 'icon', href: '/favicon.ico?v=2' }
+    ],
   }),
   component: RootComponent,
 });

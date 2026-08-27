@@ -2,6 +2,7 @@
   "title": "Getting Started",
   "pages": [
     "installation",
-    "tooling"
+    "tooling",
+    "package-management"
   ]
 }

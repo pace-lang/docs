@@ -1,0 +1,90 @@
+---
+title: "Why Pace Chose ARC over Garbage Collection"
+description: Memory management is one of the most debated topics in systems programming. Discover why Pace ditched the Garbage Collector in favor of determinism and Automatic Reference Counting (ARC).
+date: 2026-08-31
+tags: ["Deep Dive", "Architecture"]
+draft: false
+---
+
+When designing a modern systems programming language, memory management is arguably the single most important architectural decision. 
+
+Do you force developers to manage memory manually (like C or C++)? Do you rely on a complex borrow checker (like Rust)? Or do you throw in a Garbage Collector to make life easy (like Java, Go, or C#)?
+
+With **Pace**, we took a different route. We wanted the ease of a high-level scripting language without sacrificing the deterministic performance of a low-level systems language. That’s why Pace is built entirely around **Automatic Reference Counting (ARC)** and **Value Types**.
+
+Here is why we firmly believe ARC is the right choice for the future of systems software.
+
+<ArcVsGcAnimation />
+
+---
+
+## The Problem with Garbage Collection (GC)
+
+Garbage Collectors are incredible feats of engineering. They allow developers to allocate objects freely without ever worrying about freeing them. However, they come with a massive hidden cost: **Non-Determinism**.
+
+### "Stop The World" Pauses
+Most tracing garbage collectors must eventually pause your application to scan the heap, find unused objects, and sweep them away. Even with modern concurrent collectors (like Go's or Java's ZGC), GC pauses are unavoidable. 
+
+If you are building a real-time trading system, a multiplayer game server, or an audio processing engine, a sudden 5-millisecond GC pause can result in dropped frames, latency spikes, and degraded user experiences.
+
+### High Memory Overhead
+Garbage collectors require headroom to operate efficiently. A GC-managed application will typically consume 2x to 3x more memory than strictly necessary, just to avoid triggering frequent collection cycles. For embedded systems or cloud-native microservices where memory equals money, this overhead is a dealbreaker.
+
+---
+
+## Enter Automatic Reference Counting (ARC)
+
+Automatic Reference Counting solves the memory management problem predictably. 
+
+Instead of waiting for a background thread to clean up garbage, the Pace compiler automatically inserts `retain()` and `release()` calls into your compiled code. Every time an object is passed around, its reference count increments. Every time a variable goes out of scope, the count decrements.
+
+When the count hits zero, the object is **immediately** deallocated.
+
+```pace
+func processData() {
+    // A new heap allocation. Reference count = 1
+    let data = ServerData() 
+
+    if condition {
+        // Passed to another function. Count = 2
+        analyze(data) 
+        // Returns. Count = 1
+    }
+    
+    // End of scope. Count drops to 0. Memory is instantly freed.
+}
+```
+
+### Why ARC Wins
+
+1. **Zero Unpredictable Pauses**: There is no background thread scanning your memory. Execution times are consistent and predictable.
+2. **Immediate Cleanup**: Resources like file handles and network sockets are closed the exact microsecond they are no longer needed.
+3. **Low Memory Footprint**: Pace applications use exactly as much memory as they need, with zero overhead allocated for "garbage".
+
+## Avoiding the Heap Entirely: Structs
+
+While ARC is incredibly fast, heap allocation still carries a slight performance cost. This is where Pace's type system truly shines.
+
+In Pace, classes are reference types (managed by ARC on the heap), but **structs are value types (managed entirely on the stack)**.
+
+By leveraging structs, you can completely bypass ARC and the heap. Structs are copied by value, and their memory is instantly reclaimed the moment the function returns.
+
+```pace
+// Stack-allocated. Zero heap allocations. Zero ARC overhead.
+struct Vector3 {
+    x: Float64
+    y: Float64
+    z: Float64
+}
+
+func calculatePhysics() {
+    let position = Vector3(x: 10.5, y: 0.0, z: -5.2)
+    // Instantly popped off the stack when function ends
+}
+```
+
+## The Best of Both Worlds
+
+By combining **stack-allocated structs** for high-performance data processing with **ARC-managed classes** for complex, shared application state, Pace gives developers the exact tools they need.
+
+You get the safety and developer experience of a managed language, with the blazing-fast, predictable execution of a systems language. No GC required.

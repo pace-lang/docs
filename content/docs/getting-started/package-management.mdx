@@ -1,0 +1,63 @@
+---
+title: Package Management
+description: Managing dependencies and publishing packages in Pace.
+---
+
+Pace comes with a built-in package manager that makes sharing and using external code incredibly easy. 
+
+All of your project's dependencies are tracked in the `pace.toml` file at the root of your project, and their exact versions are locked via a lockfile for reproducible builds.
+
+## Managing Dependencies
+
+### Adding a Package
+
+To add a new dependency from the official Pace registry, use the `pace add` command:
+
+```bash title="Terminal"
+pace add http
+```
+
+This will automatically:
+1. Fetch the latest compatible version of the `http` package.
+2. Add it to the `[dependencies]` section in your `pace.toml`.
+3. Update your lockfile.
+
+### Removing a Package
+
+If you no longer need a dependency, you can remove it using `pace remove`:
+
+```bash title="Terminal"
+pace remove http
+```
+
+### Fetching Dependencies
+
+When you clone an existing Pace project, you need to download its dependencies before you can build it. The `pace fetch` command reads your `pace.toml` and lockfile to download exactly what you need.
+
+```bash title="Terminal"
+pace fetch
+```
+
+*(Note: Running `pace build` or `pace run` will also automatically fetch missing dependencies!)*
+
+## Publishing Packages
+
+If you've built something great, you can share it with the world on the official Pace package registry!
+
+### 1. Authenticate
+
+Before you can publish, you must authenticate your CLI with the registry using your account credentials:
+
+```bash title="Terminal"
+pace login
+```
+
+### 2. Publish
+
+Once you're logged in, you can publish your package. Ensure your `pace.toml` has the correct `name`, `version`, and `authors` fields set up.
+
+```bash title="Terminal"
+pace publish
+```
+
+This command will verify your package, bundle the source code, and upload it to the registry. Your package will then be immediately available for others to install via `pace add <your-package-name>`!

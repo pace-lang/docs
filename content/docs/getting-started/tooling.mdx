@@ -83,6 +83,14 @@ Compiles the project into a native executable and places it in the `target/relea
 pace build
 ```
 
+### `pace check`
+
+Performs semantic analysis, type checking, and ownership validation across your project without fully compiling it. It's much faster than `pace build` and is great for quickly catching errors while developing.
+
+```bash title="Terminal"
+pace check
+```
+
 ### `pace lint`
 
 Runs the built-in style linter across your project without fully compiling it. It checks for Pace naming conventions (e.g., `camelCase` for functions/variables, `PascalCase` for types) and exits with a status code of `1` if any style violations are found. Perfect for CI/CD pipelines!
