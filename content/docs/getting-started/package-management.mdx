@@ -54,10 +54,15 @@ pace login
 
 ### 2. Publish
 
-Once you're logged in, you can publish your package. Ensure your `pace.toml` has the correct `name`, `version`, and `authors` fields set up.
+Once you're logged in, you can publish your package. Ensure your `pace.toml` has the correct `name` and `version`, as well as the newly required fields:
+- `description`: A brief summary of your package.
+- `license`: e.g. "MIT" or "Apache-2.0".
+- `authors`: A list of authors.
+- `repository`: A URL to the source code repository.
+- `[sdk] pace`: The required Pace SDK version constraint (e.g. `>=0.1.0`).
 
 ```bash title="Terminal"
 pace publish
 ```
 
-This command will verify your package, bundle the source code, and upload it to the registry. Your package will then be immediately available for others to install via `pace add <your-package-name>`!
+This command will rigorously verify your package by type-checking the main entry point AND every file in your `tests/` and `examples/` folders. If everything passes, it will bundle the source code and upload it to the registry. Your package will then be immediately available for others to install via `pace add <your-package-name>`!
