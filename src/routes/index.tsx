@@ -140,11 +140,11 @@ function Home() {
                   <code>
                     <span className="text-[#ff7b72] font-semibold">class</span>{" "}
                     <span className="text-[#79c0ff]">User</span> {"{\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">public static var</span> count:{" "}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">static var</span> count:{" "}
                     <span className="text-[#79c0ff]">Int</span> = <span className="text-[#79c0ff]">0</span>{";\n\n"}
                     {"  "}<span className="text-[#ff7b72] font-semibold">var</span> age:{" "}
                     <span className="text-[#79c0ff]">Int</span>{";\n\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">public static func</span>{" "}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">static func</span>{" "}
                     <span className="text-[#d2a8ff]">getCount</span>() -{">"} <span className="text-[#79c0ff]">Int</span> {"{\n"}
                     {"    "}<span className="text-[#ff7b72] font-semibold">return</span> User::count{";\n"}
                     {"  "}{"}\n\n"}

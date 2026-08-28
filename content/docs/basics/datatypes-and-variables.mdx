@@ -48,6 +48,42 @@ speed: Float = 3.14
 
 ---
 
+## Global Variables
+
+Pace supports declaring global variables at the top level of any module (outside of any functions or classes). These variables are **eagerly initialized** before the `main()` function executes.
+
+```pace
+// Global variable
+var execution_count: Int = 0
+
+func increment() {
+    // Accessing the global variable
+    execution_count = execution_count + 1
+}
+
+func main() {
+    increment()
+    print(execution_count) // 1
+}
+```
+
+### Variable Shadowing
+If you declare a local variable with the same name as a global variable, the local variable will **shadow** the global one within that scope. Changes to the shadowed local variable will not affect the global variable.
+
+```pace
+var execution_count: Int = 0
+
+func main() {
+    // This local variable shadows the global one
+    var execution_count: Int = 999
+    
+    // Prints 999 (the local one)
+    print(execution_count) 
+}
+```
+
+---
+
 ## Primitive Types and Memory Representation
 
 Pace includes several core types built directly into the language. Because Pace compiles to native code, these types have strict memory representations.

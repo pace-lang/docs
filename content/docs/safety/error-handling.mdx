@@ -51,6 +51,33 @@ match result {
 }
 ```
 
+### Dealing with `Result` painlessly using `?`
+
+Dealing with `Result<T, E>` is frictionless using the postfix `?` operator. This operator elegantly unpacks the `Ok` payload or returns early with the `Err` if the expression evaluates to an error.
+
+```pace
+func fetchAndProcess() -> Result<String, Int> {
+    // If readFile fails, the ? operator immediately returns the Result::Err 
+    // from fetchAndProcess. If it succeeds, data contains the String.
+    var data = readFile("config.json")?
+    
+    return Result<String, Int>::Ok(data)
+}
+```
+
+**Note:** The `?` operator can only be used inside a function that itself returns a `Result`.
+
+### Enum variants are not instance methods
+Remember that enum variants must be constructed using their namespace. You cannot call an enum variant like `.Ok()` on an instance of a `Result`:
+
+```pace
+// Correct: Constructing via namespace
+let success = Result<Int, String>::Ok(42)
+
+// Incorrect: Cannot call as instance method
+// success.Ok() 
+```
+
 ---
 
 ## Compiler Diagnostics & Error Codes

@@ -107,7 +107,7 @@ Classes can now define a custom `func deinit()`. The compiler dynamically tracks
 
 ### Access Modifiers & Constructor Checks
 
-- **Access Modifiers**: We've introduced explicit `public` and `private` keywords, dropping the legacy underscore (`_`) convention for visibility control.
+- **Access Modifiers**: We've introduced explicit visibility control, dropping the legacy underscore (`_`) convention, making everything public by default, and using the `private` keyword to restrict visibility.
 - **Constructor Checks**: The typechecker now rigorously tracks uninitialized properties inside class constructors, producing robust compile-time errors if you attempt to use a partially initialized object.
 
 ---
