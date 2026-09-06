@@ -46,8 +46,8 @@ A `Result` can either be `Ok(T)` containing the successful value, or `Err(E)` co
 var result: Result<String, Int> = readFile("config.json")
 
 match result {
-    Result<String, Int>::Ok(data) => print(data)
-    Result<String, Int>::Err(code) => print("Failed with error code")
+    Result<String, Int>.Ok(data) => print(data)
+    Result<String, Int>.Err(code) => print("Failed with error code")
 }
 ```
 
@@ -57,11 +57,11 @@ Dealing with `Result<T, E>` is frictionless using the postfix `?` operator. This
 
 ```pace
 func fetchAndProcess() -> Result<String, Int> {
-    // If readFile fails, the ? operator immediately returns the Result::Err 
+    // If readFile fails, the ? operator immediately returns the Result.Err 
     // from fetchAndProcess. If it succeeds, data contains the String.
     var data = readFile("config.json")?
     
-    return Result<String, Int>::Ok(data)
+    return Result<String, Int>.Ok(data)
 }
 ```
 
@@ -72,7 +72,7 @@ Remember that enum variants must be constructed using their namespace. You canno
 
 ```pace
 // Correct: Constructing via namespace
-let success = Result<Int, String>::Ok(42)
+let success = Result<Int, String>.Ok(42)
 
 // Incorrect: Cannot call as instance method
 // success.Ok() 

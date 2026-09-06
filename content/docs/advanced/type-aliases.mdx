@@ -15,7 +15,7 @@ To create a type alias, use the `type` keyword followed by the new name, an equa
 type StatusCode = Int
 type UserId = String
 
-func getUser(id: UserId): StatusCode {
+func getUser(id: UserId) -> StatusCode {
     if (id == "admin") {
         return 200
     }
@@ -48,7 +48,7 @@ One of the best benefits of type aliases in Pace is that the compiler preserves 
 ```pace
 type Matrix = [[Float]]
 
-func multiply(a: Matrix, b: Matrix): Matrix { ... }
+func multiply(a: Matrix, b: Matrix) -> Matrix { ... }
 
 // If you pass the wrong type, the compiler error will say:
 // ERROR: Expected 'Matrix', got 'String'

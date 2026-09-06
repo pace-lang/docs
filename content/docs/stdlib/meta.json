@@ -2,8 +2,11 @@
   "title": "Standard Library",
   "pages": [
     "collections",
-    "fs",
+    "datetime",
+    "io",
     "http",
+    "math",
+    "os",
     "strings"
   ]
 }

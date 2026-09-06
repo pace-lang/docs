@@ -91,10 +91,10 @@ For example, instead of having a class with `isConnected`, `socketId`, and `url`
 Pace also supports generic Enums, where variants can hold data of a type specified at instantiation. When pattern matching on a generic Enum, you can explicitly provide the generic type arguments to the variant. This gives the compiler strict guarantees about the monomorphized type it is unpacking.
 
 ```pace
-var result: Result<Int, String> = fetch_data()
+var result: Result<Int, String> = fetchData()
 
 match result {
-    Result<Int, String>::Ok(data) => print("Success")
-    Result<Int, String>::Err(err) => print("Error")
+    Result<Int, String>.Ok(data) => print("Success")
+    Result<Int, String>.Err(err) => print("Error")
 }
 ```

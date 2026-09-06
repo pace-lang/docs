@@ -1,34 +1,53 @@
 ---
 title: Strings
-description: Advanced string manipulation functions.
+description: String manipulation and interpolation in Pace.
 ---
 
-The `std:string` module provides utilities for manipulating native Pace strings. Note that string interpolation is built directly into the compiler, but these utilities extend functionality further.
+The `pace:string` module provides robust utilities for string operations. Strings in Pace are immutable, UTF-8 encoded text sequences.
 
-## Substring
+## Interpolation
 
-Use `string_substring(s: String, start: Int, end: Int) -> String` to slice a portion of a string.
-
-```pace
-import std:string;
-
-let text = "Hello Pace!"
-let sliced = string_substring(text, 0, 5) // Returns "Hello"
-```
-
-## Replace
-
-Use `string_replace(s: String, from: String, to: String) -> String` to replace occurrences of a substring.
+You can embed variables directly into strings using the `${}` syntax. This is the preferred way to build strings.
 
 ```pace
-import std:string;
+import "pace:string"
 
-let url = string_replace("http://example.com", "http", "https")
+let name = "Alice"
+let greeting = "Hello, ${name}!"
+print(greeting)
 ```
 
-## Advanced Functions
+## `StringUtil` Methods
 
-Pace also includes several other powerful string functions out of the box:
-- `string_trim(s: String) -> String`: Removes leading and trailing whitespace.
-- `string_indexOf(s: String, needle: String) -> Int`: Finds the first occurrence of `needle` (returns `-1` if not found).
-- `string_startsWith(s: String, prefix: String) -> Bool`: Returns true if the string begins with the given prefix.
+The `StringUtil` namespace contains all string manipulation functions.
+
+### `substring`
+Extract a portion of a string using `StringUtil.substring(s: String, start: Int, end: Int) -> String`.
+```pace
+let sub = StringUtil.substring("hello world", 0, 5) // "hello"
+```
+
+### `replace`
+Replace occurrences of a substring using `StringUtil.replace(s: String, from: String, to: String) -> String`.
+```pace
+let replaced = StringUtil.replace("hello world", "world", "pace") // "hello pace"
+```
+
+### `split`
+Split a string into an array of strings based on a delimiter.
+```pace
+let fruits = StringUtil.split("apple,banana,cherry", ",")
+```
+
+### `trim`
+Remove leading and trailing whitespace from a string.
+```pace
+let trimmed = StringUtil.trim("   hello   ") // "hello"
+```
+
+### Search Operations
+You can use `indexOf` to find the position of a substring, or check prefixes/suffixes.
+```pace
+let idx = StringUtil.indexOf("hello world", "world") // 6
+let starts = StringUtil.startsWith("pace is fast", "pace") // true
+```

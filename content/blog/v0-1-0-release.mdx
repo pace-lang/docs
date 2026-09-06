@@ -51,8 +51,8 @@ To complement ADTs, Pace supports comprehensive pattern matching via the `match`
 ```pace
 var result: Result<Int, String> = fetch_data()
 match result {
-    Result<Int, String>::Ok(data) => print("Success: \{data}")
-    Result<Int, String>::Err(e) => print("Failed with error: \{e}")
+    Result<Int, String>.Ok(data) => print("Success: \{data}")
+    Result<Int, String>.Err(e) => print("Failed with error: \{e}")
 }
 ```
 
@@ -107,7 +107,7 @@ Classes can now define a custom `func deinit()`. The compiler dynamically tracks
 
 ### Access Modifiers & Constructor Checks
 
-- **Access Modifiers**: We've introduced explicit visibility control, dropping the legacy underscore (`_`) convention, making everything public by default, and using the `private` keyword to restrict visibility.
+- **Access Modifiers**: We use the underscore (`_`) prefix convention to restrict visibility, dropping the `private` keyword, and making everything public by default.
 - **Constructor Checks**: The typechecker now rigorously tracks uninitialized properties inside class constructors, producing robust compile-time errors if you attempt to use a partially initialized object.
 
 ---

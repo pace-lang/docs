@@ -22,7 +22,7 @@ class Rectangle {
     }
     
     // A Method
-    func area(): Int {
+    func area() -> Int {
         return self.width * self.height
     }
 }
@@ -46,6 +46,29 @@ class FileHandler {
 }
 ```
 
+### Encapsulation and Privacy
+
+By default, all fields and methods in a class are public. You can restrict access to them by prefixing their names with an underscore (`_`). Private members can only be accessed from within the class itself.
+
+```pace
+class Account {
+    var _balance: Int
+    
+    func init(initial: Int) {
+        self._balance = initial
+    }
+    
+    // Public getter
+    func getBalance() -> Int {
+        return self._balance
+    }
+    
+    // Private helper method
+    func _logTransaction() {
+        print("Transaction logged.")
+    }
+}
+```
 
 ## Interfaces
 
@@ -53,8 +76,8 @@ An `interface` defines a strict contract that classes can implement. Interfaces 
 
 ```pace
 interface Shape {
-    func area(): Int
-    func name(): String
+    func area() -> Int
+    func name() -> String
 }
 ```
 
@@ -68,11 +91,11 @@ class Circle implements Shape {
         self.radius = r
     }
     
-    func area(): Int {
+    func area() -> Int {
         return 3 * self.radius * self.radius // Approximate!
     }
     
-    func name(): String {
+    func name() -> String {
         return "Circle"
     }
 }

@@ -1,0 +1,11 @@
+{
+  "title": "Collections",
+  "pages": [
+    "list",
+    "map",
+    "set",
+    "queue",
+    "treemap",
+    "treeset"
+  ]
+}

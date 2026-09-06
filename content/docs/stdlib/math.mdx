@@ -1,0 +1,28 @@
+---
+title: Math
+description: Standard mathematical operations and utilities.
+---
+
+The `pace:math` module provides common mathematical functions optimized for performance.
+
+## Basic Operations
+
+You can perform comparisons and checks using built-in functions:
+
+```pace
+import "pace:math"
+
+let a = 10
+let b = 25
+
+print("Max: \{max(a, b)}") // 25
+print("Min: \{min(a, b)}") // 10
+
+if isEven(a) {
+    print("\{a} is even")
+}
+
+if isOdd(b) {
+    print("\{b} is odd")
+}
+```

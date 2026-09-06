@@ -1,0 +1,32 @@
+---
+title: TreeMap<K, V>
+description: A sorted map storing key-value pairs in ascending order of keys.
+---
+
+`TreeMap<K, V>` stores key-value pairs, maintaining them in sorted order based on the key.
+
+## Initialization
+
+Unlike other collections, `TreeMap` currently requires an explicit call to `init()` after construction.
+
+```pace
+import "pace:collections"
+
+let map = TreeMap<Int, String>()
+map.init()
+```
+
+## Modifying the Map
+
+```pace
+map.set(50, "Fifty")
+map.set(20, "Twenty")
+map.set(80, "Eighty")
+```
+
+## Queries
+
+```pace
+let size = map.length()
+let hasTwenty = map.containsKey(20)
+```

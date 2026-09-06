@@ -9,7 +9,7 @@ As your Pace project grows, you'll naturally want to split your codebase into mu
 
 In Pace, every `.pace` file is automatically considered a module. You do not need to explicitly declare a `module name` at the top of the file; the file's path relative to your source directory determines its module identity.
 
-By default, all declarations (classes, functions, bindings) are **public** and can be imported anywhere in the project. You can restrict visibility by explicitly marking a declaration as **private**.
+By default, all declarations (classes, functions, bindings) are **public** and can be imported anywhere in the project. You can restrict visibility by prefixing the declaration name with an underscore (**_**).
 
 ## Importing Modules
 
@@ -24,6 +24,9 @@ import "pace:io"
 
 // External package import
 import "package:http"
+
+// Import from the root of the current package
+import "self:utils"
 ```
 
 ### Selective Imports and Shadowing

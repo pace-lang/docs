@@ -13,25 +13,18 @@ This guarantees **zero-cost abstractions**: your generic code runs just as fast 
 
 ## Generic Classes
 
-A classic example of a generic type is a `Stack`. Instead of creating `IntStack` and `StringStack`, you define one generic `Stack<T>` where `T` is a placeholder for the type.
+A classic example of a generic type is a `Box` wrapper. Instead of creating `IntBox` and `StringBox`, you define one generic `Box<T>` where `T` is a placeholder for the type.
 
 ```pace
-class Stack<T> {
-    var items: [T]
+class Box<T> {
+    var item: T
 
-    func init() {
-        self.items = []
+    func init(item: T) {
+        self.item = item
     }
 
-    func push(item: T) {
-        self.items.push(item)
-    }
-
-    func pop(): T? {
-        if self.items.length() == 0 {
-            return null
-        }
-        return self.items.pop()
+    func getItem() -> T {
+        return self.item
     }
 }
 ```
@@ -39,9 +32,10 @@ class Stack<T> {
 To use the generic class, you specify the type when you instantiate it:
 
 ```pace
-let intStack = Stack<Int>.new()
-intStack.push(10)
-// intStack.push("Hello") // Compiler Error: Expected Int, got String
+let intBox = Box<Int>(10)
+print(intBox.getItem())
+
+// intBox.item = "Hello" // Compiler Error: Expected Int, got String
 ```
 
 ## Generic Functions
@@ -71,11 +65,11 @@ The standard library extensively uses generic Enums, such as `Option<T>` and `Re
 Because of monomorphization, when you pattern match on a generic Enum, you can explicitly provide the generic arguments to the variant to ensure absolute type safety:
 
 ```pace
-var response: Result<Int, String> = fetch_data()
+var response: Result<Int, String> = fetchData()
 
 match response {
-    Result<Int, String>::Ok(data) => print("Data: \{data}")
-    Result<Int, String>::Err(err) => print("Error: \{err}")
+    Result<Int, String>.Ok(data) => print("Data: \{data}")
+    Result<Int, String>.Err(err) => print("Error: \{err}")
 }
 ```
 
@@ -83,9 +77,9 @@ match response {
 Dealing with `Result<T, E>` is frictionless using the postfix `?` operator. This operator elegantly unpacks the `Ok` payload or returns early with the `Err` if the expression evaluates to an error.
 
 ```pace
-func fetchAndProcess(): Result<String, Error> {
+func fetchAndProcess() -> Result<String, Error> {
     // If fetch fails, the error is immediately returned!
     let data = fetch()?
-    return Result<String, Error>::Ok(process(data))
+    return Result<String, Error>.Ok(process(data))
 }
 ```

@@ -1,0 +1,16 @@
+---
+title: OS
+description: Interface with the underlying operating system.
+---
+
+The `pace:os` module allows you to interact with operating system-level features safely.
+
+## System Information
+
+You can retrieve basic system information using the `OS` namespace.
+
+```pace
+import "pace:os"
+
+print("Running on: \{OS.name()}") // e.g. "linux", "windows", "macos"
+```

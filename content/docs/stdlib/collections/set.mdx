@@ -1,0 +1,42 @@
+---
+title: Set<T>
+description: A collection of unique values backed by a hash set.
+---
+
+`Set<T>` stores unique values without any particular order.
+
+## Initialization
+
+```pace
+import "pace:collections"
+
+let emptySet = Set<Int>()
+let set: Set<Int> = [10, 20, 30, 20] // Duplicates are ignored
+```
+
+## Modifying the Set
+
+```pace
+set.add(40)
+set.add(10) // Ignored, already exists
+
+let otherSet = Set<Int>()
+otherSet.add(50)
+set.addAll(otherSet)
+```
+
+## Queries and Removal
+
+```pace
+let size = set.length()
+let hasTwenty = set.contains(20)
+
+set.remove(20)
+```
+
+## Memory Management
+
+```pace
+set.clear()
+set.drop()
+```

@@ -5,7 +5,14 @@ export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
       // JSX supported
-      title: <span className="font-semibold tracking-tight text-foreground">pace<span className="text-emerald-500">.</span></span>,
+      title: (
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="Pace Logo" className="w-6 h-6" />
+          <span className="font-semibold tracking-tight text-foreground">
+            pace<span className="text-emerald-500">.</span>
+          </span>
+        </div>
+      ),
     },
     links: [
       {

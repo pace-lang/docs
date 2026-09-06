@@ -44,7 +44,7 @@ enum NetworkStatus {
     Connecting
 }
 
-func handle_status(status: NetworkStatus) {
+func handleStatus(status: NetworkStatus) {
     match status {
         Connected => print("Online!"),
         Disconnected => print("Offline!")
@@ -59,9 +59,9 @@ func handle_status(status: NetworkStatus) {
 As covered in the [Strict Null Safety](/docs/safety/null-safety) section, Pace will not let you blindly guess that a value exists. 
 
 ```pace
-user_id: Int? = get_id() // Might be null!
+userId: Int? = getId() // Might be null!
 
-var next_id = user_id + 1
+var nextId = userId + 1
 // ❌ ERROR: Cannot add 'Int' to 'Int?'. Handle the null case first.
 ```
 

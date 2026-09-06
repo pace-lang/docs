@@ -1,0 +1,40 @@
+---
+title: IO
+description: Handle file system and directory operations natively.
+---
+
+The `pace:io` module provides an object-oriented API for interacting with the file system.
+
+## Directories
+
+You can check for the existence of directories and create new ones using the `Directory` class.
+
+```pace
+import "pace:io"
+
+let dirPath = "test_output_dir"
+if Directory.exists(dirPath)? == false {
+    let _ = Directory.make(dirPath)?
+    print("Directory created.")
+}
+```
+
+## Files
+
+Read and write text files synchronously using the `File` class. All IO operations return a `Result` that you must handle or unwrap.
+
+```pace
+import "pace:io"
+
+let filePath = "test_output_dir/test_output.txt"
+
+// Writing to a file
+let _ = File.writeText(filePath, "Hello from Pace FS!")?
+
+// Checking existence
+if File.exists(filePath)? {
+    // Reading from a file
+    let content = File.readText(filePath)?
+    print(content)
+}
+```

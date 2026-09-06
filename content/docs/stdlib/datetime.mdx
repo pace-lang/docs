@@ -1,0 +1,28 @@
+---
+title: DateTime
+description: Work with dates, times, and durations.
+---
+
+The `pace:datetime` module provides robust utilities for handling time-based operations safely and accurately.
+
+## `DateTime`
+
+The `DateTime` class represents a specific point in time.
+
+```pace
+import "pace:datetime"
+
+let now = DateTime.now()
+print("Current Year: \{now.getYear()}")
+```
+
+## `Duration`
+
+The `Duration` class represents a span of time, useful for timeouts or measuring intervals.
+
+```pace
+import "pace:datetime"
+
+let dur = Duration(120) // Duration of 120 minutes
+print("Duration in minutes: \{dur.inMinutes()}")
+```

@@ -146,7 +146,7 @@ function Home() {
                     <span className="text-[#79c0ff]">Int</span>{";\n\n"}
                     {"  "}<span className="text-[#ff7b72] font-semibold">static func</span>{" "}
                     <span className="text-[#d2a8ff]">getCount</span>() -{">"} <span className="text-[#79c0ff]">Int</span> {"{\n"}
-                    {"    "}<span className="text-[#ff7b72] font-semibold">return</span> User::count{";\n"}
+                    {"    "}<span className="text-[#ff7b72] font-semibold">return</span> User.count{";\n"}
                     {"  "}{"}\n\n"}
                     {"  "}<span className="text-[#ff7b72] font-semibold">func</span>{" "}
                     <span className="text-[#d2a8ff]">setAge</span>(a: <span className="text-[#79c0ff]">Int</span>) {"{\n"}
@@ -157,8 +157,8 @@ function Home() {
                     <span className="text-[#d2a8ff]">main</span>() {"{\n"}
                     {"  "}<span className="text-[#ff7b72] font-semibold">let</span> u1 = User(){";\n"}
                     {"  "}u1.<span className="text-[#d2a8ff]">setAge</span>(<span className="text-[#79c0ff]">30</span>){";\n"}
-                    {"  "}User::count = <span className="text-[#79c0ff]">1</span>{";\n"}
-                    {"  "}<span className="text-[#d2a8ff]">print</span>(<span className="text-[#a5d6ff]">"Users: {"${"}</span>User::<span className="text-[#d2a8ff]">getCount</span>()<span className="text-[#a5d6ff]">{"}"}"</span>){";\n"}
+                    {"  "}User.count = <span className="text-[#79c0ff]">1</span>{";\n"}
+                    {"  "}<span className="text-[#d2a8ff]">print</span>(<span className="text-[#a5d6ff]">"Users: {"${"}</span>User.<span className="text-[#d2a8ff]">getCount</span>()<span className="text-[#a5d6ff]">{"}"}"</span>){";\n"}
                     {"}"}
                   </code>
                 </pre>
@@ -247,9 +247,9 @@ function Home() {
                     <pre className="overflow-x-auto font-mono px-5 py-4 text-[0.85rem] leading-loose">
                       <code>
                         <span className="text-[#ff7b72] font-semibold">struct</span> <span className="text-[#79c0ff]">Vector3</span> {"{\n"}
-                        {"  "}x: <span className="text-[#79c0ff]">Float64</span>{"\n"}
-                        {"  "}y: <span className="text-[#79c0ff]">Float64</span>{"\n"}
-                        {"  "}z: <span className="text-[#79c0ff]">Float64</span>{"\n"}
+                        {"  "}x: <span className="text-[#79c0ff]">Float</span>{"\n"}
+                        {"  "}y: <span className="text-[#79c0ff]">Float</span>{"\n"}
+                        {"  "}z: <span className="text-[#79c0ff]">Float</span>{"\n"}
                         {"}"}
                         {"\n\n"}
                         <span className="text-[#8b949e] italic">// Passed by value. No heap allocation.</span>{"\n"}
@@ -285,8 +285,8 @@ function Home() {
                     <pre className="overflow-x-auto font-mono px-5 py-4 text-[0.85rem] leading-loose">
                       <code>
                         <span className="text-[#ff7b72] font-semibold">actor</span> <span className="text-[#79c0ff]">Counter</span> {"{\n"}
-                        {"  "}<span className="text-[#ff7b72] font-semibold">private var</span> value = <span className="text-[#79c0ff]">0</span>{"\n"}
-                        {"  "}<span className="text-[#ff7b72] font-semibold">func</span> <span className="text-[#d2a8ff]">increment</span>() {"{"} value += <span className="text-[#79c0ff]">1</span> {"}"}
+                        {"  "}<span className="text-[#ff7b72] font-semibold">var</span> _value = <span className="text-[#79c0ff]">0</span>{"\n"}
+                        {"  "}<span className="text-[#ff7b72] font-semibold">func</span> <span className="text-[#d2a8ff]">increment</span>() {"{"} _value += <span className="text-[#79c0ff]">1</span> {"}"}
                         {"}"}
                         {"\n\n"}
                         <span className="text-[#8b949e] italic">// Safe cross-thread invocation</span>{"\n"}
@@ -322,7 +322,12 @@ function Home() {
               </a>
             </div>
             <div className="mt-8 md:order-1 md:mt-0 flex flex-col md:flex-row gap-4 items-center">
-              <span className="font-semibold tracking-tight text-foreground">pace<span className="text-emerald-500">.</span></span>
+              <div className="flex items-center gap-2">
+                <img src="/logo.png" alt="Pace Logo" className="w-6 h-6" />
+                <span className="font-semibold tracking-tight text-foreground">
+                  pace<span className="text-emerald-500">.</span>
+                </span>
+              </div>
               <p className="text-center text-sm leading-5 text-muted-foreground">
                 &copy; 2026 Pace Language Contributors. All rights reserved.
               </p>

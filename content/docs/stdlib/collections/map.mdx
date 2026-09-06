@@ -1,0 +1,56 @@
+---
+title: Map<K, V>
+description: A hash map used to store key-value pairs.
+---
+
+`Map<K, V>` is a standard hash map. Keys must be primitives (like `String` or `Int`).
+
+## Initialization
+
+```pace
+import "pace:collections"
+
+let emptyMap = Map<String, Int>()
+let map = {"Alice": 25, "Bob": 30}
+```
+
+## Modifying the Map
+
+Use `set()` to add or update values, and `addAll()` to merge another map.
+
+```pace
+map.set("Alice", 26) // Updates existing key
+map.set("Charlie", 40) // Adds new key
+
+let otherMap = {"David": 50, "Eve": 60}
+map.addAll(otherMap)
+```
+
+## Accessing and Querying
+
+```pace
+let aliceAge = map.get("Alice") // Returns an Option
+let size = map.length()
+
+let hasBob = map.containsKey("Bob")
+let hasAge30 = map.containsValue(30)
+
+let allKeys = map.keys()
+let allValues = map.values()
+```
+
+## Removing Elements
+
+```pace
+let removedVal = map.remove("Bob")
+```
+
+## Status and Memory
+
+```pace
+if map.isEmpty() { print("Empty!") }
+if map.isNotEmpty() { print("Not empty!") }
+
+map.clear()
+map.drop()
+```

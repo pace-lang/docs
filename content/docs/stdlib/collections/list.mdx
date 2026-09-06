@@ -1,0 +1,65 @@
+---
+title: List<T>
+description: A growable array type for dynamically sizing lists.
+---
+
+`List<T>` is a dynamic, growable array. Elements in a list are ordered and can be accessed by their index.
+
+## Initialization
+
+You can create an empty list using its constructor, or initialize it directly with an array literal:
+
+```pace
+import "pace:collections"
+
+var emptyList = List<Int>()
+var initializedList = [10, 20, 30] // Inferred as List<Int>
+```
+
+## Adding and Inserting
+
+Use `add()` to append to the end, `insert()` to add at a specific index, or `addAll()` to append another list.
+
+```pace
+var list = List<Int>()
+list.add(40)
+list.add(50)
+list.insert(1, 15) // list is now [40, 15, 50]
+
+var otherList = [100, 200]
+list.addAll(otherList)
+```
+
+## Accessing Elements
+
+```pace
+let firstVal = list.first()
+let secondVal = list.get(1)
+let lastVal = list.last()
+```
+
+## Removing Elements
+
+```pace
+let removed = list.removeAt(2) // Removes by index
+let removedVal = list.remove(40) // Removes by value
+list.removeLast()
+```
+
+## Properties and Queries
+
+```pace
+let size = list.length()
+let idx = list.indexOf(50)
+let hasVal = list.contains(15)
+
+if list.isEmpty() { print("Empty!") }
+if list.isNotEmpty() { print("Not empty!") }
+```
+
+## Memory Management
+
+```pace
+list.clear() // Empties the list but keeps capacity
+list.drop() // Explicitly frees the underlying memory
+```

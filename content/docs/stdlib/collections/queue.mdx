@@ -1,0 +1,38 @@
+---
+title: Queue<T>
+description: A First-In-First-Out (FIFO) collection.
+---
+
+`Queue<T>` provides First-In-First-Out (FIFO) access. It is optimized for appending to the end and removing from the front.
+
+## Initialization
+
+```pace
+import "pace:collections"
+
+let queue = Queue<Int>()
+```
+
+## Enqueue and Dequeue
+
+```pace
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+
+let first = queue.dequeue() // Removes and returns 10
+```
+
+## Queries
+
+```pace
+let size = queue.length()
+let nextUp = queue.peek() // Returns 20 without removing it
+```
+
+## Memory Management
+
+```pace
+queue.clear()
+queue.drop()
+```
