@@ -29,7 +29,7 @@ Pace is statically typed. It needs to know what shape your data is so it can opt
 
 ```pace
 var age = 25
-age = "Twenty Five" // ❌ ERROR: Cannot assign type 'String' to variable of type 'Int'
+age = "Twenty Five" // ❌ ERROR: Cannot assign type 'string' to variable of type 'int'
 ```
 **Why it protects you:** If another part of your code tries to do math on `age`, it would completely fail if it suddenly became a string. The compiler prevents this silent corruption.
 
@@ -44,10 +44,10 @@ enum NetworkStatus {
     Connecting
 }
 
-func handleStatus(status: NetworkStatus) {
+fn handleStatus(status: NetworkStatus) {
     match status {
-        Connected => print("Online!"),
-        Disconnected => print("Offline!")
+        Connected => println("Online!"),
+        Disconnected => println("Offline!")
     }
 }
 // ❌ ERROR: Non-exhaustive match. You forgot to handle 'Connecting'.
@@ -59,10 +59,10 @@ func handleStatus(status: NetworkStatus) {
 As covered in the [Strict Null Safety](/docs/safety/null-safety) section, Pace will not let you blindly guess that a value exists. 
 
 ```pace
-userId: Int? = getId() // Might be null!
+userId: int? = getId() // Might be null!
 
 var nextId = userId + 1
-// ❌ ERROR: Cannot add 'Int' to 'Int?'. Handle the null case first.
+// ❌ ERROR: Cannot add 'int' to 'int?'. Handle the null case first.
 ```
 
 **Why it protects you:** Adding `1` to `null` makes no mathematical sense. The compiler makes you prove the ID exists before doing math on it.

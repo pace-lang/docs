@@ -1,12 +1,12 @@
-import { loader } from 'fumadocs-core/source';
-import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
-import { frontmatterSchema } from 'fumadocs-mdx/config';
-import { defineDocs } from 'fumadocs-mdx/macro';
-import { z } from 'zod';
-import { docsRoute } from './shared';
+import { loader } from "fumadocs-core/source";
+import { lucideIconsPlugin } from "fumadocs-core/source/lucide-icons";
+import { frontmatterSchema } from "fumadocs-mdx/config";
+import { defineDocs } from "fumadocs-mdx/macro";
+import { z } from "zod";
+import { docsRoute } from "./shared";
 
 export const docs = defineDocs({
-  dir: 'content/docs',
+  dir: "content/docs",
   docs: {
     async: true,
     postprocess: {
@@ -22,7 +22,7 @@ export const source = loader({
 });
 
 export const blogDocs = defineDocs({
-  dir: 'content/blog',
+  dir: "content/blog",
   docs: {
     schema: frontmatterSchema.extend({
       date: z.string().or(z.date()).optional(),
@@ -37,12 +37,12 @@ export const blogDocs = defineDocs({
 
 export const blogSource = loader({
   source: blogDocs.toFumadocsSource(),
-  baseUrl: '/blog',
+  baseUrl: "/blog",
   plugins: [lucideIconsPlugin()],
 });
 
-export async function getLLMText(page: (typeof source)['$inferPage']) {
-  const processed = await page.data.getText('processed');
+export async function getLLMText(page: (typeof source)["$inferPage"]) {
+  const processed = await page.data.getText("processed");
 
   return `# ${page.data.title} (${page.url})
 

@@ -12,8 +12,8 @@ You can create an empty list using its constructor, or initialize it directly wi
 ```pace
 import "pace:collections"
 
-var emptyList = List<Int>()
-var initializedList = [10, 20, 30] // Inferred as List<Int>
+var emptyList = List<int>()
+var initializedList = [10, 20, 30] // Inferred as List<int>
 ```
 
 ## Adding and Inserting
@@ -21,7 +21,7 @@ var initializedList = [10, 20, 30] // Inferred as List<Int>
 Use `add()` to append to the end, `insert()` to add at a specific index, or `addAll()` to append another list.
 
 ```pace
-var list = List<Int>()
+var list = List<int>()
 list.add(40)
 list.add(50)
 list.insert(1, 15) // list is now [40, 15, 50]
@@ -53,8 +53,8 @@ let size = list.length()
 let idx = list.indexOf(50)
 let hasVal = list.contains(15)
 
-if list.isEmpty() { print("Empty!") }
-if list.isNotEmpty() { print("Not empty!") }
+if list.isEmpty() { println("Empty!") }
+if list.isNotEmpty() { println("Not empty!") }
 ```
 
 ## Memory Management

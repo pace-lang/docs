@@ -12,13 +12,13 @@ When an operation might legitimately fail as part of its normal execution (for e
 
 ```pace
 // If the string isn't a valid integer, this returns `null`
-var maybeNumber: Int? = parseInt("123abc")
+var maybeNumber: int? = parseInt("123abc")
 
 // Explicitly handle the failure
 if maybeNumber != null {
-    print("Parsed successfully!")
+    println("Parsed successfully!")
 } else {
-    print("Failed to parse.")
+    println("Failed to parse.")
 }
 ```
 
@@ -43,11 +43,11 @@ For advanced error handling where operations might fail with specific, meaningfu
 A `Result` can either be `Ok(T)` containing the successful value, or `Err(E)` containing the error details. You use Pace's powerful `match` statement to handle both possibilities safely. Note that because Pace fully monomorphizes generics, you can specify the generic bounds directly in the match arms!
 
 ```pace
-var result: Result<String, Int> = readFile("config.json")
+var result: Result<string, int> = readFile("config.json")
 
 match result {
-    Result<String, Int>.Ok(data) => print(data)
-    Result<String, Int>.Err(code) => print("Failed with error code")
+    ok(data) => println(data)
+    error(code) => println("Failed with error code")
 }
 ```
 
@@ -56,12 +56,12 @@ match result {
 Dealing with `Result<T, E>` is frictionless using the postfix `?` operator. This operator elegantly unpacks the `Ok` payload or returns early with the `Err` if the expression evaluates to an error.
 
 ```pace
-func fetchAndProcess() -> Result<String, Int> {
-    // If readFile fails, the ? operator immediately returns the Result.Err 
-    // from fetchAndProcess. If it succeeds, data contains the String.
+fn fetchAndProcess() -> Result<string, int> {
+    // If readFile fails, the ? operator immediately returns the error 
+    // from fetchAndProcess. If it succeeds, data contains the string.
     var data = readFile("config.json")?
     
-    return Result<String, Int>.Ok(data)
+    return ok(data)
 }
 ```
 
@@ -72,7 +72,7 @@ Remember that enum variants must be constructed using their namespace. You canno
 
 ```pace
 // Correct: Constructing via namespace
-let success = Result<Int, String>.Ok(42)
+let success = ok(42)
 
 // Incorrect: Cannot call as instance method
 // success.Ok() 
@@ -98,10 +98,10 @@ These errors occur when the compiler doesn't know what variable or function you 
 
 ### P3xxx: Type System Errors
 These errors occur when you violate Pace's strict type rules.
-- **`P3001` (Type Mismatch):** You tried to pass a `String` into a function that expects an `Int`, or tried to assign a `null` to a non-optional variable.
+- **`P3001` (Type Mismatch):** You tried to pass a `string` into a function that expects an `int`, or tried to assign a `null` to a non-optional variable.
 - **`P3002` (Unknown Type):** You tried to declare a variable with a type (like `User`) that the compiler hasn't seen defined anywhere.
 
 ### P4xxx: Ownership & ARC Errors
 These errors are related to Pace's Automatic Reference Counting memory system.
-- **`P4001` (Invalid Weak Reference):** You tried to use the `weak` keyword on a value type (like an `Int`) instead of a reference type (like a `class`), or on a non-optional variable.
+- **`P4001` (Invalid Weak Reference):** You tried to use the `weak` keyword on a value type (like an `int`) instead of a reference type (like a `class`), or on a non-optional variable.
 - **`P4002` (Ownership Violation):** You tried to illegally transfer or consume an object in a way that violates ARC memory rules.

@@ -1,5 +1,5 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import { appName, gitConfig } from './shared';
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import { appName, gitConfig } from "./shared";
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -16,16 +16,16 @@ export function baseOptions(): BaseLayoutProps {
     },
     links: [
       {
-        text: 'Docs',
-        url: '/docs',
-        active: 'nested-url',
-        on: 'nav',
+        text: "Docs",
+        url: "/docs",
+        active: "nested-url",
+        on: "nav",
       },
       {
-        text: 'Blog',
-        url: '/blog',
-        active: 'nested-url',
-        on: 'nav',
+        text: "Blog",
+        url: "/blog",
+        active: "nested-url",
+        on: "nav",
       },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,

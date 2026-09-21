@@ -1,12 +1,4 @@
 {
   "title": "Standard Library",
-  "pages": [
-    "collections",
-    "datetime",
-    "io",
-    "http",
-    "math",
-    "os",
-    "strings"
-  ]
+  "pages": ["collections", "datetime", "io", "http", "math", "os", "strings"]
 }

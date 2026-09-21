@@ -3,14 +3,14 @@ title: Map<K, V>
 description: A hash map used to store key-value pairs.
 ---
 
-`Map<K, V>` is a standard hash map. Keys must be primitives (like `String` or `Int`).
+`Map<K, V>` is a standard hash map. Keys must be primitives (like `string` or `int`).
 
 ## Initialization
 
 ```pace
 import "pace:collections"
 
-let emptyMap = Map<String, Int>()
+let emptyMap = Map<string, int>()
 let map = {"Alice": 25, "Bob": 30}
 ```
 
@@ -48,8 +48,8 @@ let removedVal = map.remove("Bob")
 ## Status and Memory
 
 ```pace
-if map.isEmpty() { print("Empty!") }
-if map.isNotEmpty() { print("Not empty!") }
+if map.isEmpty() { println("Empty!") }
+if map.isNotEmpty() { println("Not empty!") }
 
 map.clear()
 map.drop()

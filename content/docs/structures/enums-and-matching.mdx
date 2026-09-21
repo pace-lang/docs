@@ -33,8 +33,8 @@ For example, a network connection might be disconnected, connecting, or connecte
 ```pace
 enum Connection {
     Disconnected,
-    Connecting(String), // Stores the URL being connected to
-    Connected(Int)      // Stores the active socket ID
+    Connecting(string), // Stores the URL being connected to
+    Connected(int)      // Stores the active socket ID
 }
 
 var activeConnection = Connection.Connected(1024)
@@ -50,20 +50,20 @@ The compiler will ensure that your `match` is **exhaustive**—meaning you must 
 ```pace
 enum Message {
     Quit,
-    Move(Int, Int),
-    Write(String)
+    Move(int, int),
+    Write(string)
 }
 
-func processMessage(msg: Message) {
+fn processMessage(msg: Message) {
     match msg {
         Message.Quit => {
-            print("Quitting the game...")
+            println("Quitting the game...")
         }
         Message.Move(x, y) => {
-            print("Moving to coordinates")
+            println("Moving to coordinates")
         }
         Message.Write(text) => {
-            print("Message received: " + text)
+            println("Message received: " + text)
         }
     }
 }
@@ -91,10 +91,10 @@ For example, instead of having a class with `isConnected`, `socketId`, and `url`
 Pace also supports generic Enums, where variants can hold data of a type specified at instantiation. When pattern matching on a generic Enum, you can explicitly provide the generic type arguments to the variant. This gives the compiler strict guarantees about the monomorphized type it is unpacking.
 
 ```pace
-var result: Result<Int, String> = fetchData()
+var result: Result<int, string> = fetchData()
 
 match result {
-    Result<Int, String>.Ok(data) => print("Success")
-    Result<Int, String>.Err(err) => print("Error")
+    ok(data) => println("Success")
+    error(err) => println("Error")
 }
 ```

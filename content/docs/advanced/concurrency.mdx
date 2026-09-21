@@ -19,7 +19,7 @@ Pace provides several tools for different concurrency needs:
 The `async` keyword marks a function that can suspend its execution without blocking the underlying OS thread. You use `await` to wait for an asynchronous operation to complete.
 
 ```pace
-async func fetchUser(id: Int) -> User {
+async fn fetchUser(id: int) -> User {
     let response = await http.get("/users/{id}")
     return response.json()
 }
@@ -54,11 +54,11 @@ An `actor` isolates mutable state. It guarantees that only one task can access i
 actor Counter {
     var _value = 0
 
-    func increment() {
+    fn increment() {
         _value += 1
     }
 
-    func get() -> Int {
+    fn get() -> int {
         return value
     }
 }
@@ -72,7 +72,7 @@ let counter = Counter()
 await counter.increment()
 
 let value = await counter.get()
-print(value)
+println(value)
 ```
 
 By combining `async`, `spawn`, and `actor`, you can build highly concurrent applications that are immune to traditional data races!

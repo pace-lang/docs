@@ -30,11 +30,11 @@ When the count reaches exactly `0`, the object is immediately and deterministica
 
 ```pace
 class DataBuffer {
-    func init() { print("Buffer Created") }
-    func destroy() { print("Buffer Destroyed") } // Conceptually!
+    fn init() { println("Buffer Created") }
+    fn destroy() { println("Buffer Destroyed") } // Conceptually!
 }
 
-func processData() {
+fn processData() {
     // 1. A DataBuffer object is allocated. 
     // 2. The compiler injects `retain`. (Ref count = 1)
     var buffer = DataBuffer()
@@ -53,7 +53,7 @@ Because ARC relies on counting references, a critical problem can occur if two o
 ```pace
 class Node {
     next: Node?
-    func init() {}
+    fn init() {}
 }
 
 var a = Node()
@@ -73,14 +73,14 @@ To solve this architectural limitation of ARC, Pace introduces the `weak` keywor
 ```pace
 class Parent {
     child: Child?
-    func init() {}
+    fn init() {}
 }
 
 class Child {
     // The child has a 'weak' reference back to the parent.
     // This breaks the reference cycle!
     weak parent: Parent?
-    func init() {}
+    fn init() {}
 }
 ```
 

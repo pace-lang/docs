@@ -1,7 +1,7 @@
 ---
 title: "Why Pace Chose ARC over Garbage Collection"
 description: Memory management is one of the most debated topics in systems programming. Discover why Pace ditched the Garbage Collector in favor of determinism and Automatic Reference Counting (ARC).
-date: 2026-08-31
+date: 2026-09-21
 tags: ["Deep Dive", "Architecture"]
 draft: false
 ---
@@ -41,7 +41,7 @@ Instead of waiting for a background thread to clean up garbage, the Pace compile
 When the count hits zero, the object is **immediately** deallocated.
 
 ```pace
-func processData() {
+fn processData() {
     // A new heap allocation. Reference count = 1
     let data = ServerData() 
 
@@ -72,12 +72,12 @@ By leveraging structs, you can completely bypass ARC and the heap. Structs are c
 ```pace
 // Stack-allocated. Zero heap allocations. Zero ARC overhead.
 struct Vector3 {
-    x: Float
-    y: Float
-    z: Float
+    x: float
+    y: float
+    z: float
 }
 
-func calculatePhysics() {
+fn calculatePhysics() {
     let position = Vector3(x: 10.5, y: 0.0, z: -5.2)
     // Instantly popped off the stack when function ends
 }

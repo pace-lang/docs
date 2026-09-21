@@ -13,7 +13,7 @@ The `DateTime` class represents a specific point in time.
 import "pace:datetime"
 
 let now = DateTime.now()
-print("Current Year: \{now.getYear()}")
+println("Current Year: ${now.getYear()}")
 ```
 
 ## `Duration`
@@ -24,5 +24,5 @@ The `Duration` class represents a span of time, useful for timeouts or measuring
 import "pace:datetime"
 
 let dur = Duration(120) // Duration of 120 minutes
-print("Duration in minutes: \{dur.inMinutes()}")
+println("Duration in minutes: ${dur.inMinutes()}")
 ```

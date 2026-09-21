@@ -9,10 +9,10 @@ Because Pace compiles down to native machine code via Cranelift, functions in Pa
 
 ## Defining a Function
 
-In Pace, functions are defined using the `func` keyword. Because Pace is statically typed, you must specify the types for all parameters and the return type.
+In Pace, functions are defined using the `fn` keyword. Because Pace is statically typed, you must specify the types for all parameters and the return type.
 
 ```pace
-func calculateTotal(price: Float, taxRate: Float) -> Float {
+fn calculateTotal(price: float, taxRate: float) -> float {
     var tax = price * taxRate
     return price + tax
 }
@@ -20,26 +20,26 @@ func calculateTotal(price: Float, taxRate: Float) -> Float {
 var finalPrice = calculateTotal(100.0, 0.05)
 ```
 
-If a function performs an action but does not return a value, you can omit the `->` return type entirely (it defaults to `Void`).
+If a function performs an action but does not return a value, you can omit the `->` return type entirely (it defaults to `void`).
 
 ```pace
-func logError(errorMsg: String) {
-    print("ERROR: ")
-    print(errorMsg)
+fn logError(errorMsg: string) {
+    println("ERROR: ")
+    println(errorMsg)
 }
 ```
 
-### Why the `func` Keyword?
-Many languages use abbreviations like `fn` or verbose words like `function` or `def`. Pace uses `func` as a deliberate middle-ground. It is explicitly clear to read, but short enough that it doesn't clutter the screen. Furthermore, it strictly distinguishes global/standalone routines from class-bound methods (which also use `func`, keeping the syntax unified across paradigms).
+### Why the `fn` Keyword?
+Many languages use abbreviations like `fn` or verbose words like `function` or `def`. Pace uses `fn` as a deliberate middle-ground. It is explicitly clear to read, but short enough that it doesn't clutter the screen. Furthermore, it strictly distinguishes global/standalone routines from class-bound methods (which also use `fn`, keeping the syntax unified across paradigms).
 
 ## Memory and Execution Under the Hood
 
 When you call a function in Pace, a new stack frame is allocated extremely quickly. 
 
 ### Parameter Passing
-By default, primitive types (`Int`, `Float`, `Bool`) are passed **by value**. They are copied into the new function's stack frame. Because they are 64-bit primitives, this copy operation happens in a single CPU register and is virtually instantaneous.
+By default, primitive types (`int`, `float`, `bool`) are passed **by value**. They are copied into the new function's stack frame. Because they are 64-bit primitives, this copy operation happens in a single CPU register and is virtually instantaneous.
 
-Reference types (`class` instances, `String`s, and `Array`s) are passed **by reference** via Automatic Reference Counting (ARC). When you pass an object into a function, Pace automatically increments its reference count, and decrements it when the function returns. This ensures you aren't copying massive amounts of memory, while maintaining 100% memory safety.
+Reference types (`class` instances, `string`s, and `Array`s) are passed **by reference** via Automatic Reference Counting (ARC). When you pass an object into a function, Pace automatically increments its reference count, and decrements it when the function returns. This ensures you aren't copying massive amounts of memory, while maintaining 100% memory safety.
 
 ## First-Class Functions
 
@@ -48,37 +48,37 @@ In Pace, functions are first-class citizens. This means you can treat functions 
 Function types use the `(ParamType) -> ReturnType` syntax.
 
 ```pace
-func calculateTotal(price: Float, taxRate: Float) -> Float {
+fn calculateTotal(price: float, taxRate: float) -> float {
     return price + (price * taxRate)
 }
 
-// Define a function variable type: (Float, Float) -> Float
-let calculator: (Float, Float) -> Float = calculateTotal
+// Define a function variable type: (float, float) -> float
+let calculator: (float, float) -> float = calculateTotal
 
 var result = calculator(50.0, 0.1)
-print(result) // Prints: 55.0
+println(result) // Prints: 55.0
 ```
 
 Under the hood, `calculator` stores a memory pointer to the executable code of the `calculateTotal` function.
 
 ## Closures (Anonymous Functions)
 
-Sometimes you need to define a quick, inline function to pass as a callback without formally declaring it with `func`. Pace provides **closures** for this purpose.
+Sometimes you need to define a quick, inline function to pass as a callback without formally declaring it with `fn`. Pace provides **closures** for this purpose.
 
 Closures use the `=>` "fat arrow" syntax:
 
 ```pace
-func applyTwice(f: (Int) -> Int, x: Int) -> Int {
+fn applyTwice(f: (int) -> int, x: int) -> int {
     return f(f(x))
 }
 
 let multiplier = 5
 
 // Define an inline closure that multiplies a number by 5
-let multiply = (x: Int) -> Int => x * multiplier
+let multiply = (x: int) -> int => x * multiplier
 
 let result = applyTwice(multiply, 2)
-print(result) // Prints 50
+println(result) // Prints 50
 ```
 
 Closures in Pace compile down to "fat pointers"—a struct containing both a pointer to the generated machine code and an environment pointer holding captured variables. This gives them zero-cost abstraction overhead while preserving full memory safety.

@@ -15,10 +15,10 @@ In Pace, **variables cannot be null by default.** If a variable is allowed to be
 
 ```pace
 // ❌ This variable MUST always have a string. It can never be null.
-name: String = "Alice"
+name: string = "Alice"
 
 // ✅ This variable MIGHT be a string, or it MIGHT be null.
-nickname: String? = null
+nickname: string? = null
 ```
 
 ## How the Compiler Protects You
@@ -39,7 +39,7 @@ class User {
 var bob = User( address: null )
 
 // ❌ COMPILER ERROR: You cannot access `.city` because `address` might be null!
-print(bob.address.city)
+println(bob.address.city)
 ```
 
 In other languages, this code would compile fine, and then crash the server when it ran. Pace refuses to compile it.
@@ -54,7 +54,7 @@ To fix this, you must handle the null case. Pace provides two very convenient op
 ```pace
 // ✅ COMPILES PERFECTLY
 var city = bob.address?.city ?? "Unknown City"
-print(city) // Prints: "Unknown City"
+println(city) // Prints: "Unknown City"
 ```
 
 ## Safe Unwrapping
@@ -62,14 +62,14 @@ print(city) // Prints: "Unknown City"
 Sometimes you want to run a whole block of code only if the value exists. You can use safe unwrapping bindings.
 
 ```pace
-maybePort: Int? = get_port_from_env()
+maybePort: int? = get_port_from_env()
 
 if var port = maybePort {
-    // Inside this block, 'port' is guaranteed to be a real Int (not null).
+    // Inside this block, 'port' is guaranteed to be a real int (not null).
     startServer(port)
 } else {
     // If maybePort was null, this block runs instead.
-    print("No port provided, shutting down.")
+    println("No port provided, shutting down.")
 }
 ```
 

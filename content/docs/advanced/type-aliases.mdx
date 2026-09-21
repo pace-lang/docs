@@ -12,10 +12,10 @@ Type aliases do not create entirely new types in memory; they are simply transpa
 To create a type alias, use the `type` keyword followed by the new name, an equals sign `=`, and the underlying type.
 
 ```pace
-type StatusCode = Int
-type UserId = String
+type StatusCode = int
+type UserId = string
 
-func getUser(id: UserId) -> StatusCode {
+fn getUser(id: UserId) -> StatusCode {
     if (id == "admin") {
         return 200
     }
@@ -23,7 +23,7 @@ func getUser(id: UserId) -> StatusCode {
 }
 ```
 
-In the example above, `UserId` is completely interchangeable with `String`. You can pass a regular `"admin"` string to the function without any special casting or wrapping.
+In the example above, `UserId` is completely interchangeable with `string`. You can pass a regular `"admin"` string to the function without any special casting or wrapping.
 
 ## Simplifying Complex Types
 
@@ -31,12 +31,12 @@ Type aliases are incredibly useful for simplifying long, complex type signatures
 
 ```pace
 // Without type aliases
-func registerCallback(cb: func(String, Int) -> Result<String, Error>) { ... }
+fn registerCallback(cb: fn(string, int) -> Result<string, Error>) { ... }
 
 // With type aliases
-type ResponseHandler = func(String, Int) -> Result<String, Error>
+type ResponseHandler = fn(string, int) -> Result<string, Error>
 
-func registerCallback(cb: ResponseHandler) { ... }
+fn registerCallback(cb: ResponseHandler) { ... }
 ```
 
 This dramatically improves code readability and reduces duplication if the same complex type is passed around multiple functions.
@@ -46,13 +46,13 @@ This dramatically improves code readability and reduces duplication if the same 
 One of the best benefits of type aliases in Pace is that the compiler preserves the alias name when generating error messages.
 
 ```pace
-type Matrix = [[Float]]
+type Matrix = [[float]]
 
-func multiply(a: Matrix, b: Matrix) -> Matrix { ... }
+fn multiply(a: Matrix, b: Matrix) -> Matrix { ... }
 
 // If you pass the wrong type, the compiler error will say:
-// ERROR: Expected 'Matrix', got 'String'
-// (Instead of saying: Expected '[[Float]]', got 'String')
+// ERROR: Expected 'Matrix', got 'string'
+// (Instead of saying: Expected '[[float]]', got 'string')
 ```
 
 This makes debugging heavily nested collections or complex generics significantly easier to understand at a glance.

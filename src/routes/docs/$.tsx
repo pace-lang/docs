@@ -1,7 +1,8 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { createServerFn } from '@tanstack/react-start';
-import { docs, source } from '@/lib/source';
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
+import { useFumadocsLoader } from "fumadocs-core/source/client";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import {
   DocsBody,
   DocsDescription,
@@ -9,18 +10,17 @@ import {
   DocsTitle,
   MarkdownCopyButton,
   ViewOptionsPopover,
-} from 'fumadocs-ui/layouts/docs/page';
-import { baseOptions } from '@/lib/layout.shared';
-import { encodeMarkdownUrl, gitConfig } from '@/lib/shared';
-import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
-import { useFumadocsLoader } from 'fumadocs-core/source/client';
-import { Suspense, use } from 'react';
-import { useMDXComponents } from '@/components/mdx';
+} from "fumadocs-ui/layouts/docs/page";
+import { Suspense, use } from "react";
+import { useMDXComponents } from "@/components/mdx";
+import { baseOptions } from "@/lib/layout.shared";
+import { encodeMarkdownUrl, gitConfig } from "@/lib/shared";
+import { docs, source } from "@/lib/source";
 
-export const Route = createFileRoute('/docs/$')({
+export const Route = createFileRoute("/docs/$")({
   component: Page,
   loader: async ({ params }) => {
-    const slugs = params._splat?.split('/') ?? [];
+    const slugs = params._splat?.split("/") ?? [];
     const data = await loader({ data: slugs });
     await docs.getPage(data.path)?.preload();
     return data;
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/docs/$')({
 });
 
 const loader = createServerFn({
-  method: 'GET',
+  method: "GET",
 })
   .validator((slugs: string[]) => slugs)
   .middleware([staticFunctionMiddleware])
@@ -69,7 +69,9 @@ function Content({ path, markdownUrl }: { path: string; markdownUrl: string }) {
 }
 
 function Page() {
-  const { pageTree, path, markdownUrl } = useFumadocsLoader(Route.useLoaderData());
+  const { pageTree, path, markdownUrl } = useFumadocsLoader(
+    Route.useLoaderData(),
+  );
 
   return (
     <DocsLayout {...baseOptions()} tree={pageTree}>

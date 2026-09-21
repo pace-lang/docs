@@ -1,9 +1,9 @@
-import defaultMdxComponents from 'fumadocs-ui/mdx';
-import type { MDXComponents } from 'mdx/types';
-import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
-import { ArcVsGcAnimation } from './docs/ArcVsGcAnimation';
-import { NullSafetyGraphic } from './docs/NullSafetyGraphic';
-import { CompileErrorTerminal } from './docs/CompileErrorTerminal';
+import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import type { MDXComponents } from "mdx/types";
+import { ArcVsGcAnimation } from "./docs/ArcVsGcAnimation";
+import { CompileErrorTerminal } from "./docs/CompileErrorTerminal";
+import { NullSafetyGraphic } from "./docs/NullSafetyGraphic";
 
 export function getMDXComponents(components?: MDXComponents) {
   return {

@@ -7,19 +7,19 @@ The `pace:http` module empowers Pace applications to make external API calls sea
 
 ## Making a GET Request
 
-You can use the `Http.get(url: String) -> Result<String, String>` function to fetch data from a REST API or web server.
+You can use the `Http.get(url: string) -> Result<string, string>` function to fetch data from a REST API or web server.
 
 ```pace
 import "pace:http"
 
-func fetchUserData() -> Result<String, String> {
+fn fetchUserData() -> Result<string, string> {
     let response = Http.get("https://api.github.com/users/pace-lang")?
-    return Result<String, String>.Ok(response)
+    return ok(response)
 }
 
 let result = fetchUserData()
 match result {
-    Result<String, String>.Ok(json) => print(json)
-    Result<String, String>.Err(e) => print("Network error: " + e)
+    ok(json) => println(json)
+    error(e) => println("Network error: " + e)
 }
 ```

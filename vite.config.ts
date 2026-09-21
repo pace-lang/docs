@@ -1,13 +1,14 @@
-import tailwindcss from '@tailwindcss/vite';
-import { tanstackStart } from '@tanstack/react-start/plugin/vite';
-import react from '@vitejs/plugin-react';
-import { fumadocsMdx } from 'fumadocs-mdx/vite';
-import { nitro } from 'nitro/vite';
-import { defineConfig } from 'vite';
+import fs from "node:fs";
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
+import { fumadocsMdx } from "fumadocs-mdx/vite";
+import { nitro } from "nitro/vite";
+import { defineConfig } from "vite";
 
-import fs from 'node:fs';
-
-const paceGrammar = JSON.parse(fs.readFileSync(new URL('./pace.tmLanguage.json', import.meta.url), 'utf-8'));
+const paceGrammar = JSON.parse(
+  fs.readFileSync(new URL("./pace.tmLanguage.json", import.meta.url), "utf-8"),
+);
 
 export default defineConfig({
   server: {
@@ -19,13 +20,13 @@ export default defineConfig({
         mdxOptions: {
           rehypeCodeOptions: {
             themes: {
-              light: 'github-light',
-              dark: 'github-dark',
+              light: "github-light",
+              dark: "github-dark",
             },
             langs: [paceGrammar as any],
           },
-        }
-      }
+        },
+      },
     }),
     tailwindcss(),
     tanstackStart({
@@ -39,19 +40,19 @@ export default defineConfig({
 
       pages: [
         {
-          path: '/docs',
+          path: "/docs",
         },
         {
-          path: '/blog',
+          path: "/blog",
         },
         {
-          path: '/api/search',
+          path: "/api/search",
         },
         {
-          path: 'llms-full.txt',
+          path: "llms-full.txt",
         },
         {
-          path: 'llms.txt',
+          path: "llms.txt",
         },
       ],
     }),
@@ -62,7 +63,7 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
     alias: {
-      tslib: 'tslib/tslib.es6.js',
+      tslib: "tslib/tslib.es6.js",
     },
   },
 });

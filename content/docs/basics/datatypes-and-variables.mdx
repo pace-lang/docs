@@ -18,7 +18,7 @@ In Pace, variables are mutable by default. You can declare them using the `var` 
 
 ```pace
 var name = "Pace"
-version: Int = 1
+version: int = 1
 
 name = "New Pace" // This is perfectly fine
 ```
@@ -38,13 +38,13 @@ const PI = 3.14
 By explicitly locking data with `let`, you create a visual signal to anyone reading the code: *"This value is constant throughout this scope."*
 
 ### Why Postfix Types?
-Notice how explicit type declarations in Pace are placed *after* the variable name, separated by a colon (`name: String`).
+Notice how explicit type declarations in Pace are placed *after* the variable name, separated by a colon (`name: string`).
 
 ```pace
-speed: Float = 3.14
+speed: float = 3.14
 ```
 
-**The Rationale:** In languages like C or Java (`Float speed`), the type is prioritized over the variable name. Pace uses postfix types because **the name of the variable is almost always more important than its type**. When reading code left-to-right, you care more about *what* the variable represents (`speed`) than *how* it's stored (`Float`). Additionally, postfix types make parsing significantly cleaner for the compiler!
+**The Rationale:** In languages like C or Java (`float speed`), the type is prioritized over the variable name. Pace uses postfix types because **the name of the variable is almost always more important than its type**. When reading code left-to-right, you care more about *what* the variable represents (`speed`) than *how* it's stored (`float`). Additionally, postfix types make parsing significantly cleaner for the compiler!
 
 ---
 
@@ -54,16 +54,16 @@ Pace supports declaring global variables at the top level of any module (outside
 
 ```pace
 // Global variable
-var executionCount: Int = 0
+var executionCount: int = 0
 
-func increment() {
+fn increment() {
     // Accessing the global variable
     executionCount = executionCount + 1
 }
 
-func main() {
+fn main() {
     increment()
-    print(executionCount) // 1
+    println(executionCount) // 1
 }
 ```
 
@@ -71,14 +71,14 @@ func main() {
 If you declare a local variable with the same name as a global variable, the local variable will **shadow** the global one within that scope. Changes to the shadowed local variable will not affect the global variable.
 
 ```pace
-var executionCount: Int = 0
+var executionCount: int = 0
 
-func main() {
+fn main() {
     // This local variable shadows the global one
-    var executionCount: Int = 999
+    var executionCount: int = 999
     
     // Prints 999 (the local one)
-    print(executionCount) 
+    println(executionCount) 
 }
 ```
 
@@ -88,10 +88,10 @@ func main() {
 
 Pace includes several core types built directly into the language. Because Pace compiles to native code, these types have strict memory representations.
 
-- **`Int`**: A 64-bit signed integer. (`42`, `-100`). Takes exactly 8 bytes of memory.
-- **`Float`**: A 64-bit IEEE 754 floating-point number. (`3.14`, `-0.001`). Takes exactly 8 bytes.
-- **`Bool`**: A boolean value. (`true`, `false`). Typically represented as a single byte.
-- **`String`**: A UTF-8 encoded text string. (`"Hello"`). Internally, this is represented as a pointer to a heap-allocated buffer along with its length.
+- **`int`**: A 64-bit signed integer. (`42`, `-100`). Takes exactly 8 bytes of memory.
+- **`float`**: A 64-bit IEEE 754 floating-point number. (`3.14`, `-0.001`). Takes exactly 8 bytes.
+- **`bool`**: A boolean value. (`true`, `false`). Typically represented as a single byte.
+- **`string`**: A UTF-8 encoded text string. (`"Hello"`). Internally, this is represented as a pointer to a heap-allocated buffer along with its length.
 
 ---
 
@@ -100,11 +100,11 @@ Pace includes several core types built directly into the language. Because Pace 
 Pace supports dynamically sized arrays natively. Arrays are strictly typed; an array can only hold elements of one specific type.
 
 ```pace
-// Type inferred as [Int]
+// Type inferred as [int]
 var numbers = [1, 2, 3, 4, 5]
 
 // Explicit type declaration
-names: [String] = ["Alice", "Bob"]
+names: [string] = ["Alice", "Bob"]
 ```
 
 ### Array Repetition
@@ -120,7 +120,7 @@ You can read and write to arrays using standard bracket `[]` notation:
 
 ```pace
 var items = ["Apple", "Banana", "Cherry"]
-print(items[1]) // Prints: Banana
+println(items[1]) // Prints: Banana
 
 items[1] = "Blueberry"
 ```
@@ -141,7 +141,7 @@ var ages = {
     "Bob": 25
 }
 
-// Accessing map values returns an Optional (e.g. Int?)
+// Accessing map values returns an Optional (e.g. int?)
 // because the key might not exist!
 var aliceAge = ages["Alice"]
 ```
@@ -153,7 +153,7 @@ Pace also provides a native `Set` collection in the standard library (`stdlib/sr
 ```pace
 import "stdlib/src/collections/set.pace"
 
-var names = Set<String>()
+var names = Set<string>()
 names.insert("Alice")
 names.insert("Bob")
 ```
@@ -169,14 +169,14 @@ In languages like Java or C, any object reference can silently hold a `null` val
 In Pace, standard types **cannot** be null!
 
 ```pace
-safeString: String = null // COMPILER ERROR!
+safeString: string = null // COMPILER ERROR!
 ```
 
 ### The `?` Type
 If you actually *want* a variable to hold either a value or nothing at all, you must explicitly declare it as an **Optional** using the `?` syntax. Under the hood, this is an algebraic data type that forces you to handle the `null` case explicitly.
 
 ```pace
-maybeString: String? = null // This is allowed
+maybeString: string? = null // This is allowed
 maybeString = "Hello"
 ```
 
@@ -184,7 +184,7 @@ maybeString = "Hello"
 If you are absolutely certain an optional contains a value, you can **force unwrap** it using the `!` operator. If you are wrong and the value is `null`, the program will safely panic.
 
 ```pace
-validString: String = maybeString!
+validString: string = maybeString!
 ```
 
 ### Optional Chaining (`?.`)
@@ -195,11 +195,11 @@ class User {
     profile: Profile?
 }
 class Profile {
-    age: Int = 30
+    age: int = 30
 }
 
 var user = User()
-// Returns an Int? which is null if profile is null
+// Returns an int? which is null if profile is null
 var userAge = user.profile?.age 
 ```
 
@@ -207,7 +207,7 @@ var userAge = user.profile?.age
 Often, you want to provide a default fallback value if an optional turns out to be `null`. You can use the `??` operator to achieve this concisely.
 
 ```pace
-configSpeed: Int? = null
+configSpeed: int? = null
 // result is 100 because configSpeed is null
 var defaultSpeed = configSpeed ?? 100 
 
@@ -219,7 +219,7 @@ var letSpeed = userSpeed ?? configSpeed ?? 100
 If you only want to assign a value to a variable if its current value is `null`, you can use the `??=` operator.
 
 ```pace
-maxRetries: Int? = null
+maxRetries: int? = null
 maxRetries ??= 5 // maxRetries is now 5
 maxRetries ??= 10 // maxRetries remains 5, because it's no longer null
 ```

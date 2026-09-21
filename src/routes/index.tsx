@@ -1,4 +1,3 @@
-import { baseOptions } from "@/lib/layout.shared";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
@@ -7,6 +6,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { useState } from "react";
+import { baseOptions } from "@/lib/layout.shared";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -138,27 +138,28 @@ function Home() {
                 </div>
                 <pre className="overflow-x-auto font-mono px-6 py-5 text-[0.9rem] leading-loose">
                   <code>
+                    <span className="text-[#ff7b72] font-semibold">trait</span>{" "}
+                    <span className="text-[#79c0ff]">Serializable</span> {"{\n"}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">fn</span>{" "}
+                    <span className="text-[#d2a8ff]">toJson</span>() -{">"} <span className="text-[#79c0ff]">string</span>{"\n"}
+                    {"}\n\n"}
                     <span className="text-[#ff7b72] font-semibold">class</span>{" "}
-                    <span className="text-[#79c0ff]">User</span> {"{\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">static var</span> count:{" "}
-                    <span className="text-[#79c0ff]">Int</span> = <span className="text-[#79c0ff]">0</span>{";\n\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">var</span> age:{" "}
-                    <span className="text-[#79c0ff]">Int</span>{";\n\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">static func</span>{" "}
-                    <span className="text-[#d2a8ff]">getCount</span>() -{">"} <span className="text-[#79c0ff]">Int</span> {"{\n"}
-                    {"    "}<span className="text-[#ff7b72] font-semibold">return</span> User.count{";\n"}
+                    <span className="text-[#79c0ff]">User</span> <span className="text-[#ff7b72] font-semibold">with</span> Serializable {"{\n"}
+                    {"  "}name: <span className="text-[#79c0ff]">string</span>{";\n\n"}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">init</span>(name: <span className="text-[#79c0ff]">string</span>) {"{\n"}
+                    {"    "}<span className="text-[#79c0ff]">self</span>.name = name{";\n"}
                     {"  "}{"}\n\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">func</span>{" "}
-                    <span className="text-[#d2a8ff]">setAge</span>(a: <span className="text-[#79c0ff]">Int</span>) {"{\n"}
-                    {"    "}<span className="text-[#79c0ff]">self</span>.age = a{";\n"}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">override fn</span>{" "}
+                    <span className="text-[#d2a8ff]">toJson</span>() -{">"} <span className="text-[#79c0ff]">string</span> {"{\n"}
+                    {"    "}<span className="text-[#ff7b72] font-semibold">return</span> <span className="text-[#a5d6ff]">{'"{ \\"name\\": \\"{self.name}\\" }"'}</span>{";\n"}
                     {"  "}{"}\n"}
                     {"}\n\n"}
-                    <span className="text-[#ff7b72] font-semibold">func</span>{" "}
-                    <span className="text-[#d2a8ff]">main</span>() {"{\n"}
-                    {"  "}<span className="text-[#ff7b72] font-semibold">let</span> u1 = User(){";\n"}
-                    {"  "}u1.<span className="text-[#d2a8ff]">setAge</span>(<span className="text-[#79c0ff]">30</span>){";\n"}
-                    {"  "}User.count = <span className="text-[#79c0ff]">1</span>{";\n"}
-                    {"  "}<span className="text-[#d2a8ff]">print</span>(<span className="text-[#a5d6ff]">"Users: {"${"}</span>User.<span className="text-[#d2a8ff]">getCount</span>()<span className="text-[#a5d6ff]">{"}"}"</span>){";\n"}
+                    <span className="text-[#ff7b72] font-semibold">fn</span>{" "}
+                    <span className="text-[#d2a8ff]">fetchUser</span>(id: <span className="text-[#79c0ff]">int</span>) -{">"} <span className="text-[#79c0ff]">Result</span>&lt;<span className="text-[#79c0ff]">User</span>, <span className="text-[#79c0ff]">string</span>&gt; {"{\n"}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">if</span> id &lt; <span className="text-[#79c0ff]">0</span> {"{\n"}
+                    {"    "}<span className="text-[#ff7b72] font-semibold">return</span> <span className="text-[#d2a8ff]">error</span>(<span className="text-[#a5d6ff]">"Invalid ID"</span>){";\n"}
+                    {"  "}{"}\n"}
+                    {"  "}<span className="text-[#ff7b72] font-semibold">return</span> <span className="text-[#d2a8ff]">ok</span>(User(<span className="text-[#a5d6ff]">"Alice"</span>)){";\n"}
                     {"}"}
                   </code>
                 </pre>
@@ -207,13 +208,13 @@ function Home() {
                     <pre className="overflow-x-auto font-mono px-5 py-4 text-[0.85rem] leading-loose">
                       <code>
                         <span className="text-[#8b949e] italic">// Nullable types require explicit handling</span>{"\n"}
-                        <span className="text-[#ff7b72] font-semibold">func</span> <span className="text-[#d2a8ff]">getCity</span>(user: User): <span className="text-[#79c0ff]">String</span> {"{\n"}
+                        <span className="text-[#ff7b72] font-semibold">fn</span> <span className="text-[#d2a8ff]">getCity</span>(user: User) -{">"} <span className="text-[#79c0ff]">string</span> {"{\n"}
                         {"  "}<span className="text-[#ff7b72] font-semibold">return</span> user.address?.city ?? <span className="text-[#a5d6ff]">"Unknown"</span>{"\n"}
                         {"}"}
                         {"\n\n"}
                         <span className="text-[#8b949e] italic">// Exhaustive Pattern Matching</span>{"\n"}
                         <span className="text-[#ff7b72] font-semibold">match</span> result {"{\n"}
-                        {"  "}Ok(val) {`=>`} <span className="text-[#d2a8ff]">print</span>(val),{"\n"}
+                        {"  "}Ok(val) {`=>`} <span className="text-[#d2a8ff]">println</span>(val),{"\n"}
                         {"  "}Err(e)  {`=>`} <span className="text-[#d2a8ff]">log</span>(e){"\n"}
                         {"}"}
                       </code>
@@ -247,9 +248,9 @@ function Home() {
                     <pre className="overflow-x-auto font-mono px-5 py-4 text-[0.85rem] leading-loose">
                       <code>
                         <span className="text-[#ff7b72] font-semibold">struct</span> <span className="text-[#79c0ff]">Vector3</span> {"{\n"}
-                        {"  "}x: <span className="text-[#79c0ff]">Float</span>{"\n"}
-                        {"  "}y: <span className="text-[#79c0ff]">Float</span>{"\n"}
-                        {"  "}z: <span className="text-[#79c0ff]">Float</span>{"\n"}
+                        {"  "}x: <span className="text-[#79c0ff]">float</span>{"\n"}
+                        {"  "}y: <span className="text-[#79c0ff]">float</span>{"\n"}
+                        {"  "}z: <span className="text-[#79c0ff]">float</span>{"\n"}
                         {"}"}
                         {"\n\n"}
                         <span className="text-[#8b949e] italic">// Passed by value. No heap allocation.</span>{"\n"}
@@ -286,7 +287,7 @@ function Home() {
                       <code>
                         <span className="text-[#ff7b72] font-semibold">actor</span> <span className="text-[#79c0ff]">Counter</span> {"{\n"}
                         {"  "}<span className="text-[#ff7b72] font-semibold">var</span> _value = <span className="text-[#79c0ff]">0</span>{"\n"}
-                        {"  "}<span className="text-[#ff7b72] font-semibold">func</span> <span className="text-[#d2a8ff]">increment</span>() {"{"} _value += <span className="text-[#79c0ff]">1</span> {"}"}
+                        {"  "}<span className="text-[#ff7b72] font-semibold">fn</span> <span className="text-[#d2a8ff]">increment</span>() {"{"} _value += <span className="text-[#79c0ff]">1</span> {"}"}
                         {"}"}
                         {"\n\n"}
                         <span className="text-[#8b949e] italic">// Safe cross-thread invocation</span>{"\n"}

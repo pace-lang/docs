@@ -13,18 +13,18 @@ The `if` statement allows you to execute blocks of code conditionally.
 var statusCode = 404
 
 if (statusCode == 200) {
-    print("Request successful!")
+    println("Request successful!")
 } else if (statusCode == 404) {
-    print("Error: Resource not found.")
+    println("Error: Resource not found.")
 } else {
-    print("Unknown status.")
+    println("Unknown status.")
 }
 ```
 
 ### Why Strict Booleans?
 In languages like JavaScript or Python, you can write `if (myString)` or `if (0)` relying on implicit "truthy" or "falsy" coercions. This is a massive source of logical bugs. 
 
-**The Rationale:** Pace demands explicit intent. The condition in an `if` statement must strictly evaluate to a `Bool` type. `if (0)` is a compiler error in Pace. You must write `if (count != 0)`. This forces the developer to declare exactly what condition they care about, leaving zero ambiguity for the next person reading the code.
+**The Rationale:** Pace demands explicit intent. The condition in an `if` statement must strictly evaluate to a `bool` type. `if (0)` is a compiler error in Pace. You must write `if (count != 0)`. This forces the developer to declare exactly what condition they care about, leaving zero ambiguity for the next person reading the code.
 
 ---
 
@@ -40,7 +40,7 @@ var attempts = 0
 var maxAttempts = 3
 
 while (attempts < maxAttempts) {
-    print("Attempting connection...")
+    println("Attempting connection...")
     attempts = attempts + 1
 }
 ```
@@ -66,8 +66,8 @@ For iterating over collections, Pace replaces the traditional, error-prone C-sty
 var servers = ["US-East", "EU-West", "AP-South"]
 
 for server in servers {
-    print("Pinging ")
-    print(server)
+    println("Pinging ")
+    println(server)
 }
 ```
 
@@ -91,7 +91,7 @@ for num in numbers {
         break // Stop searching once we pass 4
     }
     
-    print(num) // Only prints 1 and 3
+    println(num) // Only prints 1 and 3
 }
 ```
 
@@ -111,8 +111,8 @@ Traditional `switch` statements have a severe flaw: "fall-through". If you forge
 ```pace
 enum Message {
     Quit,
-    Write(String),
-    Move(Int, Int)
+    Write(string),
+    Move(int, int)
 }
 
 let msg = Message.Write("Hello Pace!")
@@ -120,15 +120,15 @@ let msg = Message.Write("Hello Pace!")
 // The compiler guarantees you handle every variant!
 match msg {
     Message.Quit => {
-        print("Quitting...")
+        println("Quitting...")
     }
     Message.Write(text) => {
         // 'text' is safely extracted from the enum
-        print("Writing: ")
-        print(text)
+        println("Writing: ")
+        println(text)
     }
     Message.Move(x, y) => {
-        print("Moving coordinates")
+        println("Moving coordinates")
     }
 }
 ```

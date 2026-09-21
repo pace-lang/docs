@@ -10,8 +10,8 @@ description: A collection of unique values backed by a hash set.
 ```pace
 import "pace:collections"
 
-let emptySet = Set<Int>()
-let set: Set<Int> = [10, 20, 30, 20] // Duplicates are ignored
+let emptySet = Set<int>()
+let set: Set<int> = [10, 20, 30, 20] // Duplicates are ignored
 ```
 
 ## Modifying the Set
@@ -20,7 +20,7 @@ let set: Set<Int> = [10, 20, 30, 20] // Duplicates are ignored
 set.add(40)
 set.add(10) // Ignored, already exists
 
-let otherSet = Set<Int>()
+let otherSet = Set<int>()
 otherSet.add(50)
 set.addAll(otherSet)
 ```

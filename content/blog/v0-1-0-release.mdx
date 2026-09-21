@@ -1,7 +1,7 @@
 ---
 title: "Pace v0.1.0 - The Journey Begins"
 description: Welcome to the first official release of the Pace programming language! Discover how Pace delivers blazing speed, modern ergonomics, and native performance.
-date: 2026-09-01
+date: 2026-09-21
 tags: ["release", "v0.1"]
 draft: false
 ---
@@ -49,10 +49,10 @@ We have officially introduced **Standard Generic Algebraic Data Types**, includi
 To complement ADTs, Pace supports comprehensive pattern matching via the `match` expression! You can safely unwrap variants and extract payloads with compile-time exhaustiveness checking. Furthermore, you can explicitly pattern match on generic ADT variants using the new generic pattern matching syntax to ensure absolute type safety.
 
 ```pace
-var result: Result<Int, String> = fetch_data()
+var result: Result<int, string> = fetch_data()
 match result {
-    Result<Int, String>.Ok(data) => print("Success: \{data}")
-    Result<Int, String>.Err(e) => print("Failed with error: \{e}")
+    ok(data) => println("Success: ${data}")
+    error(e) => println("Failed with error: ${e}")
 }
 ```
 
@@ -61,9 +61,9 @@ match result {
 Dealing with `Result<T, E>` is frictionless. The postfix `?` operator elegantly unpacks the `Ok` payload or returns early with an `Err`.
 
 ```pace
-func fetchAndProcess(): Result<String, Error> {
+fn fetchAndProcess(): Result<string, Error> {
     var data = fetch()? // Returns early if fetch() fails!
-    return Result.Ok(process(data))
+    return ok(process(data))
 }
 ```
 
@@ -71,13 +71,13 @@ func fetchAndProcess(): Result<String, Error> {
 
 You can define highly efficient, stack-allocated, non-ARC value types using the `struct` keyword! Structs guarantee pass-by-value semantics and explicitly forbid ARC-managed fields, giving you fine-grained control over memory layout.
 
-### String Interpolation
+### string Interpolation
 
 Pace now supports string interpolation using both `\{expr}` and `${expr}` syntax. Expressions are directly evaluated and safely concatenated inside string literals—no manual type conversions necessary!
 
 ```pace
 var name = "Pace Developer"
-print("Welcome to v0.1.0, \{name}!")
+println("Welcome to v0.1.0, ${name}!")
 ```
 
 ### Function Overloading
@@ -93,8 +93,8 @@ Dealing with optional data is now frictionless. We've introduced full support fo
 You can now define type aliases using the `type` keyword. They are completely transparent to the compiler but drastically improve the readability of your code and diagnostic messages!
 
 ```pace
-type StatusCode = Int
-type UserId = String
+type StatusCode = int
+type UserId = string
 ```
 
 ### Generic Interfaces

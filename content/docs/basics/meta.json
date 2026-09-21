@@ -1,8 +1,4 @@
 {
   "title": "Basics",
-  "pages": [
-    "datatypes-and-variables",
-    "control-flow",
-    "functions"
-  ]
+  "pages": ["datatypes-and-variables", "control-flow", "functions"]
 }

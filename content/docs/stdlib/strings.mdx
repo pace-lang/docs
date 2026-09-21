@@ -1,6 +1,6 @@
 ---
 title: Strings
-description: String manipulation and interpolation in Pace.
+description: string manipulation and interpolation in Pace.
 ---
 
 The `pace:string` module provides robust utilities for string operations. Strings in Pace are immutable, UTF-8 encoded text sequences.
@@ -14,7 +14,7 @@ import "pace:string"
 
 let name = "Alice"
 let greeting = "Hello, ${name}!"
-print(greeting)
+println(greeting)
 ```
 
 ## `StringUtil` Methods
@@ -22,13 +22,13 @@ print(greeting)
 The `StringUtil` namespace contains all string manipulation functions.
 
 ### `substring`
-Extract a portion of a string using `StringUtil.substring(s: String, start: Int, end: Int) -> String`.
+Extract a portion of a string using `StringUtil.substring(s: string, start: int, end: int) -> string`.
 ```pace
 let sub = StringUtil.substring("hello world", 0, 5) // "hello"
 ```
 
 ### `replace`
-Replace occurrences of a substring using `StringUtil.replace(s: String, from: String, to: String) -> String`.
+Replace occurrences of a substring using `StringUtil.replace(s: string, from: string, to: string) -> string`.
 ```pace
 let replaced = StringUtil.replace("hello world", "world", "pace") // "hello pace"
 ```

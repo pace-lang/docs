@@ -7,7 +7,7 @@ Generics allow you to write functions, classes, and Enums that can operate on an
 
 ## True Monomorphization (Zero-Cost Abstractions)
 
-In Pace, generics are **true monomorphizations**. This means that when you use a generic type like `Result<Int, String>`, the compiler doesn't use opaque pointers or box the values under the hood. Instead, it generates a unique, highly optimized machine-code version of the type specifically for `Int` and `String`.
+In Pace, generics are **true monomorphizations**. This means that when you use a generic type like `Result<int, string>`, the compiler doesn't use opaque pointers or box the values under the hood. Instead, it generates a unique, highly optimized machine-code version of the type specifically for `int` and `string`.
 
 This guarantees **zero-cost abstractions**: your generic code runs just as fast as if you had hand-written specialized versions for each type, and you can safely pass generic structs by-value into C-FFI functions!
 
@@ -19,11 +19,11 @@ A classic example of a generic type is a `Box` wrapper. Instead of creating `Int
 class Box<T> {
     var item: T
 
-    func init(item: T) {
+    fn init(item: T) {
         self.item = item
     }
 
-    func getItem() -> T {
+    fn getItem() -> T {
         return self.item
     }
 }
@@ -32,10 +32,10 @@ class Box<T> {
 To use the generic class, you specify the type when you instantiate it:
 
 ```pace
-let intBox = Box<Int>(10)
-print(intBox.getItem())
+let intBox = Box<int>(10)
+println(intBox.getItem())
 
-// intBox.item = "Hello" // Compiler Error: Expected Int, got String
+// intBox.item = "Hello" // Compiler Error: Expected int, got string
 ```
 
 ## Generic Functions
@@ -43,7 +43,7 @@ print(intBox.getItem())
 Functions can also take type parameters.
 
 ```pace
-func firstElement<T>(arr: [T]): T? {
+fn firstElement<T>(arr: [T]): T? {
     if arr.length() == 0 {
         return null
     }
@@ -55,7 +55,7 @@ Pace's compiler is smart enough to **infer** the type parameter `T` when you cal
 
 ```pace
 let numbers = [1, 2, 3]
-let firstNum = firstElement(numbers) // T is inferred as Int!
+let firstNum = firstElement(numbers) // T is inferred as int!
 ```
 
 ## Generic Enums & Pattern Matching
@@ -65,11 +65,11 @@ The standard library extensively uses generic Enums, such as `Option<T>` and `Re
 Because of monomorphization, when you pattern match on a generic Enum, you can explicitly provide the generic arguments to the variant to ensure absolute type safety:
 
 ```pace
-var response: Result<Int, String> = fetchData()
+var response: Result<int, string> = fetchData()
 
 match response {
-    Result<Int, String>.Ok(data) => print("Data: \{data}")
-    Result<Int, String>.Err(err) => print("Error: \{err}")
+    ok(data) => println("Data: ${data}")
+    error(err) => println("Error: ${err}")
 }
 ```
 
@@ -77,9 +77,9 @@ match response {
 Dealing with `Result<T, E>` is frictionless using the postfix `?` operator. This operator elegantly unpacks the `Ok` payload or returns early with the `Err` if the expression evaluates to an error.
 
 ```pace
-func fetchAndProcess() -> Result<String, Error> {
+fn fetchAndProcess() -> Result<string, Error> {
     // If fetch fails, the error is immediately returned!
     let data = fetch()?
-    return Result<String, Error>.Ok(process(data))
+    return ok(process(data))
 }
 ```

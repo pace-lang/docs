@@ -1,11 +1,4 @@
 {
   "title": "Collections",
-  "pages": [
-    "list",
-    "map",
-    "set",
-    "queue",
-    "treemap",
-    "treeset"
-  ]
+  "pages": ["list", "map", "set", "queue", "treemap", "treeset"]
 }

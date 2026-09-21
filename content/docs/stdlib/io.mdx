@@ -15,7 +15,7 @@ import "pace:io"
 let dirPath = "test_output_dir"
 if Directory.exists(dirPath)? == false {
     let _ = Directory.make(dirPath)?
-    print("Directory created.")
+    println("Directory created.")
 }
 ```
 
@@ -35,6 +35,6 @@ let _ = File.writeText(filePath, "Hello from Pace FS!")?
 if File.exists(filePath)? {
     // Reading from a file
     let content = File.readText(filePath)?
-    print(content)
+    println(content)
 }
 ```

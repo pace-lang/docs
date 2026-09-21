@@ -1,5 +1,5 @@
 ---
-title: Classes & Interfaces
+title: Classes & Traits
 description: Explore Pace's robust Object-Oriented Programming features.
 ---
 
@@ -12,17 +12,17 @@ A `class` acts as a blueprint for an object. Classes in Pace can hold state (pro
 ```pace
 class Rectangle {
     // Properties
-    width: Int
-    height: Int
+    width: int
+    height: int
     
     // The Constructor
-    func init(w: Int, h: Int) {
+    fn init(w: int, h: int) {
         self.width = w
         self.height = h
     }
     
     // A Method
-    func area() -> Int {
+    fn area() -> int {
         return self.width * self.height
     }
 }
@@ -32,7 +32,7 @@ To create an instance of a class, call it like a function:
 
 ```pace
 var rect = Rectangle(10, 20)
-print(rect.area()) // Prints: 200
+println(rect.area()) // Prints: 200
 ```
 
 ### Destructors (`deinit`)
@@ -41,8 +41,8 @@ If your class manages external resources (like network sockets or open files), y
 
 ```pace
 class FileHandler {
-    func init() { print("Opened file") }
-    func deinit() { print("Closed file") }
+    fn init() { println("Opened file") }
+    fn deinit() { println("Closed file") }
 }
 ```
 
@@ -52,50 +52,50 @@ By default, all fields and methods in a class are public. You can restrict acces
 
 ```pace
 class Account {
-    var _balance: Int
+    var _balance: int
     
-    func init(initial: Int) {
+    fn init(initial: int) {
         self._balance = initial
     }
     
     // Public getter
-    func getBalance() -> Int {
+    fn getBalance() -> int {
         return self._balance
     }
     
     // Private helper method
-    func _logTransaction() {
-        print("Transaction logged.")
+    fn _logTransaction() {
+        println("Transaction logged.")
     }
 }
 ```
 
-## Interfaces
+## Traits
 
-An `interface` defines a strict contract that classes can implement. Interfaces contain method signatures without actual logic.
+An `trait` defines a strict contract that classes can implement. Traits contain method signatures without actual logic.
 
 ```pace
-interface Shape {
-    func area() -> Int
-    func name() -> String
+trait Shape {
+    fn area() -> int
+    fn name() -> string
 }
 ```
 
-You can use the `implements` keyword to guarantee a class fulfills the contract. Classes can also implement generic interfaces (like `implements Iterable<T>`) for advanced polymorphism!
+You can use the `with` keyword to guarantee a class fulfills the contract. Classes can also implement generic traits (like `implements Iterable<T>`) for advanced polymorphism!
 
 ```pace
-class Circle implements Shape {
-    radius: Int
+class Circle with Shape {
+    radius: int
     
-    func init(r: Int) {
+    fn init(r: int) {
         self.radius = r
     }
     
-    func area() -> Int {
+    fn area() -> int {
         return 3 * self.radius * self.radius // Approximate!
     }
     
-    func name() -> String {
+    fn name() -> string {
         return "Circle"
     }
 }
@@ -103,13 +103,13 @@ class Circle implements Shape {
 
 ### Polymorphism
 
-Interfaces allow you to write generic, polymorphic code. Any variable typed as an interface can hold *any* class that implements that interface!
+Traits allow you to write generic, polymorphic code. Any variable typed as an trait can hold *any* class that implements that trait!
 
 ```pace
-func printShapeInfo(shape: Shape) {
-    print(shape.name())
-    print("Area is:")
-    print(shape.area())
+fn printShapeInfo(shape: Shape) {
+    println(shape.name())
+    println("Area is:")
+    println(shape.area())
 }
 
 var c = Circle(5)
