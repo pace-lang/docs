@@ -1,3 +1,4 @@
+import { baseOptions } from "@/lib/layout.shared";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
@@ -6,7 +7,6 @@ import {
   Terminal,
 } from "lucide-react";
 import { useState } from "react";
-import { baseOptions } from "@/lib/layout.shared";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -51,7 +51,7 @@ function Home() {
                     New
                   </span>
                   <span className="min-w-0 truncate text-foreground">
-                    Pace v0.1.0 — The Foundation Release
+                    Pace v0.2.0
                   </span>
                   <ArrowRight className="w-3 h-3 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
                 </a>
