@@ -11,6 +11,9 @@ In Pace, generics are **true monomorphizations**. This means that when you use a
 
 This guarantees **zero-cost abstractions**: your generic code runs just as fast as if you had hand-written specialized versions for each type, and you can safely pass generic structs by-value into C-FFI functions!
 
+> [!NOTE]
+> Because Pace dynamically monomorphizes types during type-checking, our native Language Server Protocol (LSP) flawlessly resolves generics in real-time. Hovering over a generic method or requesting auto-completion will always display the correctly inferred concrete types instead of abstract placeholders.
+
 ## Generic Classes
 
 A classic example of a generic type is a `Box` wrapper. Instead of creating `IntBox` and `StringBox`, you define one generic `Box<T>` where `T` is a placeholder for the type.

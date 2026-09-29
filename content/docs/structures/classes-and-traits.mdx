@@ -72,16 +72,18 @@ class Account {
 
 ## Traits
 
-An `trait` defines a strict contract that classes can implement. Traits contain method signatures without actual logic.
+A `trait` can define a strict contract (interface) that classes must implement, or it can provide default implementations (mixins) that classes inherit. 
 
 ```pace
 trait Shape {
-    fn area() -> int
-    fn name() -> string
+    fn area() -> int          // Interface method (no body)
+    fn printName() {          // Mixin method (has body)
+        println("I am a shape.")
+    }
 }
 ```
 
-You can use the `with` keyword to guarantee a class fulfills the contract. Classes can also implement generic traits (like `implements Iterable<T>`) for advanced polymorphism!
+You use the `with` keyword to apply a trait to a `class`, `struct`, or `actor`. If a trait includes interface methods (methods without bodies), the Pace compiler rigorously checks that your struct or class implements all required methods!
 
 ```pace
 class Circle with Shape {

@@ -48,31 +48,38 @@ spawn {
 
 Sharing mutable state across threads is notoriously dangerous and leads to data races. Pace solves this with **Actors**. 
 
-An `actor` isolates mutable state. It guarantees that only one task can access its state at a time, making concurrent access perfectly safe.
+An `actor` isolates mutable state. It guarantees that only one task can access its state at a time, making concurrent access perfectly safe without the need for manual `Mutex` locking. More importantly, **Actors are the foundation of Multi-Threading in Pace.** 
+
+When you instantiate an actor and send it a message (by calling a method), that method call is pushed to a background thread pool managed by **libuv**. The actor processes messages sequentially, but multiple actors can run in parallel across all available CPU cores.
 
 ```pace
 actor Counter {
-    var _value = 0
+    count: int
+
+    init() {
+        self.count = 0
+    }
 
     fn increment() {
-        _value += 1
+        self.count = self.count + 1
     }
 
     fn get() -> int {
-        return value
+        return self.count
     }
 }
 ```
 
-Because an actor's state is isolated, you must `await` its methods from the outside to ensure safe access:
+Because an actor's state is isolated, you must `await` its methods from the outside to ensure safe asynchronous access:
 
 ```pace
 let counter = Counter()
 
+// These calls are dispatched to a multi-threaded worker pool
 await counter.increment()
 
 let value = await counter.get()
 println(value)
 ```
 
-By combining `async`, `spawn`, and `actor`, you can build highly concurrent applications that are immune to traditional data races!
+By combining single-threaded `async`/`await` for I/O operations and multi-threaded `actor`s for CPU-heavy tasks, you can build highly concurrent applications that are immune to traditional data races!

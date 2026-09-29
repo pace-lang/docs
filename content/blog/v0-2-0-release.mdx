@@ -1,0 +1,67 @@
+---
+title: "Pace v0.2.0 - Concurrency, Traits, and Generics"
+description: Announcing Pace v0.2.0! This release introduces multi-threaded Actors, strict Trait interfaces, and robust Generics support in the LSP.
+date: 2026-09-29
+tags: ["release", "v0.2", "concurrency"]
+draft: false
+---
+
+We are incredibly excited to announce the release of **Pace v0.2.0**! 🎉
+
+This release represents a massive leap forward for Pace, transforming it from a powerful single-threaded language into a robust, multi-threaded powerhouse. We've introduced a brand new concurrency model powered by libuv, implemented strict Trait interface checking, and perfected our LSP support for Generics.
+
+---
+
+## 🚀 Multi-Threaded Actors
+
+Pace now features a highly efficient, multi-threaded **Actor Model** natively built into the language.
+
+Previously, `async`/`await` in Pace was entirely single-threaded and cooperative. While excellent for I/O bounds, it couldn't utilize multi-core CPUs. In v0.2.0, we introduced the `actor` keyword, representing isolated state machines that run concurrently across a dedicated thread pool managed by `libuv`.
+
+```pace
+actor MathWorker {
+    total: int
+    
+    init(id: int) {
+        self.total = 0
+        println("Worker initialized.")
+    }
+    
+    fn add(val: int) {
+        self.total = self.total + val
+    }
+}
+```
+
+Actors guarantee data-race-free parallelism. You interact with them strictly through asynchronous message passing. Behind the scenes, the Pace runtime seamlessly schedules these messages across worker threads, scaling effortlessly with your CPU cores!
+
+## 🧩 Strict Trait Interfaces
+
+Traits in Pace have evolved! In v0.2.0, traits can now define **interface methods** (methods without bodies). The TypeChecker has been enhanced to rigorously enforce these contracts. If a class or struct mixes in a trait via the `with` keyword, it **must** implement all required interface methods.
+
+```pace
+trait Logger {
+    fn log(msg: string) // No body required!
+}
+
+class MyService with Logger {
+    // The compiler enforces that this method exists
+    fn log(msg: string) {
+        println(msg)
+    }
+}
+```
+
+If you forget to implement `log`, the compiler will immediately alert you: `Error: Class/Struct 'MyService' must implement required method 'log' from Trait 'Logger'`.
+
+## 🧠 Robust Generics in the LSP
+
+Our Language Server Protocol (LSP) has received significant upgrades. Generics are now perfectly resolved dynamically during type-checking. When you hover over generic variables or invoke auto-completion on generic types (like `Option<T>` or `Worker<T>`), the IDE correctly infers and substitutes the concrete monomorphized type, providing flawless, context-aware developer assistance.
+
+## 🛠️ Get Started
+
+Ready to experience the multi-core power of Pace v0.2.0? Upgrade your toolchain and dive into the new capabilities!
+
+Check out our updated [Concurrency Docs](/docs/advanced/concurrency) for a deep dive into the new Actor model, or read the [Classes & Traits Guide](/docs/structures/classes-and-traits) for interface implementation details.
+
+Happy coding! 🚀
