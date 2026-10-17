@@ -45,13 +45,13 @@ function Home() {
               <div className="min-w-0 mt-10 xl:mt-0">
                 <a
                   className="group inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-card/50 py-1 pl-1 pr-3 text-sm leading-none text-muted-foreground hover:border-emerald-500/50 transition-colors"
-                  href="/blog"
+                  href="/blog/v0-3-0-release"
                 >
                   <span className="shrink-0 rounded-full bg-emerald-500 px-2.5 py-0.5 font-mono text-[0.7rem] font-medium uppercase tracking-wider text-white shadow-[0_0_10px_rgba(52,211,153,0.8)]">
                     New
                   </span>
                   <span className="min-w-0 truncate text-foreground">
-                    Pace v0.2.0
+                    Pace v0.3.0
                   </span>
                   <ArrowRight className="w-3 h-3 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
                 </a>
@@ -326,7 +326,7 @@ function Home() {
               <div className="flex items-center gap-2">
                 <img src="/logo.png" alt="Pace Logo" className="w-6 h-6" />
                 <span className="font-semibold tracking-tight text-foreground">
-                  pace<span className="text-emerald-500">.</span>
+                  Pace<span className="text-emerald-500">.</span>
                 </span>
               </div>
               <p className="text-center text-sm leading-5 text-muted-foreground">

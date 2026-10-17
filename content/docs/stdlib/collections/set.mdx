@@ -3,40 +3,29 @@ title: Set<T>
 description: A collection of unique values backed by a hash set.
 ---
 
-`Set<T>` stores unique values without any particular order.
+> [!NOTE]
+> `Set<T>` is currently in active development on the Pace standard library roadmap. For native collections supported in Pace v0.3.0, see [`List<T>`](/docs/stdlib/collections/list) and [`Map<K, V>`](/docs/stdlib/collections/map).
 
-## Initialization
+`Set<T>` stores unique values without any duplicate elements, backed by an open-addressing hash table.
 
-```pace
-import "pace:collections"
-
-let emptySet = Set<int>()
-let set: Set<int> = [10, 20, 30, 20] // Duplicates are ignored
-```
-
-## Modifying the Set
+## Planned API & Syntax
 
 ```pace
-set.add(40)
-set.add(10) // Ignored, already exists
+// Empty set creation
+var numbers = Set<int>()
 
-let otherSet = Set<int>()
-otherSet.add(50)
-set.addAll(otherSet)
-```
+// Adding elements (duplicates are ignored)
+numbers.add(10)
+numbers.add(20)
+numbers.add(10) // Ignored
 
-## Queries and Removal
+// Membership queries
+if numbers.contains(20) {
+    println("Found 20!")
+}
 
-```pace
-let size = set.length()
-let hasTwenty = set.contains(20)
-
-set.remove(20)
-```
-
-## Memory Management
-
-```pace
-set.clear()
-set.drop()
+// Length and removal
+println("Count: ${numbers.len()}")
+numbers.remove(10)
+numbers.clear()
 ```

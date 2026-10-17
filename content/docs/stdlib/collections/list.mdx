@@ -1,65 +1,94 @@
 ---
 title: List<T>
-description: A growable array type for dynamically sizing lists.
+description: A contiguous, dynamically growable array type with zero-cost 64-bit word storage and automatic ARC memory safety.
 ---
 
-`List<T>` is a dynamic, growable array. Elements in a list are ordered and can be accessed by their index.
+`List<T>` is Pace's built-in, dynamically sized array. Elements in a list are ordered, stored contiguously in memory, and accessible by zero-based integer index.
+
+`List<T>` is part of the standard prelude—no imports are required.
 
 ## Initialization
 
-You can create an empty list using its constructor, or initialize it directly with an array literal:
+You can create an empty list using the explicit constructor `List<T>()`, initialize it with a list literal, or declare it with type annotations:
 
 ```pace
-import "pace:collections"
-
+// Empty list created via constructor
 var emptyList = List<int>()
-var initializedList = [10, 20, 30] // Inferred as List<int>
+
+// Inferred as List<int>
+var numbers = [10, 20, 30]
+
+// Explicit type annotation
+var names: List<string> = ["Alice", "Bob", "Charlie"]
 ```
 
-## Adding and Inserting
+## Accessing and Modifying Elements
 
-Use `add()` to append to the end, `insert()` to add at a specific index, or `addAll()` to append another list.
+Pace provides ergonomic subscript indexing `[index]` for both reading and in-place updating of elements. You can also use the `.get()` and `.set()` methods:
 
 ```pace
-var list = List<int>()
-list.add(40)
-list.add(50)
-list.insert(1, 15) // list is now [40, 15, 50]
+var numbers = [10, 20, 30]
 
-var otherList = [100, 200]
-list.addAll(otherList)
+// Subscript access
+let first = numbers[0]     // 10
+let second = numbers.get(1) // 20
+
+// In-place mutation
+numbers[0] = 99            // list is now [99, 20, 30]
+numbers.set(1, 88)         // list is now [99, 88, 30]
 ```
 
-## Accessing Elements
+## Adding and Removing Elements
+
+Use `.push()` to append elements to the end, `.pop()` to remove and return the last element, or `.clear()` to empty the entire list:
 
 ```pace
-let firstVal = list.first()
-let secondVal = list.get(1)
-let lastVal = list.last()
+var tasks = List<string>()
+
+// Append items to the end
+tasks.push("Write compiler")
+tasks.push("Run benchmarks")
+tasks.push("Publish release")
+
+println("Pending tasks: ${tasks.len()}") // 3
+
+// Remove and retrieve the last element
+let lastTask = tasks.pop() // "Publish release"
+
+// Empty the list completely
+tasks.clear()
+println("After clear: ${tasks.len()}") // 0
 ```
 
-## Removing Elements
+## Iteration (`for ... in`)
+
+Iterating through a `List<T>` is idiomatic with the `for ... in` loop:
 
 ```pace
-let removed = list.removeAt(2) // Removes by index
-let removedVal = list.remove(40) // Removes by value
-list.removeLast()
+var items = [1, 2, 3, 4, 5]
+
+for item in items {
+    println("Value: ${item}")
+}
 ```
 
-## Properties and Queries
+Off-by-one errors and buffer overruns are eliminated, as Pace handles iteration bounds natively without manual index incrementing.
 
-```pace
-let size = list.length()
-let idx = list.indexOf(50)
-let hasVal = list.contains(15)
+## Methods Reference
 
-if list.isEmpty() { println("Empty!") }
-if list.isNotEmpty() { println("Not empty!") }
-```
+| Method | Signature | Description |
+| :--- | :--- | :--- |
+| `len()` | `len() -> int` | Returns the number of elements currently stored in the list. |
+| `push(item)` | `push(item: T) -> void` | Appends `item` to the end of the list, automatically expanding capacity if needed. |
+| `pop()` | `pop() -> T` | Removes and returns the last element. |
+| `get(index)` | `get(index: int) -> T` | Returns the element at the specified zero-based index. |
+| `set(index, item)` | `set(index: int, item: T) -> void` | Overwrites the element at `index` with `item`. |
+| `clear()` | `clear() -> void` | Empties the list and resets length to 0. |
 
-## Memory Management
+## Memory Architecture & ARC Safety
 
-```pace
-list.clear() // Empties the list but keeps capacity
-list.drop() // Explicitly frees the underlying memory
-```
+`List<T>` in Pace is designed for low latency and high CPU cache efficiency:
+
+1. **64-bit Inline Words**: For primitive types (`int`, `float`, `bool`), elements are stored directly as contiguous 64-bit words without pointer chasing or object boxing overhead.
+2. **Deterministic ARC Cleanup**: When a list stores reference-counted elements (`string`, `class` instances, or nested collections), mutating an index (`xs[i] = newObj`), calling `.pop()`, or calling `.clear()` automatically decrements the reference count of the old objects.
+3. **Zero Garbage Collection Pauses**: When a list goes out of scope, its backing storage and all contained reference objects are freed deterministically.

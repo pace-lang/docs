@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { appName, gitConfig } from "./shared";
+import { gitConfig } from "./shared";
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -9,7 +9,7 @@ export function baseOptions(): BaseLayoutProps {
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="Pace Logo" className="w-6 h-6" />
           <span className="font-semibold tracking-tight text-foreground">
-            pace<span className="text-emerald-500">.</span>
+            Pace<span className="text-emerald-500">.</span>
           </span>
         </div>
       ),
