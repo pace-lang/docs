@@ -1,3 +1,6 @@
+import { useMDXComponents } from "@/components/mdx";
+import { baseOptions } from "@/lib/layout.shared";
+import { blogDocs, blogSource } from "@/lib/source";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
@@ -5,10 +8,6 @@ import { useFumadocsLoader } from "fumadocs-core/source/client";
 import { DocsBody } from "fumadocs-ui/layouts/docs/page";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { Suspense, use } from "react";
-import { useMDXComponents } from "@/components/mdx";
-import { baseOptions } from "@/lib/layout.shared";
-import { encodeMarkdownUrl } from "@/lib/shared";
-import { blogDocs, blogSource } from "@/lib/source";
 
 export const Route = createFileRoute("/blog/$")({
   component: Page,
@@ -31,7 +30,6 @@ const loader = createServerFn({
 
     return {
       path: page.path,
-      markdownUrl: encodeMarkdownUrl(page.slugs, page.locale),
       pageTree: await blogSource.serializePageTree(blogSource.getPageTree()),
     };
   });
@@ -45,7 +43,7 @@ function Content({ path }: { path: string }) {
 
   return (
     <main className="flex-1 flex flex-col items-center overflow-x-hidden bg-background w-full pb-32">
-      <div className="w-full max-w-[800px] mx-auto px-6 pt-16 pb-12 relative z-10">
+      <div className="w-full max-w-200 mx-auto px-6 pt-16 pb-12 relative z-10">
         <div className="mb-10 border-b border-border/50 pb-6">
           <Link
             to="/blog"
@@ -85,7 +83,7 @@ function Content({ path }: { path: string }) {
         </div>
       </div>
 
-      <div className="w-full max-w-[800px] mx-auto px-6 relative z-10">
+      <div className="w-full max-w-200 mx-auto px-6 relative z-10">
         <DocsBody>
           <MDX components={useMDXComponents()} />
         </DocsBody>
@@ -95,13 +93,10 @@ function Content({ path }: { path: string }) {
 }
 
 function Page() {
-  const { pageTree, path, markdownUrl } = useFumadocsLoader(
-    Route.useLoaderData(),
-  );
+  const { path } = useFumadocsLoader(Route.useLoaderData());
 
   return (
     <HomeLayout {...baseOptions()}>
-      <Link to={markdownUrl} hidden />
       <Suspense>
         <Content path={path} />
       </Suspense>
