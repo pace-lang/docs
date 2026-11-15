@@ -26,7 +26,8 @@ function BlogIndex() {
     const tags = (post.data as any).tags || [];
     const isRelease = tags.some(
       (t: string) =>
-        t.toLowerCase().includes("release") || t.toLowerCase().startsWith("v0."),
+        t.toLowerCase().includes("release") ||
+        t.toLowerCase().startsWith("v0."),
     );
 
     if (filter === "Releases") return isRelease;

@@ -70,6 +70,46 @@ class Account {
 }
 ```
 
+### Inheritance (`extends`)
+
+Classes can inherit properties and methods from a parent class using the `extends` keyword. A subclass invokes its parent's constructor using `super.init(...)` and can override parent methods using the `override` keyword:
+
+```pace
+class Animal {
+    name: string
+
+    init(name: string) {
+        self.name = name
+    }
+
+    fn speak() {
+        println("${self.name} makes a sound")
+    }
+}
+
+class Dog extends Animal {
+    breed: string
+
+    init(name: string, breed: string) {
+        super.init(name)
+        self.breed = breed
+    }
+
+    override fn speak() {
+        println("${self.name} barks")
+    }
+}
+
+fn main() {
+    let dog = Dog("Rex", "German Shepherd")
+    println(dog.name)  // Inherited from Animal: Rex
+    println(dog.breed) // Dog-specific: German Shepherd
+    dog.speak()        // Overridden method: Rex barks
+}
+```
+
+Pace resolves inherited methods and properties up the entire inheritance tree at compile time.
+
 ## Traits
 
 A `trait` can define a strict contract (interface) that classes must implement, or it can provide default implementations (mixins) that classes inherit. 

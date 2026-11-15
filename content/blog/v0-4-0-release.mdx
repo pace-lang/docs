@@ -1,0 +1,243 @@
+---
+title: "Pace v0.4.0 - Native Test Runner, Built-In Assertions & String Content Equality"
+description: Announcing Pace v0.4.0! Introducing a zero-config native test runner ('pace test'), built-in assert statements, deep string content equality, OOP inheritance improvements, and Rust 1.100.0 toolchain modernization.
+date: 2026-11-15
+tags: ["release", "v0.4", "testing", "tooling", "runtime"]
+draft: false
+---
+
+We are excited to announce the release of **Pace v0.4.0**! 🎉
+
+Following the high-performance native collections and benchmark suite in v0.3.0, the **v0.4.0** milestone delivers a complete first-class testing story, foundational runtime ergonomics, and key type system improvements that make building production-grade systems in Pace faster and more reliable than ever.
+
+With this release, Pace gains a native zero-config test runner (`pace test`), a built-in `assert` statement with expressive diagnostics, value-based string content equality (`==`), multi-level OOP class inheritance, and internal compiler modernizations adopting the latest Rust 1.100.0 features.
+
+---
+
+## 🧪 Native Test Runner: `pace test`
+
+Quality and reliability shouldn't require installing third-party testing harnesses or writing custom boilerplate runners. Starting in v0.4.0, testing is built right into the Pace CLI.
+
+```bash title="Terminal"
+pace test
+```
+
+### Zero Configuration, Automatic Discovery
+
+The `pace test` runner automatically scans your project's `tests/`, `src/`, or root directory for any file ending with the `.test.pace` extension.
+
+```pace title="tests/math.test.pace"
+fn add(a: int, b: int) -> int {
+    return a + b
+}
+
+fn main() {
+    assert(add(2, 3) == 5, "2 + 3 should equal 5")
+    assert(add(-1, 1) == 0, "negatives should cancel out")
+}
+```
+
+When you execute `pace test`, the runner compiles each test into an isolated executable, executes it in a sandboxed environment, cleans up all temporary build artifacts via RAII guards, and reports real-time latency for every test suite:
+
+```
+pace test v0.4.0
+Running 3 test file(s)...
+
+  ✓ tests/collections.test.pace (137.3ms)
+  ✓ tests/types.test.pace (104.3ms)
+  ✓ tests/math.test.pace (89.1ms)
+
+3 passed (330.7ms)
+```
+
+### Selective Test Filtering
+
+Need to focus on a single failing test file or a specific subsystem? Pass an optional filter or file path to `pace test`:
+
+```bash title="Terminal"
+# Run only tests matching "collections"
+pace test collections
+
+# Run a specific test file directly
+pace test tests/types.test.pace
+```
+
+### Full Package Dependency Resolution
+
+`pace test` is fully package-aware. When running tests inside a Pace package or workspace, the runner automatically inspects your `pace.toml` manifest and `pace.lock` lockfile, resolving both local path dependencies and cached remote packages so your tests can import library modules effortlessly:
+
+```pace title="tests/lib.test.pace"
+import "demo_lib"
+
+fn main() {
+    assert(demo_lib.greet("World") == "Hello, World!")
+}
+```
+
+---
+
+## ⚡ Built-In `assert(condition, message?)`
+
+Pace v0.4.0 introduces `assert` as a first-class language primitive available everywhere in the prelude without requiring imports.
+
+An assertion evaluates a boolean condition at runtime. If the condition is `true`, execution continues without overhead. If the condition evaluates to `false`, the runtime immediately prints an assertion failure diagnostic and cleanly aborts:
+
+```pace
+fn main() {
+    let balance = 100
+    
+    // Assert with default failure message
+    assert(balance > 0)
+
+    // Assert with a descriptive diagnostic message
+    assert(balance >= 150, "Insufficient account balance for transaction")
+}
+```
+
+If the assertion fails:
+
+```
+Assertion failed: Insufficient account balance for transaction
+```
+
+Under the hood, `assert` is deeply integrated across all compiler stages:
+- **Type Checker**: Enforces that condition expressions strictly evaluate to `bool` and optional messages evaluate to `string`.
+- **MIR Lowering**: Directly maps assertions to optimized branching blocks without unnecessary allocations.
+- **Native Runtime (`pace_rt`)**: Invokes `pace_assert(cond, msg)` in both C and Rust static runtime implementations.
+
+---
+
+## 🔤 Value-Based String Content Equality (`==` / `!=`)
+
+In earlier releases, applying `==` or `!=` between two strings evaluated raw pointer addresses. Two independently allocated strings containing identical text sequences would evaluate to `false` unless they shared the exact same memory pointer.
+
+In **Pace v0.4.0**, string comparison now performs true **value-based content equality**:
+
+```pace
+fn main() {
+    let greeting = "hello"
+    let user = "world"
+    let combined = "${greeting}, ${user}!"
+
+    // True content equality!
+    assert(combined == "hello, world!")
+    assert("pace" != "rust")
+}
+```
+
+The native C and Rust runtime functions (`pace_string_equals`) check pointer identity first for instantaneous $O(1)$ short-circuiting, followed by length comparison, and finally optimized memory comparison (`memcmp`) over the UTF-8 byte sequences:
+
+```c
+int pace_string_equals(struct PaceString* a, struct PaceString* b) {
+    if (a == b) return 1;
+    if (!a || !b) return 0;
+    if (a->length != b->length) return 0;
+    if (a->length == 0) return 1;
+    if (!a->data || !b->data) return a->data == b->data;
+    return memcmp(a->data, b->data, a->length) == 0;
+}
+```
+
+String comparisons are now intuitive, deterministic, and rock solid.
+
+---
+
+## 🏛️ OOP Inheritance & Method Dispatch Fixes
+
+Pace supports single-inheritance class hierarchies using the `extends` keyword. In v0.4.0, the typechecker and MIR builder received substantial architectural improvements when resolving multi-level inheritance:
+
+```pace
+class Animal {
+    name: string
+
+    init(name: string) {
+        self.name = name
+    }
+
+    fn speak() {
+        println("${self.name} makes a sound")
+    }
+}
+
+class Dog extends Animal {
+    breed: string
+
+    init(name: string, breed: string) {
+        super.init(name)
+        self.breed = breed
+    }
+
+    override fn speak() {
+        println("${self.name} barks loudly")
+    }
+}
+
+fn main() {
+    let rex = Dog("Rex", "German Shepherd")
+
+    // Access inherited parent fields
+    assert(rex.name == "Rex")
+    assert(rex.breed == "German Shepherd")
+
+    // Dispatch overridden method
+    rex.speak()
+}
+```
+
+### What Changed:
+1. **Chain Traversal**: Member lookup in `TypeChecker::check_expr` now systematically traverses the entire `class_parents` chain, correctly resolving inherited methods and properties across arbitrary inheritance depths.
+2. **`super` Constructor Resolution**: MIR lowering accurately maps `super.init(...)` invocations to parent class constructors without symbol collision.
+3. **Monomorphization Scope**: Generic functions invoked with explicit type arguments (e.g. `fn<T>(...)`) across imported modules are correctly mangled and monomorphized without name shadowing.
+
+---
+
+## 🔒 Compiler Modernization: Rust 1.100.0 & Supply-Chain Hardening
+
+The Pace compiler core is built in Rust. In v0.4.0, we took advantage of modern toolchain capabilities:
+
+- **Supply-Chain Security**: Configured `.cargo/config.toml` with `global-min-publish-age` to guard against zero-day supply-chain attacks on package dependencies.
+- **RAII Artifact Cleanup (`DropGuard`)**: The test runner and compiler driver now use `std::mem::DropGuard` to guarantee cleanup of temporary build directories, even if a compilation terminates abruptly.
+- **Standard Library Cleanup**: Adopted modern `str::trim_prefix` patterns throughout `pace-ty`, `pace-hir`, and `pace-pkg`, deprecating manual prefix strip unwraps.
+- **Never Type (`!`) Integration**: Streamlined error reporting in `pace-errors` and `pace-cli` utilizing the never type (`!`) for explicit non-returning termination paths.
+
+---
+
+## 📦 Verified Example Suites
+
+All official example packages included in the repository—[`hello_world`](https://github.com/pace-lang/pace/tree/main/examples/hello_world), [`demo_lib`](https://github.com/pace-lang/pace/tree/main/examples/demo_lib), and [`demo_app`](https://github.com/pace-lang/pace/tree/main/examples/demo_app)—have been updated with dedicated `.test.pace` test suites covering:
+- Value-semantics structs and reference-semantics classes
+- Inheritance hierarchies and `super.init` dispatch
+- Native `List<T>` dynamic array mutation and iteration
+- Native `Map<K, V>` open-addressing hash table insertion, retrieval, and deletion
+- Cross-package library imports and exports
+
+You can explore these examples directly in the Pace repository to see idiomatic Pace code and testing patterns in action.
+
+---
+
+## 🚀 Upgrade Today
+
+Upgrading to Pace v0.4.0 takes just a single command:
+
+### Linux & macOS
+```bash
+curl -fsSL https://raw.githubusercontent.com/pace-lang/pace/main/installer/install.sh | bash
+```
+
+### Windows (PowerShell)
+```powershell
+irm https://raw.githubusercontent.com/pace-lang/pace/main/installer/install.ps1 | iex
+```
+
+### Docker
+```bash
+docker pull ghcr.io/pace-lang/pace:0.4
+```
+
+### From an Existing Installation
+```bash
+pace upgrade
+```
+
+Check out our new [Testing Guide](/docs/getting-started/testing) and updated [Tooling Documentation](/docs/getting-started/tooling) to start writing tests with `pace test` today!
+

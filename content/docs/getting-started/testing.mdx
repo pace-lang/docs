@@ -1,0 +1,232 @@
+---
+title: Testing
+description: Writing, structuring, and running test suites with the native Pace test runner and built-in assertions.
+---
+
+Testing is an essential part of building reliable, maintainable software. Pace provides a **native test runner** and **built-in assertions** out of the box—no third-party frameworks, external test runners, or complicated setup required.
+
+## Quick Start
+
+Create a new test file ending in `.test.pace` (for example, `tests/math.test.pace`):
+
+```pace title="tests/math.test.pace"
+fn add(a: int, b: int) -> int {
+    return a + b
+}
+
+fn multiply(a: int, b: int) -> int {
+    return a * b
+}
+
+fn main() {
+    assert(add(2, 3) == 5, "2 + 3 should be 5")
+    assert(multiply(4, 5) == 20, "4 * 5 should be 20")
+    assert(add(-10, 10) == 0, "adding opposite signs should yield 0")
+}
+```
+
+Now, run your tests using the Pace CLI:
+
+```bash title="Terminal"
+pace test
+```
+
+Output:
+
+```
+pace test v0.4.0
+Running 1 test file(s)...
+
+  ✓ tests/math.test.pace (94.2ms)
+
+1 passed (94.2ms)
+```
+
+---
+
+## The `assert` Statement
+
+Pace includes a built-in `assert` statement in the prelude. You can use it anywhere in your codebase or tests without importing anything.
+
+### Basic Assertion
+
+Evaluates a boolean expression. If the expression evaluates to `false`, the program aborts immediately:
+
+```pace
+let count = 10
+assert(count > 0)
+```
+
+### Assertion with Custom Diagnostic Message
+
+You can provide an optional `string` message as the second argument. If the assertion fails, Pace displays the diagnostic message before terminating:
+
+```pace
+let balance = 50
+let withdrawal = 100
+
+assert(balance >= withdrawal, "Insufficient account balance for withdrawal")
+```
+
+If the condition fails:
+
+```
+Assertion failed: Insufficient account balance for withdrawal
+```
+
+---
+
+## Test File Conventions
+
+The `pace test` command discovers test files according to the following rules:
+
+1. **Naming**: Test files must end with the `.test.pace` extension (for example, `math.test.pace`, `users.test.pace`).
+2. **Location**: By default, the runner searches for `.test.pace` files in:
+   - The `tests/` directory
+   - The `src/` directory
+   - The current project root directory
+3. **Entry Point**: Each test file is a standalone executable with its own `fn main()`. If all assertions in `main()` pass, the test is marked as passed (`✓`). If any assertion fails or an unhandled panic occurs, the test is marked as failed (`✗`).
+
+---
+
+## Running Tests
+
+### Run All Tests
+
+To discover and execute all test files in your project:
+
+```bash title="Terminal"
+pace test
+```
+
+Each test runs in an isolated native process. Intermediate compilation artifacts are written to a temporary sandboxed directory and automatically cleaned up upon test completion.
+
+### Filter Tests by Name
+
+You can supply a filter pattern to execute only tests whose path matches a given string:
+
+```bash title="Terminal"
+# Run tests matching "collections" (e.g. tests/collections.test.pace)
+pace test collections
+
+# Run tests matching "auth"
+pace test auth
+```
+
+### Run a Specific Test File
+
+To execute a single test file directly:
+
+```bash title="Terminal"
+pace test tests/math.test.pace
+```
+
+---
+
+## Testing Packages and Libraries
+
+When you test a package governed by `pace.toml`, `pace test` automatically resolves dependencies declared in your manifest.
+
+For example, if your package name is `math_utils` defined in `pace.toml`:
+
+```toml title="pace.toml"
+[package]
+name = "math_utils"
+version = "0.1.0"
+
+[sdk]
+pace = ">=0.4.0 <1.0.0"
+```
+
+You can import your own package inside test files just like external consumers would:
+
+```pace title="tests/lib.test.pace"
+import "math_utils"
+
+fn main() {
+    let result = math_utils.calculateHypotenuse(3, 4)
+    assert(result == 5, "Hypotenuse of 3 and 4 should be 5")
+}
+```
+
+The test runner will automatically link the package's compiled library artifacts and any transitive dependencies from your cache or `pace.lock` lockfile.
+
+---
+
+## Common Testing Patterns
+
+### 1. Testing String Equality
+
+As of Pace v0.4.0, strings are compared using **deep value content equality**:
+
+```pace
+let first = "Hello"
+let second = "World"
+let combined = "${first}, ${second}!"
+
+assert(combined == "Hello, World!", "String interpolation must match expected value")
+assert(combined != "Goodbye, World!", "Inequality operator should work for strings")
+```
+
+### 2. Testing Collections
+
+Test native dynamic arrays (`List<T>`) and hash tables (`Map<K, V>`):
+
+```pace
+// Dynamic List tests
+let items = [1, 2, 3]
+assert(items.len() == 3, "Initial list length should be 3")
+
+items.push(4)
+assert(items.len() == 4, "Length after push should be 4")
+assert(items[3] == 4, "Newly pushed element should be at index 3")
+
+let popped = items.pop()
+assert(popped == 4, "Popped item should be 4")
+
+// Hash Map tests
+let dict = {"apple": 5, "banana": 10}
+assert(dict.len() == 2, "Map length should be 2")
+assert(dict.has("apple") == true, "Map should contain apple")
+assert(dict.get("banana") == 10, "Banana count should be 10")
+```
+
+### 3. Testing Structs and Classes
+
+Verify both value types (structs) and reference-counted objects (classes):
+
+```pace
+struct Coordinate {
+    x: int,
+    y: int,
+}
+
+class User {
+    name: string
+    active: bool
+
+    init(name: string) {
+        self.name = name
+        self.active = true
+    }
+
+    fn deactivate() {
+        self.active = false
+    }
+}
+
+fn main() {
+    // Test struct value semantics
+    let c = Coordinate(x: 10, y: 20)
+    assert(c.x == 10 && c.y == 20, "Struct fields should match initialized values")
+
+    // Test class methods and state transitions
+    let u = User("Alice")
+    assert(u.name == "Alice", "User name should be Alice")
+    assert(u.active == true, "User should be active upon initialization")
+
+    u.deactivate()
+    assert(u.active == false, "User should be inactive after deactivation")
+}
+```
+

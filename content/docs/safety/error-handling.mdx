@@ -78,6 +78,17 @@ let success = ok(42)
 // success.Ok() 
 ```
 
+### 4. Assertions for Invariant Validation
+
+Pace provides built-in `assert(condition, message?)` statements to verify runtime invariants and test assertions. If the condition evaluates to `false`, the runtime prints the diagnostic message (if provided) and aborts cleanly.
+
+```pace
+let bufferSize = 1024
+assert(bufferSize > 0, "Buffer size must be positive")
+```
+
+For comprehensive testing workflows and writing automated test suites, check out the [Testing Guide](/docs/getting-started/testing).
+
 ---
 
 ## Compiler Diagnostics & Error Codes

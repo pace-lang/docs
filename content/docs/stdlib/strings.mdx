@@ -51,3 +51,19 @@ You can use `indexOf` to find the position of a substring, or check prefixes/suf
 let idx = StringUtil.indexOf("hello world", "world") // 6
 let starts = StringUtil.startsWith("pace is fast", "pace") // true
 ```
+
+## String Equality
+
+Starting in Pace v0.4.0, string equality operators (`==` and `!=`) compare **UTF-8 byte content** rather than object memory pointers.
+
+```pace
+let a = "hello"
+let b = "he" + "llo"
+let c = "world"
+
+println(a == b) // true (same content)
+println(a != c) // true
+```
+
+The runtime performs an $O(1)$ fast check on memory addresses and byte lengths before running memory comparison (`memcmp`). Two distinct string instances with identical characters evaluate to `true`.
+

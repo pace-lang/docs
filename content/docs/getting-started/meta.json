@@ -1,4 +1,4 @@
 {
   "title": "Getting Started",
-  "pages": ["installation", "tooling", "package-management"]
+  "pages": ["installation", "tooling", "testing", "package-management"]
 }
